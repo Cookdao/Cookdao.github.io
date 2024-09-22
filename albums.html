@@ -1,0 +1,650 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albums Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e7e5e0;
+            color: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .album-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 1000px;
+            height: 500px;
+            background-color: #fff;
+            border-radius: 0;
+            box-sizing: border-box;
+            margin: 0;
+            position: relative;
+        }
+        .album-cover {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+        .album-cover img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            transition: opacity 0.3s, filter 0.3s;
+        }
+        .album-cover a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .album-cover:hover img {
+            opacity: 0.5;
+            filter: brightness(0.5);
+        }
+        .album-info {
+            width: 500px;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .album-info-inner {
+            text-align: center;
+        }
+        .year {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        h3 {
+            font-size: 28px;
+            font-weight: bold;
+            text-decoration: underline;
+            color: #333;
+            margin-bottom: 10px;
+            font-family: 'Arial', sans-serif;
+        }
+        h2 {
+            font-size: 42px;
+            font-weight: 300;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #000;
+            margin-top: 0;
+            text-transform: uppercase;
+        }
+        .reverse {
+            flex-direction: row-reverse;
+        }
+        .floating-window {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+<div class="floating-window">
+    总计：34
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=247913938" target="_blank">
+            <img src="http://p2.music.126.net/-G2re2uXOqk0AL732efmjw==/109951169962138318.jpg" alt="夕阳 风 烟 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-09-15</span>
+            <span class="year">2024</span>
+            <h3>898</h3>
+            <h2>夕阳 风 烟</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=246507605" target="_blank">
+            <img src="http://p1.music.126.net/vcRyBA253mdIy3nB7DECVQ==/109951169920447205.jpg" alt="金鼎 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-08-31</span>
+            <span class="year">2024</span>
+            <h3>MonPig</h3>
+            <h2>金鼎</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=245062074" target="_blank">
+            <img src="http://p1.music.126.net/V8_Day3Ae1-QEGIBW8LtaQ==/109951169875108033.jpg" alt="必备指令 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-08-15</span>
+            <span class="year">2024</span>
+            <h3>YIF钱毅峰</h3>
+            <h2>必备指令</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=243932243" target="_blank">
+            <img src="http://p2.music.126.net/fKK51uZdIdG5ymWfJug0qw==/109951169839894902.jpg" alt="火烧云 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-08-03</span>
+            <span class="year">2024</span>
+            <h3>CheezeK</h3>
+            <h2>火烧云</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=242854471" target="_blank">
+            <img src="http://p1.music.126.net/0AtdhPH3u8r27xkOsFVc_Q==/109951169809119505.jpg" alt="捕肉 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-07-23</span>
+            <span class="year">2024</span>
+            <h3>nicyco</h3>
+            <h2>捕肉</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=240703510" target="_blank">
+            <img src="http://p1.music.126.net/GZ0KxxLOkIiOLU-gv5OMNg==/109951169734137482.jpg" alt="F？emo 2024 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-06-29</span>
+            <span class="year">2024</span>
+            <h3>nicyco</h3>
+            <h2>F？emo 2024</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=197506694" target="_blank">
+            <img src="http://p2.music.126.net/2RTtCM1vA5VL4JfiK90O1g==/109951169632401644.jpg" alt="下个阶段 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-05-28</span>
+            <span class="year">2024</span>
+            <h3>Fefei物</h3>
+            <h2>下个阶段</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=196146392" target="_blank">
+            <img src="http://p1.music.126.net/Qymiy4g6WaCME-s8Wn0arg==/109951169597772610.jpg" alt="MARGUERITE玛格丽特 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-05-20</span>
+            <span class="year">2024</span>
+            <h3>曼珠沙華.</h3>
+            <h2>MARGUERITE玛格丽特</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=194993652" target="_blank">
+            <img src="http://p2.music.126.net/dCO06VehJ_NrUhoerQnXJw==/109951169571672118.jpg" alt="Frankyworld Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-05-11</span>
+            <span class="year">2024</span>
+            <h3>FrankyFire</h3>
+            <h2>Frankyworld</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=194996069" target="_blank">
+            <img src="http://p1.music.126.net/7OmEUb-t3lxEGmRrZNVSZw==/109951169570309879.jpg" alt="MINI COOPER Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-05-07</span>
+            <span class="year">2024</span>
+            <h3>Wey</h3>
+            <h2>MINI COOPER</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=193130769" target="_blank">
+            <img src="http://p2.music.126.net/cPERXa2NBtiuxVuDKB3vUA==/109951169523822357.jpg" alt="布鲁切尔 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-04-23</span>
+            <span class="year">2024</span>
+            <h3>nicyco</h3>
+            <h2>布鲁切尔</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=191521031" target="_blank">
+            <img src="http://p1.music.126.net/66kZHJ4z-jqPwuPjjtJibA==/109951169479579615.jpg" alt="断弦 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-04-08</span>
+            <span class="year">2024</span>
+            <h3>JungleZR</h3>
+            <h2>断弦</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=189753745" target="_blank">
+            <img src="http://p2.music.126.net/rA734NyZbO-HTxi0L4CGcQ==/109951169433203470.jpg" alt="Palette Mixtape Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-03-16</span>
+            <span class="year">2024</span>
+            <h3>Ele Jazz</h3>
+            <h2>Palette Mixtape</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=189515959" target="_blank">
+            <img src="http://p1.music.126.net/1HNA1I19oM6jjt66-ac0-Q==/109951169427057439.jpg" alt="楚门 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-03-14</span>
+            <span class="year">2024</span>
+            <h3>Ele Jazz</h3>
+            <h2>楚门</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=186263420" target="_blank">
+            <img src="http://p2.music.126.net/56fONfps2akyEmrcNxu0iw==/109951169352788904.jpg" alt="不走心说爱1.0 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-02-19</span>
+            <span class="year">2024</span>
+            <h3>nineteen</h3>
+            <h2>不走心说爱1.0</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=186011706" target="_blank">
+            <img src="http://p1.music.126.net/YwPy6LK5aEHcpsqL11x8gA==/109951169342070122.jpg" alt="贰拾 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-02-18</span>
+            <span class="year">2024</span>
+            <h3>JungleZR</h3>
+            <h2>贰拾</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=184937627" target="_blank">
+            <img src="http://p2.music.126.net/IsnOYAV-_RMHHJtx5LJ_qQ==/109951169307418420.jpg" alt="席卷着人间的浪 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-02-04</span>
+            <span class="year">2024</span>
+            <h3>ACondaway</h3>
+            <h2>席卷着人间的浪</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=184912000" target="_blank">
+            <img src="http://p1.music.126.net/lMbzsP3-kTe4pi_ZxH3u1w==/109951169306203582.jpg" alt="抛弃 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2024-02-02</span>
+            <span class="year">2024</span>
+            <h3>白丝巾YuXuan</h3>
+            <h2>抛弃</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=181712415" target="_blank">
+            <img src="http://p1.music.126.net/OXM0Ydl5B7t5ZcIbvy5LSg==/109951169203928801.jpg" alt="华东师范大学2023Cypher Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-12-25</span>
+            <span class="year">2023</span>
+            <h3>白丝巾YuXuan</h3>
+            <h2>华东师范大学2023Cypher</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=181790153" target="_blank">
+            <img src="http://p2.music.126.net/UO-23SocfXXV6xax72f2HA==/109951169206498088.jpg" alt="怪士诞日 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-12-24</span>
+            <span class="year">2023</span>
+            <h3>nicyco</h3>
+            <h2>怪士诞日</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=179884769" target="_blank">
+            <img src="http://p1.music.126.net/DGKwqeRssR67V8vzLfrDTA==/109951169105516154.jpg" alt="N.P.C Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-12-02</span>
+            <span class="year">2023</span>
+            <h3>nicyco</h3>
+            <h2>N.P.C</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=180169615" target="_blank">
+            <img src="http://p2.music.126.net/A-iqfjD77zMBFeh8ruiy-w==/109951169121605029.jpg" alt="SU1C1DE Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-12-02</span>
+            <span class="year">2023</span>
+            <h3>DIAMA 琨</h3>
+            <h2>SU1C1DE</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=178746366" target="_blank">
+            <img src="http://p2.music.126.net/dOWgk0E3A6rSyMMukEJmRw==/109951169046283282.jpg" alt="Fashion Demon Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-11-12</span>
+            <span class="year">2023</span>
+            <h3>CheezeK</h3>
+            <h2>Fashion Demon</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=177570503" target="_blank">
+            <img src="http://p1.music.126.net/aBk05gFqZ9rjVSk33aKV6A==/109951169008188224.jpg" alt="NINJAS Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-10-26</span>
+            <span class="year">2023</span>
+            <h3>JungleZR</h3>
+            <h2>NINJAS</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=175046931" target="_blank">
+            <img src="http://p1.music.126.net/6IZBK_DKP_zsUSC-MGXw6g==/109951168927494191.jpg" alt="Boombap Soul Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-09-20</span>
+            <span class="year">2023</span>
+            <h3>DIAMA 琨</h3>
+            <h2>Boombap Soul</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=173735399" target="_blank">
+            <img src="http://p2.music.126.net/ljY7YIeBT9wNp_i0GUMwjA==/109951168884355333.jpg" alt="拾探步 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-09-02</span>
+            <span class="year">2023</span>
+            <h3>白丝巾YuXuan</h3>
+            <h2>拾探步</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=173608711" target="_blank">
+            <img src="http://p2.music.126.net/R2x-Zgc75BgD92YIagQ_5A==/109951168881558137.jpg" alt="试探步Mixtape Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-09-01</span>
+            <span class="year">2023</span>
+            <h3>白丝巾YuXuan</h3>
+            <h2>试探步Mixtape</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=168762519" target="_blank">
+            <img src="http://p1.music.126.net/thj9epXwYzRryqrYDwRraA==/109951168713810198.jpg" alt="人 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-07-03</span>
+            <span class="year">2023</span>
+            <h3>JungleZR</h3>
+            <h2>人</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=164912481" target="_blank">
+            <img src="http://p1.music.126.net/naajK5WkZBZU3AmoY2Kb_w==/109951168589887251.jpg" alt="我 恨 早 八 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-05-04</span>
+            <span class="year">2023</span>
+            <h3>一刀阿阿</h3>
+            <h2>我 恨 早 八</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=164744981" target="_blank">
+            <img src="http://p1.music.126.net/npR37nSCYUtvDsVlLBMVFA==/109951168581638648.jpg" alt="HARDCORE SOUL Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-05-01</span>
+            <span class="year">2023</span>
+            <h3>LOG</h3>
+            <h2>HARDCORE SOUL</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=160212346" target="_blank">
+            <img src="http://p1.music.126.net/yNANX0v6lrmbah1DKoN0UA==/109951168316034924.jpg" alt="“我以为你会说的” Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-02-17</span>
+            <span class="year">2023</span>
+            <h3>DaWaNOLonE</h3>
+            <h2>“我以为你会说的”</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=159201448" target="_blank">
+            <img src="http://p2.music.126.net/6oDEyvZH8j2voQVpaiRAWQ==/109951168276674198.jpg" alt="冬忒窝瑞 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2023-02-01</span>
+            <span class="year">2023</span>
+            <h3>LOG</h3>
+            <h2>冬忒窝瑞</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row ">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=156898457" target="_blank">
+            <img src="http://p1.music.126.net/Jr5MMh8uXNOO_Trt9GMd9g==/109951168163867338.jpg" alt="Trash Talk Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2022-12-20</span>
+            <span class="year">2022</span>
+            <h3>LOG</h3>
+            <h2>Trash Talk</h2>
+        </div>
+    </div>
+</div>
+
+<div class="album-row reverse">
+    <div class="album-cover">
+        <a href="https://music.163.com/album?id=152978750" target="_blank">
+            <img src="http://p2.music.126.net/yPh7c9860LOS3eF5A2wkIA==/109951168499346559.jpg" alt="华东师大没有黑怕 Album Cover">
+        </a>
+    </div>
+    <div class="album-info">
+        <div class="album-info-inner">
+            <span class="date" style="display: none;">2022-10-10</span>
+            <span class="year">2022</span>
+            <h3>一刀阿阿</h3>
+            <h2>华东师大没有黑怕</h2>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

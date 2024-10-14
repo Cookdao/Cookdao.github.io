@@ -27,17 +27,19 @@
             box-sizing: border-box;
             margin: 0;
             position: relative;
-            white-space: nowrap; /* Prevent wrapping */
+            white-space: nowrap;
         }
         .album-cover {
-            width: 500px;
+            flex: 1; /* Allows the cover to grow and shrink */
+            max-width: 500px;
             height: 500px;
             position: relative;
             overflow: hidden;
         }
         .album-cover img {
-            width: 100%;
-            height: 100%;
+            width: 500px;
+            height: 500px;
+            object-fit: cover; /* Ensures the image is cropped but maintains aspect ratio */
             display: block;
             transition: opacity 0.3s, filter 0.3s;
         }
@@ -51,8 +53,9 @@
             filter: brightness(0.5);
         }
         .album-info {
-            width: 500px;
-            height: 500px;
+            flex: 1; /* Allows the info to grow and shrink */
+            max-width: 500px;
+            height: auto;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -68,7 +71,7 @@
         }
         h3 {
             font-size: 28px;
-            font-weight: normal; /* 修改为 normal */
+            font-weight: normal;
             text-decoration: underline;
             color: #333;
             margin-bottom: 10px;
@@ -76,7 +79,7 @@
         }
         h2 {
             font-size: 42px;
-            font-weight: 300; /* 保持不变 */
+            font-weight: 300;
             font-family: 'Helvetica Neue', Arial, sans-serif;
             color: #000;
             margin-top: 0;
@@ -89,45 +92,77 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background-color: #fff; /* Pure white background */
+            background-color: #fff;
             border: 1px solid #ccc;
-            padding: 20px; /* Adjusted padding for content */
+            padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
             z-index: 1000;
-            font-size: 16px; /* Adjusted font size */
+            font-size: 16px;
             color: #000;
             font-weight: bold;
             text-align: center;
             cursor: pointer;
             display: flex;
-            flex-direction: column; /* Added for multi-line content */
-            justify-content: center; /* Center content vertically */
+            flex-direction: column;
+            justify-content: center;
         }
         .floating-window span {
-            margin-bottom: 5px; /* Space between lines */
+            margin-bottom: 5px;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 1000px) {
+            .album-row {
+                width: 100%;
+                height: 50%;
+                flex-wrap: wrap; /* Allow rows to wrap */
+            }
+            .album-cover, .album-info {
+                max-width: 40%; /* Allow elements to take full width */
+                height: auto; /* Let the height be determined by content */
+                flex-basis: auto; /* Take 50% width for each element */
+            }
+            .album-cover img {
+                width: 100%;
+                height: auto;
+            }
+            h2 {
+                font-size: 10px;
+            }
+            h3 {
+                font-size: 15px;
+            }
+            .year {
+                font-size: 5px;
+            }
+            .floating-window {
+                font-size: 10px;
+                padding: 10px;
+            }
         }
     </style>
+</head>
+
+<body>
     <!-- Floating window content -->
     <div class="floating-window" onclick="copyWeChatIdAndOpenWeChat()">
-        <span>WeChat:Cookdao</span>
-        <span>(点击复制到粘贴板并打开微信)</span>
+        <span>WeChat: Cookdao</span>
+        <span>(点击复制并打开微信)</span>
     </div>
+
     <script>
         function copyWeChatIdAndOpenWeChat() {
             var wechatId = 'Cookdao';
-            // 复制微信ID到粘贴板
             navigator.clipboard.writeText(wechatId).then(function() {
                 console.log('微信ID已复制到粘贴板');
             }).catch(function(err) {
                 console.error('无法复制微信ID到粘贴板: ', err);
             });
-            // 尝试打开微信
             window.location.href = 'weixin://';
         }
     </script>
-</head>
-<body>
+
 <div class="album-row reverse">
     <div class="album-cover">
         <a href="https://music.163.com/album?id=249870834" target="_blank">
@@ -231,7 +266,7 @@
         <div class="album-info-inner">
             <span class="date" style="display: none;">2024-08-03</span>
             <span class="year">2024</span>
-            <h3>CheezeK</h3>
+            <h3>CheezeK & RioT</h3>
             <h2>火烧云</h2>
         </div>
     </div>

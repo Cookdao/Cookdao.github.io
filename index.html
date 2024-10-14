@@ -109,14 +109,21 @@
         }
     </style>
     <!-- Floating window content -->
-    <div class="floating-window" onclick="openWeChat()">
+    <div class="floating-window" onclick="copyWeChatIdAndOpenWeChat()">
         <span>WeChat:Cookdao</span>
-        <span>(iOS可直接点击加好友)</span>
+        <span>(点击复制到粘贴板并打开微信)</span>
     </div>
     <script>
-        function openWeChat() {
+        function copyWeChatIdAndOpenWeChat() {
             var wechatId = 'Cookdao';
-            window.location.href = 'weixin://' + encodeURIComponent(wechatId);
+            // 复制微信ID到粘贴板
+            navigator.clipboard.writeText(wechatId).then(function() {
+                console.log('微信ID已复制到粘贴板');
+            }).catch(function(err) {
+                console.error('无法复制微信ID到粘贴板: ', err);
+            });
+            // 尝试打开微信
+            window.location.href = 'weixin://';
         }
     </script>
 </head>

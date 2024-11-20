@@ -30,7 +30,7 @@
             white-space: nowrap;
         }
         .album-cover {
-            flex: 1; /* Allows the cover to grow and shrink */
+            flex: 1;
             max-width: 500px;
             height: 500px;
             position: relative;
@@ -39,7 +39,7 @@
         .album-cover img {
             width: 500px;
             height: 500px;
-            object-fit: cover; /* Ensures the image is cropped but maintains aspect ratio */
+            object-fit: cover;
             display: block;
             transition: opacity 0.3s, filter 0.3s;
         }
@@ -53,7 +53,7 @@
             filter: brightness(0.5);
         }
         .album-info {
-            flex: 1; /* Allows the info to grow and shrink */
+            flex: 1;
             max-width: 500px;
             height: auto;
             display: flex;
@@ -90,8 +90,6 @@
         }
         .floating-window {
             position: fixed;
-            top: 20px;
-            right: 20px;
             background-color: #fff;
             border: 1px solid #ccc;
             padding: 20px;
@@ -107,6 +105,14 @@
             flex-direction: column;
             justify-content: center;
         }
+        .wechat-window {
+            top: 20px;
+            right: 20px;
+        }
+        .counter-window {
+            bottom: 20px;
+            left: 20px;
+        }
         .floating-window span {
             margin-bottom: 5px;
         }
@@ -116,12 +122,12 @@
             .album-row {
                 width: 100%;
                 height: 50%;
-                flex-wrap: wrap; /* Allow rows to wrap */
+                flex-wrap: wrap;
             }
             .album-cover, .album-info {
-                max-width: 40%; /* Allow elements to take full width */
-                height: auto; /* Let the height be determined by content */
-                flex-basis: auto; /* Take 50% width for each element */
+                max-width: 40%;
+                height: auto;
+                flex-basis: auto;
             }
             .album-cover img {
                 width: 100%;
@@ -145,24 +151,42 @@
 </head>
 
 <body>
-    <!-- Floating window content -->
-    <div class="floating-window" onclick="copyWeChatIdAndOpenWeChat()">
+    <!-- WeChat Floating Window -->
+    <div class="floating-window wechat-window" onclick="copyWeChatIdAndOpenWeChat()">
         <span>WeChat: Cookdao</span>
         <span>(点击复制并打开微信)</span>
     </div>
 
+    <!-- Visitor Count Floating Window -->
+    <div class="floating-window counter-window" id="visitor-counter">
+        当前累计访问人数：<span id="visit-count">0</span>
+    </div>
+
     <script>
+        // Copy WeChat ID and Open WeChat App
         function copyWeChatIdAndOpenWeChat() {
-            var wechatId = 'Cookdao';
-            navigator.clipboard.writeText(wechatId).then(function() {
-                console.log('微信ID已复制到粘贴板');
-            }).catch(function(err) {
-                console.error('无法复制微信ID到粘贴板: ', err);
+            const wechatId = 'Cookdao';
+            navigator.clipboard.writeText(wechatId).then(() => {
+                alert('微信ID已复制到剪贴板');
+            }).catch(err => {
+                console.error('无法复制微信ID: ', err);
             });
             window.location.href = 'weixin://';
         }
-    </script>
 
+        // Visitor Count Logic
+        const counterElement = document.getElementById('visit-count');
+        let visitCount = localStorage.getItem('visitCount');
+
+        if (!visitCount) {
+            visitCount = 1; // First visit
+        } else {
+            visitCount = parseInt(visitCount, 10) + 1; // Increment count
+        }
+
+        localStorage.setItem('visitCount', visitCount);
+        counterElement.textContent = visitCount;
+    </script>
 <div class="album-row reverse">
     <div class="album-cover">
         <a href="https://music.163.com/album?id=253462820" target="_blank">

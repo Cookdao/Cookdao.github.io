@@ -166,10 +166,7 @@
         <span>(点击复制并打开微信)</span>
     </div>
 
-    <!-- Visitor Count Floating Window -->
-    <div class="floating-window counter-window" id="visitor-counter">
-        当前累计访问人数：<span id="visit-count">0</span>
-    </div>
+
 
     <script>
         // Copy WeChat ID and Open WeChat App
@@ -183,18 +180,7 @@
             window.location.href = 'weixin://';
         }
 
-        // Visitor Count Logic
-        const counterElement = document.getElementById('visit-count');
-        let visitCount = localStorage.getItem('visitCount');
-
-        if (!visitCount) {
-            visitCount = 1; // First visit
-        } else {
-            visitCount = parseInt(visitCount, 10) + 1; // Increment count
-        }
-
-        localStorage.setItem('visitCount', visitCount);
-        counterElement.textContent = visitCount;
+       
     </script>
 <div class="album-row reverse">
     <div class="album-cover">

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +8,7 @@
     <meta property="og:title" content="大厨菜单">
     <meta property="og:description" content="刀大厨混音母带">
     <meta property="og:image" content="https://github.com/Cookdao/Cookdao.github.io/blob/main/icon.png">
-    <meta property="og:url" content="https://cookdao.github.io/"> <!-- 替换为实际网址 -->
+    <meta property="og:url" content="https://cookdao.github.io/">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,8 +41,8 @@
             overflow: hidden;
         }
         .album-cover img {
-            width: 500px;
-            height: 500px;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             display: block;
             transition: opacity 0.3s, filter 0.3s;
@@ -57,6 +56,42 @@
             opacity: 0.5;
             filter: brightness(0.5);
         }
+        .highlight {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px; /* 等于三角形高 */
+            height: 100px; /* 等于三角形宽 */
+            overflow: hidden; /* 确保内容不溢出 */
+        }
+
+        .highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-top: 100px solid gold; /* Triangle color */
+            border-right: 100px solid transparent; /* Transparent edge */
+            transform: rotate(90deg); /* 旋转三角形以形成锐角 */
+
+            opacity: 0.9; /* 设置透明度 */
+        }
+
+        .highlight span {
+            position: absolute;
+            display: flex; /* 使用flexbox */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            top: 0;
+            right: 0;
+            width: 50px; /* 等于三角形的宽度 */
+            height: 50px; /* 等于三角形的高度 */
+            font-size: 33px;
+            color: #000;
+            opacity: 0.90; /* 设置透明度 */
+        }
         .album-info {
             flex: 1;
             max-width: 500px;
@@ -67,6 +102,7 @@
         }
         .album-info-inner {
             text-align: center;
+            position: relative;
         }
         .year {
             font-size: 18px;
@@ -121,7 +157,6 @@
         .floating-window span {
             margin-bottom: 5px;
         }
-
         /* Mobile responsiveness */
         @media (max-width: 1000px) {
             .album-row {
@@ -153,26 +188,21 @@
             }
         }
     </style>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WKW4EL3VCC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-WKW4EL3VCC');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WKW4EL3VCC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-WKW4EL3VCC');
+    </script>
 </head>
-
 <body>
     <!-- WeChat Floating Window -->
     <div class="floating-window wechat-window" onclick="copyWeChatIdAndOpenWeChat()">
         <span>WeChat: Cookdao</span>
         <span>(点击复制并打开微信)</span>
     </div>
-
-
-
     <script>
         // Copy WeChat ID and Open WeChat App
         function copyWeChatIdAndOpenWeChat() {
@@ -184,24 +214,23 @@
             });
             window.location.href = 'weixin://';
         }
-
-
     </script>
-<div class="album-row">
-    <div class="album-cover">
-        <a href="https://music.163.com/album?id=258535006" target="_blank">
-            <img src="http://p2.music.126.net/K0FP9U0dC9uzP1MP4WrdIA==/109951170344988605.jpg" alt="果体，苹果，你 Album Cover">
-        </a>
-    </div>
-    <div class="album-info">
-        <div class="album-info-inner">
-            <span class="date" style="display: none;">2025-01-05</span>
-            <span class="year">2025</span>
-            <h3>nicyco</h3>
-            <h2>果体，苹果，你</h2>
+    <div class="album-row">
+        <div class="album-cover">
+            <a href="https://music.163.com/album?id=258535006" target="_blank">
+                <img src="http://p2.music.126.net/K0FP9U0dC9uzP1MP4WrdIA==/109951170344988605.jpg" alt="果体，苹果，你 Album Cover">
+            </a>
+            <div class="highlight"><span>★</span></div>
+        </div>
+        <div class="album-info">
+            <div class="album-info-inner">
+                <span class="date" style="display: none;">2025-01-05</span>
+                <span class="year">2025</span>
+                <h3>nicyco</h3>
+                <h2>果体，苹果，你</h2>
+            </div>
         </div>
     </div>
-</div>
 <div class="album-row reverse">
     <div class="album-cover">
         <a href="https://music.163.com/album?id=257739096" target="_blank">
@@ -297,6 +326,7 @@
         <a href="https://music.163.com/album?id=249870834" target="_blank">
             <img src="http://p2.music.126.net/nnnqgdFjThGzG3m1r7YRHg==/109951170018200576.jpg" alt="Royal Blue(ft. Rapeter) Album Cover">
         </a>
+                    <div class="highlight"><span>★</span></div>
     </div>
     <div class="album-info">
         <div class="album-info-inner">
@@ -390,6 +420,8 @@
         <a href="https://music.163.com/album?id=243932243" target="_blank">
             <img src="http://p2.music.126.net/fKK51uZdIdG5ymWfJug0qw==/109951169839894902.jpg" alt="火烧云 Album Cover">
         </a>
+                    <div class="highlight"><span>★</span></div>
+
     </div>
     <div class="album-info">
         <div class="album-info-inner">
@@ -502,6 +534,8 @@
         <a href="https://music.163.com/album?id=193130769" target="_blank">
             <img src="http://p2.music.126.net/cPERXa2NBtiuxVuDKB3vUA==/109951169523822357.jpg" alt="布鲁切尔 Album Cover">
         </a>
+                    <div class="highlight"><span>★</span></div>
+
     </div>
     <div class="album-info">
         <div class="album-info-inner">
@@ -534,6 +568,8 @@
         <a href="https://music.163.com/album?id=189753745" target="_blank">
             <img src="http://p2.music.126.net/rA734NyZbO-HTxi0L4CGcQ==/109951169433203470.jpg" alt="Palette Mixtape Album Cover">
         </a>
+                    <div class="highlight"><span>★</span></div>
+
     </div>
     <div class="album-info">
         <div class="album-info-inner">
@@ -630,12 +666,14 @@
         <a href="https://music.163.com/album?id=181712415" target="_blank">
             <img src="http://p1.music.126.net/OXM0Ydl5B7t5ZcIbvy5LSg==/109951169203928801.jpg" alt="华东师范大学2023Cypher Album Cover">
         </a>
+                    <div class="highlight"><span>★</span></div>
+
     </div>
     <div class="album-info">
         <div class="album-info-inner">
             <span class="date" style="display: none;">2023-12-25</span>
             <span class="year">2023</span>
-            <h3>白丝巾YuXuan</h3>
+            <h3>哇嘻大</h3>
             <h2>华东师范大学2023Cypher</h2>
         </div>
     </div>

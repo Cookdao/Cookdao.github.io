@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -157,49 +158,49 @@
         .floating-window span {
             margin-bottom: 5px;
         }
-        /* Mobile responsiveness */
-        @media (max-width: 1000px) {
-            .album-row {
-                width: 100%;
-                height: 50%;
-                flex-wrap: wrap;
-            }
-            .album-cover, .album-info {
-                max-width: 40%;
-                height: auto;
-                flex-basis: auto;
-            }
-            .album-cover img {
-                width: 100%;
-                height: auto;
-            }
-            h2 {
-                font-size: 12px;
-            }
-            h3 {
-                font-size: 15px;
-            }
-            .year {
-                font-size: 8px;
-            }
-            .floating-window {
-                font-size: 10px;
-                padding: 10px;
-            }
-            .highlight {
-                width: 15vw;
-                height: 15vw;
-            }
-            .highlight::before {
-                border-top: 15vw solid gold;
-                border-right: 15vw solid transparent;
-            }
-            .highlight span {
-                width: 7.5vw;
-                height: 7.5vw;
-                font-size: 4vw;
-            }
-        }
+/* Mobile responsiveness */
+@media (max-width: 1000px) {
+    .album-row {
+        width: 100%;
+        height: 50%;
+        flex-wrap: wrap;
+    }
+    .album-cover, .album-info {
+        max-width: 50%;
+        height: auto;
+        flex-basis: auto;
+    }
+    .album-cover img {
+        width: 100%;
+        height: auto;
+    }
+    h2 {
+        font-size: 4vw; /* 文字大小基于屏幕宽度 */
+    }
+    h3 {
+        font-size: 3vw; /* 文字大小基于屏幕宽度 */
+    }
+    .year {
+        font-size: 2vw; /* 文字大小基于屏幕宽度 */
+    }
+    .floating-window {
+        font-size: 2vw; /* 字体大小基于屏幕宽度 */
+        padding: 3vw; /* 自适应缩放的内边距 */
+    }
+    .highlight {
+        width: 15vw;
+        height: 15vw;
+    }
+    .highlight::before {
+        border-top: 15vw solid gold;
+        border-right: 15vw solid transparent;
+    }
+    .highlight span {
+        width: 7.5vw;
+        height: 7.5vw;
+        font-size: 4vw;
+    }
+}
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WKW4EL3VCC"></script>

@@ -1003,23 +1003,7 @@ body.intro-finished #intro-overlay {
             });
         });
 
-        // --- 3. DOMContentLoaded 事件处理 ---
-        window.addEventListener("DOMContentLoaded", () => {
-
-            if (sessionStorage.getItem('hasVisited')) {
-                // *** 不是第一次访问 ***
-                document.body.classList.add('intro-finished');
-                generateAlbums();
-                observeAlbums();
-            } else {
-                // *** 是第一次访问 ***
-                sessionStorage.setItem('hasVisited', 'true');
-                document.body.classList.add('intro-active');
-                generateAlbums();
-                observeAlbums();
-                // 移除了原有的startIntroAnimation()调用
-            }
-        });
+        
     </script>
 
 </body></html>

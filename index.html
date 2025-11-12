@@ -878,8 +878,8 @@ body.intro-finished #intro-overlay {
         function generateAlbums() {
             const container = document.getElementById("albums-container");
             let reverseClass = false;
-            // .slice(0, 10) 会自动处理数组中只有1个元素的情况
-            const albumsToDisplay = albums.slice(0, 10);
+            // .slice(0, 100) 会自动处理数组中只有1个元素的情况
+            const albumsToDisplay = albums.slice(0, 100);
 
             albumsToDisplay.forEach((album, index) => {
                 reverseClass = index % 2 === 0 ? false : true;

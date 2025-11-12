@@ -1,163 +1,162 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="en"><head>
+<base href="https://fr6abvxuageku.ok.kimi.link">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>刀大厨的菜单</title>
-    <link rel="icon" href="https://www.emojiall.com/images/240/apple/1f373.png" type="image/png">
-    <meta property="og:title" content="大厨菜单">
-    <meta property="og:description" content="刀大厨混音母带">
-    <meta property="og:image" content="https://github.com/Cookdao/Cookdao.github.io/blob/main/icon.png">
-    <meta property="og:url" content="https://cookdao.github.io/">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #e7e5e0;
-            color: #000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .album-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 1000px;
-            height: 500px;
-            background-color: #fff;
-            border-radius: 0;
-            box-sizing: border-box;
-            margin: 0;
-            position: relative;
-            white-space: nowrap;
-        }
-        .album-cover {
-            flex: 1;
-            max-width: 500px;
-            height: 500px;
-            position: relative;
-            overflow: hidden;
-        }
-        .album-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transform: scale(1);
-            transition: opacity 0.3s, filter 0.3s, transform 0.4s ease;
-        }
-        .album-cover a {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-        .album-cover:hover img {
-            opacity: 0.5;
-            filter: brightness(0.5);
-            transform: scale(1.05);
-        }
-        .highlight {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100px;
-            height: 100px;
-            overflow: hidden;
-        }
+    <link rel="icon" href="https://www.emojiall.com/images/240/apple/1f373.png " type="image/png"/>
+    <meta property="og:title" content="大厨菜单"/>
+    <meta property="og:description" content="刀大厨混音母带"/>
+    <meta property="og:image" content="https://github.com/Cookdao/Cookdao.github.io/blob/main/icon.png "/>
+    <meta property="og:url" content="https://cookdao.github.io/ "/>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #e7e5e0;
+        color: #000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .album-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 1000px;
+        height: 500px;
+        background-color: #fff;
+        border-radius: 0;
+        box-sizing: border-box;
+        margin: 0;
+        position: relative;
+        white-space: nowrap;
+    }
+    .album-cover {
+        flex: 1;
+        max-width: 500px;
+        height: 500px;
+        position: relative;
+        overflow: hidden;
+    }
+    .album-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transform: scale(1);
+        transition: opacity 0.3s, filter 0.3s, transform 0.4s ease;
+    }
+    .album-cover a {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+    .album-cover:hover img {
+        opacity: 0.5;
+        filter: brightness(0.5);
+        transform: scale(1.05);
+    }
+    .highlight {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+    }
 
-        .highlight::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 0;
-            height: 0;
-            border-top: 100px solid gold;
-            border-right: 100px solid transparent;
-            transform: rotate(90deg);
-            opacity: 0.9;
-        }
+    .highlight::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-top: 100px solid gold;
+        border-right: 100px solid transparent;
+        transform: rotate(90deg);
+        opacity: 0.9;
+    }
 
-        .highlight span {
-            position: absolute;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            top: 0;
-            right: 0;
-            width: 50px;
-            height: 50px;
-            font-size: 33px;
-            color: #000;
-            opacity: 0.90;
-        }
-        .album-info {
-            flex: 1;
-            max-width: 500px;
-            height: auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .album-info-inner {
-            text-align: center;
-            position: relative;
-        }
-        .year {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
-        }
-        h3 {
-            font-size: 28px;
-            font-weight: normal;
-            text-decoration: underline;
-            color: #333;
-            margin-bottom: 10px;
-            font-family: 'Arial', sans-serif;
-        }
-        h2 {
-            font-size: 42px;
-            font-weight: 300;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: #000;
-            margin-top: 0;
-            text-transform: uppercase;
-        }
-        .reverse {
-            flex-direction: row-reverse;
-        }
-        .floating-window {
-            position: fixed;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            font-size: 16px;
-            color: #000;
-            font-weight: bold;
-            text-align: center;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .wechat-window {
-            top: 20px;
-            right: 20px;
-        }
-        .counter-window {
-            bottom: 20px;
-            left: 20px;
-        }
-        .floating-window span {
-            margin-bottom: 5px;
-        }
+    .highlight span {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        right: 0;
+        width: 50px;
+        height: 50px;
+        font-size: 33px;
+        color: #000;
+        opacity: 0.90;
+    }
+    .album-info {
+        flex: 1;
+        max-width: 500px;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .album-info-inner {
+        text-align: center;
+        position: relative;
+    }
+    .year {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 10px;
+        letter-spacing: 2px;
+    }
+    h3 {
+        font-size: 28px;
+        font-weight: normal;
+        text-decoration: underline;
+        color: #333;
+        margin-bottom: 10px;
+        font-family: 'Arial', sans-serif;
+    }
+    h2 {
+        font-size: 42px;
+        font-weight: 300;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        color: #000;
+        margin-top: 0;
+        text-transform: uppercase;
+    }
+    .reverse {
+        flex-direction: row-reverse;
+    }
+    .floating-window {
+        position: fixed;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        font-size: 16px;
+        color: #000;
+        font-weight: bold;
+        text-align: center;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .wechat-window {
+        top: 20px;
+        right: 20px;
+    }
+    .counter-window {
+        bottom: 20px;
+        left: 20px;
+    }
+    .floating-window span {
+        margin-bottom: 5px;
+    }
 /* Mobile responsiveness */
 @media (max-width: 1000px) {
     .album-row {
@@ -251,24 +250,37 @@ body.intro-active #intro-overlay {
     display: flex; /* 仅在 intro 激活时显示 */
 }
 
-/* 2. 闪现的图片容器 */
+/* 2. 正方形图片容器 - 修改为充满整个视口 */
 .intro-image-box {
-    width: 800px;
-    height: 800px;
+    width: 100vw; /* 宽度设置为视口宽度 */
+    height: 100vh; /* 高度设置为视口高度 */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    border-radius: 5px;
+    box-shadow: none; /* 移除阴影 */
+    border-radius: 0; /* 移除圆角 */
+    position: relative;
 }
+
+/* 3. 正方形图片元素 - 用于实现铺满和裁剪 */
+.intro-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 关键：保持图片比例，裁剪多余部分，实现放大铺满效果 */
+    border-radius: 0; /* 移除圆角 */
+}
+
 @media (max-width: 600px) {
+    /* 响应式调整为全屏 */
     .intro-image-box {
-        width: 70vw;
-        height: 70vw;
+        width: 100vw;
+        height: 100vh;
+        max-width: 100vw;
+        max-height: 100vh;
     }
 }
 
-/* 3. 控制 body 和 #albums-container 的状态 */
+/* 4. 控制 body 和 #albums-container 的状态 */
 body.intro-active {
     overflow: hidden;
 }
@@ -283,8 +295,8 @@ body.intro-finished #intro-overlay {
     opacity: 0;
     pointer-events: none;
 }
-/* --- 动画效果结束 --- */
 
+/* 5. 进入按钮样式 */
 #skip-intro-btn {
   position: absolute;
   bottom: 8vh;
@@ -300,30 +312,34 @@ body.intro-finished #intro-overlay {
   cursor: pointer;
   opacity: 0;
   transition: all 0.4s ease;
+  display: none; /* 默认隐藏 */
 }
 
 #skip-intro-btn.show {
   opacity: 1;
   transform: translateX(-50%) scale(1);
+  display: block;
 }
 
-#skip-intro-btn:active {
+#skip-intro-btn:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
-
-    </style>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WKW4EL3VCC"></script>
+</style>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-WKW4EL3VCC "></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-WKW4EL3VCC');
     </script>
-</head>
+<script src="https://statics.moonshot.cn/sdk/preview-widgets.min.js" defer=""></script></head>
 <body>
     <div id="intro-overlay">
-      <div class="intro-image-box"></div>
+      <div class="intro-image-box">
+        <!-- 用户需要填写的全屏图片 -->
+        <img class="intro-image" src="https://github.com/user-attachments/assets/da854eee-1c0c-4a78-b15a-5f990693ac43" alt="开场图片" id="intro-image"/>
+      </div>
       <button id="skip-intro-btn">进入网站</button>
     </div>
 
@@ -333,568 +349,568 @@ body.intro-finished #intro-overlay {
         // 定义专辑数据
         const albums = [
             {
-                link: "https://music.163.com/album?id=349892857",
-                image: "http://p2.music.126.net/Z0XW7Vb1WHMnn0Z0aZ3tVw==/109951172263038796.jpg",
+                link: "https://music.163.com/album?id=349892857 ",
+                image: "http://p2.music.126.net/Z0XW7Vb1WHMnn0Z0aZ3tVw==/109951172263038796.jpg ",
                 year: "2025",
                 artist: "安伊涵",
                 title: "BAD DESIRE",
                 highlighted: true
             },
             {
-                link: "https://music.163.com/album?id=273398421",
-                image: "http://p1.music.126.net/EZUw2Idccw7OkinISOXpeQ==/109951171093017111.jpg",
+                link: "https://music.163.com/album?id=273398421 ",
+                image: "http://p1.music.126.net/EZUw2Idccw7OkinISOXpeQ==/109951171093017111.jpg ",
                 year: "2025",
                 artist: "RioT婷 & CheezeK",
                 title: "小巴辣子",
                 highlighted: true
             },
             {
-                link: "https://music.163.com/album?id=263242113",
-                image: "http://p2.music.126.net/QpNRZsfMP5J4tOlziA8Pnw==/109951170504642760.jpg",
+                link: "https://music.163.com/album?id=263242113 ",
+                image: "http://p2.music.126.net/QpNRZsfMP5J4tOlziA8Pnw==/109951170504642760.jpg ",
                 year: "2025",
                 artist: "Rapeter",
                 title: "IMGOOD别担心我",
                 highlighted: true
             },
             {
-                link: "https://music.163.com/album?id=285918201",
-                image: "http://p2.music.126.net/NPwKdmm_krtd4sEEzE8G-g==/109951172050720624.jpg",
+                link: "https://music.163.com/album?id=285918201 ",
+                image: "http://p2.music.126.net/NPwKdmm_krtd4sEEzE8G-g==/109951172050720624.jpg ",
                 year: "2025",
                 artist: "西冷",
                 title: "汤火",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=284607285",
-                image: "http://p2.music.126.net/JlYNY-59Ys9_P6v4Q_8pYA==/109951171998308814.jpg",
+                link: "https://music.163.com/album?id=284607285 ",
+                image: "http://p2.music.126.net/JlYNY-59Ys9_P6v4Q_8pYA==/109951171998308814.jpg ",
                 year: "2025",
                 artist: "CheezeK & CATI2",
                 title: "Just Come Again",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=284558402",
-                image: "http://p2.music.126.net/hkegtpRfa2Ow7WuRuGiajQ==/109951171998134151.jpg",
+                link: "https://music.163.com/album?id=284558402 ",
+                image: "http://p2.music.126.net/hkegtpRfa2Ow7WuRuGiajQ==/109951171998134151.jpg ",
                 year: "2025",
                 artist: "juNk chaiN",
                 title: "愚",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=283509783",
-                image: "http://p2.music.126.net/k5Ea2W95Vk2ZHjPnq4S4WQ==/109951171959047869.jpg",
+                link: "https://music.163.com/album?id=283509783 ",
+                image: "http://p2.music.126.net/k5Ea2W95Vk2ZHjPnq4S4WQ==/109951171959047869.jpg ",
                 year: "2025",
                 artist: "掌柜不CHOKIN",
                 title: "焦虑型人格",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=281868509",
-                image: "http://p2.music.126.net/4aw3W2ztwD-t8FyA65psRw==/109951171885901333.jpg",
+                link: "https://music.163.com/album?id=281868509 ",
+                image: "http://p2.music.126.net/4aw3W2ztwD-t8FyA65psRw==/109951171885901333.jpg ",
                 year: "2025",
                 artist: "898",
                 title: "灯塔",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=279179554",
-                image: "http://p2.music.126.net/t_dolznM2McNhnl4b4Qa4Q==/109951171789982806.jpg",
+                link: "https://music.163.com/album?id=279179554 ",
+                image: "http://p2.music.126.net/t_dolznM2McNhnl4b4Qa4Q==/109951171789982806.jpg ",
                 year: "2025",
                 artist: "CheezeK",
                 title: "必备指令2.0",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=276925482",
-                image: "http://p2.music.126.net/m0opMAaNB1eOGnd30EYFZg==/109951171387080337.jpg",
+                link: "https://music.163.com/album?id=276925482 ",
+                image: "http://p2.music.126.net/m0opMAaNB1eOGnd30EYFZg==/109951171387080337.jpg ",
                 year: "2025",
                 artist: "焦娇JoJo",
                 title: "陕北女子",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=270573035",
-                image: "http://p1.music.126.net/NrbdvLw7jhqKWzPYLUzEOw==/109951170927016553.jpg",
+                link: "https://music.163.com/album?id=270573035 ",
+                image: "http://p1.music.126.net/NrbdvLw7jhqKWzPYLUzEOw==/109951170927016553.jpg ",
                 year: "2025",
                 artist: "YOUNGLEGO",
                 title: "快人一步",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=276430474",
-                image: "http://p1.music.126.net/kB5zkM3rSYaJtZNUM-tmVQ==/109951171363350397.jpg",
+                link: "https://music.163.com/album?id=276430474 ",
+                image: "http://p1.music.126.net/kB5zkM3rSYaJtZNUM-tmVQ==/109951171363350397.jpg ",
                 year: "2025",
                 artist: "FLAG2000 & 歪吉",
                 title: "BAD BAD的心情",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=166077501",
-                image: "http://p2.music.126.net/ohHee67UBXig9S89itHNAQ==/109951168627523940.jpg",
+                link: "https://music.163.com/album?id=166077501 ",
+                image: "http://p2.music.126.net/ohHee67UBXig9S89itHNAQ==/109951168627523940.jpg ",
                 year: "2025",
                 artist: "浪氏云",
                 title: "浪潮 Restart",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=275300472",
-                image: "http://p2.music.126.net/NI49TfJcoiaBxw9te1TUkA==/109951171315986087.jpg",
+                link: "https://music.163.com/album?id=275300472 ",
+                image: "http://p2.music.126.net/NI49TfJcoiaBxw9te1TUkA==/109951171315986087.jpg ",
                 year: "2025",
                 artist: "Jerome杰罗姆",
                 title: "天命",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=275333561",
-                image: "http://p1.music.126.net/TVysXuJ9sv4GnlvmYI-P1Q==/109951171296811142.jpg",
+                link: "https://music.163.com/album?id=275333561 ",
+                image: "http://p1.music.126.net/TVysXuJ9sv4GnlvmYI-P1Q==/109951171296811142.jpg ",
                 year: "2025",
                 artist: " LiI GB",
                 title: "Im coming",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=272339997",
-                image: "http://p1.music.126.net/J89BSZrXMJL0AKWYyB1dvw==/109951171002089414.jpg",
+                link: "https://music.163.com/album?id=272339997 ",
+                image: "http://p1.music.126.net/J89BSZrXMJL0AKWYyB1dvw==/109951171002089414.jpg ",
                 year: "2025",
                 artist: "Lil Pink",
                 title: "This Love of Mine",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=271405981",
-                image: "http://p2.music.126.net/FcXC3O6H0NpaJjhOYfSMEw==/109951170964908286.jpg",
+                link: "https://music.163.com/album?id=271405981 ",
+                image: "http://p2.music.126.net/FcXC3O6H0NpaJjhOYfSMEw==/109951170964908286.jpg ",
                 year: "2025",
                 artist: "LilSugar",
                 title: "英英",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=272339857",
-                image: "http://p2.music.126.net/lvdW8gDU5ZOjjQHVp_0Mbg==/109951171001170800.jpg",
+                link: "https://music.163.com/album?id=272339857 ",
+                image: "http://p2.music.126.net/lvdW8gDU5ZOjjQHVp_0Mbg==/109951171001170800.jpg ",
                 year: "2025",
                 artist: "李李",
                 title: "2 The Harmony",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=271594679",
-                image: " http://p1.music.126.net/4Yd8xzNw_d_NpwtWTp8CMA==/109951170974582178.jpg",
+                link: "https://music.163.com/album?id=271594679 ",
+                image: " http://p1.music.126.net/4Yd8xzNw_d_NpwtWTp8CMA==/109951170974582178.jpg ",
                 year: "2025",
                 artist: "HanP",
                 title: "如果累了就歇歇吧",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=267552392",
-                image: "http://p2.music.126.net/dLO3LfOGdQ-X3P6I02yrWA==/109951170673486612.jpg",
+                link: "https://music.163.com/album?id=267552392 ",
+                image: "http://p2.music.126.net/dLO3LfOGdQ-X3P6I02yrWA==/109951170673486612.jpg ",
                 year: "2025",
                 artist: "Ele Jazz",
                 title: "太空规则",
                 highlighted: true
             },
             {
-                link: "https://music.163.com/album?id=270338954",
-                image: "http://p1.music.126.net/7KS-dsJ0RUXelV2gY7DglQ==/109951170923668169.jpg",
+                link: "https://music.163.com/album?id=270338954 ",
+                image: "http://p1.music.126.net/7KS-dsJ0RUXelV2gY7DglQ==/109951170923668169.jpg ",
                 year: "2025",
                 artist: "浴霸王",
                 title: "MASKED BOWLING",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=269915848",
-                image: "http://p2.music.126.net/f_kwkW2QEpaD262iCr3g2A==/109951170862430479.jpg",
+                link: "https://music.163.com/album?id=269915848 ",
+                image: "http://p2.music.126.net/f_kwkW2QEpaD262iCr3g2A==/109951170862430479.jpg ",
                 year: "2025",
                 artist: "柒6",
                 title: "没说再见",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=266613043",
-                image: "http://p2.music.126.net/-W9spToZSasNLLvDCoQx8g==/109951170637774434.jpg",
+                link: "https://music.163.com/album?id=266613043 ",
+                image: "http://p1.music.126.net/-W9spToZSasNLLvDCoQx8g==/109951170637774434.jpg ",
                 year: "2025",
                 artist: "898",
                 title: "恍惚",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=263243441",
-                image: "http://p2.music.126.net/UCmvFFVtBPU2qBXc_UJPkQ==/109951170496707576.jpg",
+                link: "https://music.163.com/album?id=263243441 ",
+                image: "http://p1.music.126.net/UCmvFFVtBPU2qBXc_UJPkQ==/109951170496707576.jpg ",
                 year: "2025",
                 artist: "RioT婷",
                 title: "岛 Pt.1",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=263018609",
-                image: "http://p2.music.126.net/k4hAMIW4kt57vhqo9rFdeg==/109951170490373724.jpg",
+                link: "https://music.163.com/album?id=263018609 ",
+                image: "http://p2.music.126.net/k4hAMIW4kt57vhqo9rFdeg==/109951170490373724.jpg ",
                 year: "2025",
                 artist: "安伊涵",
                 title: "Heaven",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=262350947",
-                image: "http://p2.music.126.net/tg23znRitSin1BsH9cNRpw==/109951170470853706.jpg",
+                link: "https://music.163.com/album?id=262350947 ",
+                image: "http://p2.music.126.net/tg23znRitSin1BsH9cNRpw==/109951170470853706.jpg ",
                 year: "2025",
                 artist: "Rapeter",
                 title: "Shower",
                 highlighted: true
             },
             {
-                link: "https://music.163.com/album?id=258535006",
-                image: "http://p2.music.126.net/K0FP9U0dC9uzP1MP4WrdIA==/109951170344988605.jpg",
+                link: "https://music.163.com/album?id=258535006 ",
+                image: "http://p2.music.126.net/K0FP9U0dC9uzP1MP4WrdIA==/109951170344988605.jpg ",
                 year: "2025",
                 artist: "nicyco",
                 title: "果体，苹果，你",
                 highlighted: true
             },
             {
-              link: "https://music.163.com/album?id=268691673",
-                image: "http://p2.music.126.net/HKse0pNFetTPe89RUfKFGg==/109951170713614365.jpg",
+              link: "https://music.163.com/album?id=268691673 ",
+                image: "http://p2.music.126.net/HKse0pNFetTPe89RUfKFGg==/109951170713614365.jpg ",
                 year: "2025",
                 artist: "FLAG2000",
                 title: "秘密花园",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=257739096",
-                image: "http://p1.music.126.net/No5Anl8V6Y-EgEUwh0V2qQ==/109951170306042309.jpg",
+                link: "https://music.163.com/album?id=257739096 ",
+                image: "http://p1.music.126.net/No5Anl8V6Y-EgEUwh0V2qQ==/109951170306042309.jpg ",
                 year: "2024",
                 artist: "米拉Mila & 西凹木",
                 title: "Leave to time",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=256193130",
-                image: "http://p1.music.126.net/cGmDYLkspQWcp0AJ69Ljww==/109951170233779980.jpg",
+                link: "https://music.163.com/album?id=256193130 ",
+                image: "http://p1.music.126.net/cGmDYLkspQWcp0AJ69Ljww==/109951170233779980.jpg ",
                 year: "2024",
                 artist: "CanvaSunny",
                 title: "STRIKERS",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=255259643",
-                image: "http://p1.music.126.net/usdpvCx1QjWegBimczIEjw==/109951170201490125.jpg",
+                link: "https://music.163.com/album?id=255259643 ",
+                image: "http://p1.music.126.net/usdpvCx1QjWegBimczIEjw==/109951170201490125.jpg ",
                 year: "2024",
                 artist: "HanP",
                 title: "Oizys",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=255259506",
-                image: "http://p1.music.126.net/0bez3nJkVino6BTd9tVb8A==/109951170201142948.jpg",
+                link: "https://music.163.com/album?id=255259506 ",
+                image: "http://p1.music.126.net/0bez3nJkVino6BTd9tVb8A==/109951170201142948.jpg ",
                 year: "2024",
                 artist: "nicyco & Ele Jazz",
                 title: "V",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=253462820",
-                image: "http://p1.music.126.net/sBeI0oNXUva-ZuLbWHN4eQ==/109951170141792269.jpg",
+                link: "https://music.163.com/album?id=253462820 ",
+                image: "http://p1.music.126.net/sBeI0oNXUva-ZuLbWHN4eQ==/109951170141792269.jpg ",
                 year: "2024",
                 artist: "李晨曦 & Rapeter",
                 title: "乡里别的爱情故事",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=250416715",
-                image: "http://p1.music.126.net/6EB-ibVrkz50WvF6pxaP1Q==/109951170035097807.jpg",
+                link: "https://music.163.com/album?id=250416715 ",
+                image: "http://p1.music.126.net/6EB-ibVrkz50WvF6pxaP1Q==/109951170035097807.jpg ",
                 year: "2024",
                 artist: "Ele Jazz",
                 title: "郁金香",
                 highlighted: true
             },
             {
-                link: "https://music.163.com/album?id=249870834",
-                image: "http://p2.music.126.net/nnnqgdFjThGzG3m1r7YRHg==/109951170018200576.jpg",
+                link: "https://music.163.com/album?id=249870834 ",
+                image: "http://p2.music.126.net/nnnqgdFjThGzG3m1r7YRHg==/109951170018200576.jpg ",
                 year: "2024",
                 artist: "程思源 & Rapeter",
                 title: "Royal Blue",
                 highlighted: true
             },
             {
-                link: "https://music.163.com/album?id=247380991",
-                image: "http://p2.music.126.net/oeWWJJjJ0c0erzqBoiVD3g==/109951169946775974.jpg",
+                link: "https://music.163.com/album?id=247380991 ",
+                image: "http://p1.music.126.net/oeWWJJjJ0c0erzqBoiVD3g==/109951169946775974.jpg ",
                 year: "2024",
                 artist: "Cee",
                 title: "侬CYPHER了伐",
                 highlighted: true
             },
             {
-                link: "https://music.163.com/album?id=248678750",
-                image: "http://p2.music.126.net/tXBQV9T84lAzYCby8A_Msg==/109951169984473918.jpg",
+                link: "https://music.163.com/album?id=248678750 ",
+                image: "http://p2.music.126.net/tXBQV9T84lAzYCby8A_Msg==/109951169984473918.jpg ",
                 year: "2024",
                 artist: "Ele Jazz",
                 title: "Forgetful",
                 highlighted: true
             },
             {
-                link: "https://music.163.com/album?id=247913938",
-                image: "http://p2.music.126.net/-G2re2uXOqk0AL732efmjw==/109951169962138318.jpg",
+                link: "https://music.163.com/album?id=247913938 ",
+                image: "http://p2.music.126.net/-G2re2uXOqk0AL732efmjw==/109951169962138318.jpg ",
                 year: "2024",
                 artist: "898",
                 title: "夕阳 风 烟",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=246507605",
-                image: "http://p1.music.126.net/vcRyBA253mdIy3nB7DECVQ==/109951169920447205.jpg",
+                link: "https://music.163.com/album?id=246507605 ",
+                image: "http://p1.music.126.net/vcRyBA253mdIy3nB7DECVQ==/109951169920447205.jpg ",
                 year: "2024",
                 artist: "MonPig",
                 title: "金鼎",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=245062074",
-                image: "http://p1.music.126.net/V8_Day3Ae1-QEGIBW8LtaQ==/109951169875108033.jpg",
+                link: "https://music.163.com/album?id=245062074 ",
+                image: "http://p1.music.126.net/V8_Day3Ae1-QEGIBW8LtaQ==/109951169875108033.jpg ",
                 year: "2024",
                 artist: "YIF钱毅峰",
                 title: "必备指令",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=243932243",
-                image: "http://p2.music.126.net/fKK51uZdIdG5ymWfJug0qw==/109951169839894902.jpg",
+                link: "https://music.163.com/album?id=243932243 ",
+                image: "http://p2.music.126.net/fKK51uZdIdG5ymWfJug0qw==/109951169839894902.jpg ",
                 year: "2024",
                 artist: "CeezeK & RioT婷",
                 title: "火烧云",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=242854471",
-                image: "http://p1.music.126.net/0AtdhPH3u8r27xkOsFVc_Q==/109951169809119505.jpg",
+                link: "https://music.163.com/album?id=242854471 ",
+                image: "http://p1.music.126.net/0AtdhPH3u8r27xkOsFVc_Q==/109951169809119505.jpg ",
                 year: "2024",
                 artist: "nicyco",
                 title: "捕肉",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=240703510",
-                image: "http://p1.music.126.net/GZ0KxxLOkIiOLU-gv5OMNg==/109951169734137482.jpg",
+                link: "https://music.163.com/album?id=240703510 ",
+                image: "http://p1.music.126.net/GZ0KxxLOkIiOLU-gv5OMNg==/109951169734137482.jpg ",
                 year: "2024",
                 artist: "nicyco",
                 title: "F？emo 2024",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=197506694",
-                image: "http://p2.music.126.net/2RTtCM1vA5VL4JfiK90O1g==/109951169632401644.jpg",
+                link: "https://music.163.com/album?id=197506694 ",
+                image: "http://p2.music.126.net/2RTtCM1vA5VL4JfiK90O1g==/109951169632401644.jpg ",
                 year: "2024",
                 artist: "Fefei物",
                 title: "下个阶段",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=196146392",
-                image: "http://p1.music.126.net/Qymiy4g6WaCME-s8Wn0arg==/109951169597772610.jpg",
+                link: "https://music.163.com/album?id=196146392 ",
+                image: "http://p1.music.126.net/Qymiy4g6WaCME-s8Wn0arg==/109951169597772610.jpg ",
                 year: "2024",
                 artist: "曼珠沙華.",
                 title: "MARGUERITE玛格丽特",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=194993652",
-                image: "http://p2.music.126.net/dCO06VehJ_NrUhoerQnXJw==/109951169571672118.jpg",
+                link: "https://music.163.com/album?id=194993652 ",
+                image: "http://p2.music.126.net/dCO06VehJ_NrUhoerQnXJw==/109951169571672118.jpg ",
                 year: "2024",
                 artist: "FrankyFire",
                 title: "Frankyworld",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=194996069",
-                image: "http://p1.music.126.net/7OmEUb-t3lxEGmRrZNVSZw==/109951169570309879.jpg",
+                link: "https://music.163.com/album?id=194996069 ",
+                image: "http://p1.music.126.net/7OmEUb-t3lxEGmRrZNVSZw==/109951169570309879.jpg ",
                 year: "2024",
                 artist: "Wey",
                 title: "MINI COOPER",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=193130769",
-                image: "http://p2.music.126.net/cPERXa2NBtiuxVuDKB3vUA==/109951169523822357.jpg",
+                link: "https://music.163.com/album?id=193130769 ",
+                image: "http://p2.music.126.net/cPERXa2NBtiuxVuDKB3vUA==/109951169523822357.jpg ",
                 year: "2024",
                 artist: "nicyco",
                 title: "布鲁切尔",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=191521031",
-                image: "http://p1.music.126.net/66kZHJ4z-jqPwuPjjtJibA==/109951169479579615.jpg",
+                link: "https://music.163.com/album?id=191521031 ",
+                image: "http://p1.music.126.net/66kZHJ4z-jqPwuPjjtJibA==/109951169479579615.jpg ",
                 year: "2024",
                 artist: "JungleZR",
                 title: "断弦",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=189753745",
-                image: "http://p2.music.126.net/rA734NyZbO-HTxi0L4CGcQ==/109951169433203470.jpg",
+                link: "https://music.163.com/album?id=189753745 ",
+                image: "http://p2.music.126.net/rA734NyZbO-HTxi0L4CGcQ==/109951169433203470.jpg ",
                 year: "2024",
                 artist: "Ele Jazz",
                 title: "Palette Mixtape",
                 highlighted: true
             },
             {
-                link: "https://music.163.com/album?id=189515959",
-                image: "http://p1.music.126.net/1HNA1I19oM6jjt66-ac0-Q==/109951169427057439.jpg",
+                link: "https://music.163.com/album?id=189515959 ",
+                image: "http://p1.music.126.net/1HNA1I19oM6jjt66-ac0-Q==/109951169427057439.jpg ",
                 year: "2024",
                 artist: "Ele Jazz",
                 title: "楚门",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=186263420",
-                image: "http://p2.music.126.net/56fONfps2akyEmrcNxu0iw==/109951169352788904.jpg",
+                link: "https://music.163.com/album?id=186263420 ",
+                image: "http://p2.music.126.net/56fONfps2akyEmrcNxu0iw==/109951169352788904.jpg ",
                 year: "2024",
                 artist: "nineteen",
                 title: "不走心说爱1.0",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=186011706",
-                image: "http://p1.music.126.net/YwPy6LK5aEHcpsqL11x8gA==/109951169342070122.jpg",
+                link: "https://music.163.com/album?id=186011706 ",
+                image: "http://p1.music.126.net/YwPy6LK5aEHcpsqL11x8gA==/109951169342070122.jpg ",
                 year: "2024",
                 artist: "JungleZR",
                 title: "贰拾",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=184937627",
-                image: "http://p2.music.126.net/IsnOYAV-_RMHHJtx5LJ_qQ==/109951169307418420.jpg",
+                link: "https://music.163.com/album?id=184937627 ",
+                image: "http://p2.music.126.net/IsnOYAV-_RMHHJtx5LJ_qQ==/109951169307418420.jpg ",
                 year: "2024",
                 artist: "ACondaway",
                 title: "席卷着人间的浪",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=184912000",
-                image: "http://p1.music.126.net/lMbzsP3-kTe4pi_ZxH3u1w==/109951169306203582.jpg",
+                link: "https://music.163.com/album?id=184912000 ",
+                image: "http://p1.music.126.net/lMbzsP3-kTe4pi_ZxH3u1w==/109951169306203582.jpg ",
                 year: "2024",
                 artist: "白丝巾YuXuan",
                 title: "抛弃",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=181712415",
-                image: "http://p1.music.126.net/OXM0Ydl5B7t5ZcIbvy5LSg==/109951169203928801.jpg",
+                link: "https://music.163.com/album?id=181712415 ",
+                image: "http://p1.music.126.net/OXM0Ydl5B7t5ZcIbvy5LSg==/109951169203928801.jpg ",
                 year: "2023",
                 artist: "哇嘻大",
                 title: "华东师范大学2023Cypher",
                 highlighted: true
             },
             {
-                link: "https://music.163.com/album?id=181790153",
-                image: "http://p2.music.126.net/UO-23SocfXXV6xax72f2HA==/109951169206498088.jpg",
+                link: "https://music.163.com/album?id=181790153 ",
+                image: "http://p2.music.126.net/UO-23SocfXXV6xax72f2HA==/109951169206498088.jpg ",
                 year: "2023",
                 artist: "nicyco",
                 title: "怪士诞日",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=179884769",
-                image: "http://p1.music.126.net/DGKwqeRssR67V8vzLfrDTA==/109951169105516154.jpg",
+                link: "https://music.163.com/album?id=179884769 ",
+                image: "http://p1.music.126.net/DGKwqeRssR67V8vzLfrDTA==/109951169105516154.jpg ",
                 year: "2023",
                 artist: "nicyco",
                 title: "N.P.C",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=180169615",
-                image: "http://p2.music.126.net/A-iqfjD77zMBFeh8ruiy-w==/109951169121605029.jpg",
+                link: "https://music.163.com/album?id=180169615 ",
+                image: "http://p2.music.126.net/A-iqfjD77zMBFeh8ruiy-w==/109951169121605029.jpg ",
                 year: "2023",
                 artist: "DIAMA 琨",
                 title: "SU1C1DE",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=178746366",
-                image: "http://p2.music.126.net/dOWgk0E3A6rSyMMukEJmRw==/109951169046283282.jpg",
+                link: "https://music.163.com/album?id=178746366 ",
+                image: "http://p2.music.126.net/dOWgk0E3A6rSyMMukEJmRw==/109951169046283282.jpg ",
                 year: "2023",
                 artist: "CheezeK",
                 title: "Fashion Demon",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=177570503",
-                image: "http://p1.music.126.net/aBk05gFqZ9rjVSk33aKV6A==/109951169008188224.jpg",
+                link: "https://music.163.com/album?id=177570503 ",
+                image: "http://p1.music.126.net/aBk05gFqZ9rjVSk33aKV6A==/109951169008188224.jpg ",
                 year: "2023",
                 artist: "JungleZR",
                 title: "NINJAS",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=175046931",
-                image: "http://p1.music.126.net/6IZBK_DKP_zsUSC-MGXw6g==/109951168927494191.jpg",
+                link: "https://music.163.com/album?id=175046931 ",
+                image: "http://p1.music.126.net/6IZBK_DKP_zsUSC-MGXw6g==/109951168927494191.jpg ",
                 year: "2023",
                 artist: "DIAMA 琨",
                 title: "Boombap Soul",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=173735399",
-                image: "http://p2.music.126.net/ljY7YIeBT9wNp_i0GUMwjA==/109951168884355333.jpg",
+                link: "https://music.163.com/album?id=173735399 ",
+                image: "http://p2.music.126.net/ljY7YIeBT9wNp_i0GUMwjA==/109951168884355333.jpg ",
                 year: "2023",
                 artist: "白丝巾YuXuan",
                 title: "拾探步",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=173608711",
-                image: "http://p2.music.126.net/R2x-Zgc75BgD92YIagQ_5A==/109951168881558137.jpg",
+                link: "https://music.163.com/album?id=173608711 ",
+                image: "http://p2.music.126.net/R2x-Zgc75BgD92YIagQ_5A==/109951168881558137.jpg ",
                 year: "2023",
                 artist: "白丝巾YuXuan",
                 title: "试探步Mixtape",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=168762519",
-                image: "http://p1.music.126.net/thj9epXwYzRryqrYDwRraA==/109951168713810198.jpg",
+                link: "https://music.163.com/album?id=168762519 ",
+                image: "http://p1.music.126.net/thj9epXwYzRryqrYDwRraA==/109951168713810198.jpg ",
                 year: "2023",
                 artist: "JungleZR",
                 title: "人",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=164912481",
-                image: "http://p1.music.126.net/naajK5WkZBZU3AmoY2Kb_w==/109951168589887251.jpg",
+                link: "https://music.163.com/album?id=164912481 ",
+                image: "http://p1.music.126.net/naajK5WkZBZU3AmoY2Kb_w==/109951168589887251.jpg ",
                 year: "2023",
                 artist: "一刀阿阿",
                 title: "我 恨 早 八",
                 highlighted: true
             },
             {
-                link: "https://music.163.com/album?id=164744981",
-                image: "http://p1.music.126.net/npR37nSCYUtvDsVlLBMVFA==/109951168581638648.jpg",
+                link: "https://music.163.com/album?id=164744981 ",
+                image: "http://p2.music.126.net/npR37nSCYUtvDsVlLBMVFA==/109951168581638648.jpg ",
                 year: "2023",
                 artist: "LOG",
                 title: "HARDCORE SOUL",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=160212346",
-                image: "http://p1.music.126.net/yNANX0v6lrmbah1DKoN0UA==/109951168316034924.jpg",
+                link: "https://music.163.com/album?id=160212346 ",
+                image: "http://p1.music.126.net/yNANX0v6lrmbah1DKoN0UA==/109951168316034924.jpg ",
                 year: "2023",
                 artist: "DaWaNOLonE",
-                title: "“我以为你会说的”",
+                title: "我以为你会说的",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=159201448",
-                image: "http://p2.music.126.net/6oDEyvZH8j2voQVpaiRAWQ==/109951168276674198.jpg",
+                link: "https://music.163.com/album?id=159201448 ",
+                image: "http://p2.music.126.net/6oDEyvZH8j2voQVpaiRAWQ==/109951168276674198.jpg ",
                 year: "2023",
                 artist: "LOG",
                 title: "冬忒窝瑞",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=156898457",
-                image: "http://p1.music.126.net/Jr5MMh8uXNOO_Trt9GMd9g==/109951168163867338.jpg",
+                link: "https://music.163.com/album?id=156898457 ",
+                image: "http://p1.music.126.net/Jr5MMh8uXNOO_Trt9GMd9g==/109951168163867338.jpg ",
                 year: "2022",
                 artist: "LOG",
                 title: "Trash Talk",
                 highlighted: false
             },
             {
-                link: "https://music.163.com/album?id=152978750",
-                image: "http://p2.music.126.net/yPh7c9860LOS3eF5A2wkIA==/109951168499346559.jpg",
+                link: "https://music.163.com/album?id=152978750 ",
+                image: "http://p2.music.126.net/yPh7c9860LOS3eF5A2wkIA==/109951168499346559.jpg ",
                 year: "2022",
                 artist: "一刀阿阿",
                 title: "华东师大没有黑怕",
@@ -966,80 +982,29 @@ body.intro-finished #intro-overlay {
             });
         }
 
-// --- 新增：开场动画逻辑 ---
-document.addEventListener("DOMContentLoaded", () => {
-  const introOverlay = document.getElementById("intro-overlay");
-  const skipButton = document.getElementById("skip-intro-btn");
-  const body = document.body;
+        // --- 新增：简化的开场动画逻辑 ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const introOverlay = document.getElementById("intro-overlay");
+            const skipButton = document.getElementById("skip-intro-btn");
+            const body = document.body;
+            const introImage = document.getElementById("intro-image");
 
-  // 激活动画
-  body.classList.add("intro-active");
+            // 激活动画
+            body.classList.add("intro-active");
 
-  // 显示进入按钮（延迟出现）
-  setTimeout(() => {
-    skipButton.classList.add("show");
-  }, 2000);
+            // 显示进入按钮（1秒后显示）
+            setTimeout(() => {
+                skipButton.classList.add("show");
+            }, 1000);
 
-  // 点击按钮进入网站
-  skipButton.addEventListener("click", () => {
-    body.classList.remove("intro-active");
-    body.classList.add("intro-finished");
-  });
-});
-
-        // --- 3. 图片预加载 ---
-        function preloadImages(urls, callback) {
-            let loadedCount = 0;
-            const total = urls.length;
-            if (total === 0) {
-                callback();
-                return;
-            }
-            urls.forEach(url => {
-                const img = new Image();
-                img.src = url;
-                const onComplete = () => {
-                    loadedCount++;
-                    if (loadedCount === total) {
-                        callback();
-                    }
-                };
-                img.onload = onComplete;
-                img.onerror = onComplete;
+            // 点击按钮进入网站
+            skipButton.addEventListener("click", () => {
+                body.classList.remove("intro-active");
+                body.classList.add("intro-finished");
             });
-        }
+        });
 
-        // --- 4. 执行开场动画 ---
-        function startIntroAnimation() {
-            const imgBox = document.querySelector(".intro-image-box");
-            if (!imgBox) return;
-
-            // .slice(0, 10) 同样会只获取那一张专辑的图片
-            const imageUrls = albums
-                                .filter(album => album.highlighted) // 过滤出高亮专辑
-                                .map(album => album.image);         // 提取它们的图片 URL
-            const flashInterval = 100;
-            const totalDuration = imageUrls.length * flashInterval;
-
-            preloadImages(imageUrls, () => {
-                let index = 0;
-                const intervalId = setInterval(() => {
-                    if (index < imageUrls.length) {
-                        imgBox.style.backgroundImage = `url(${imageUrls[index]})`;
-                        index++;
-                    } else {
-                        clearInterval(intervalId);
-                    }
-                }, flashInterval);
-
-                setTimeout(() => {
-                    document.body.classList.remove('intro-active');
-                    document.body.classList.add('intro-finished');
-                }, totalDuration + 200);
-            });
-        }
-
-        // --- 5. DOMContentLoaded 事件处理 ---
+        // --- 3. DOMContentLoaded 事件处理 ---
         window.addEventListener("DOMContentLoaded", () => {
 
             if (sessionStorage.getItem('hasVisited')) {
@@ -1053,9 +1018,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.body.classList.add('intro-active');
                 generateAlbums();
                 observeAlbums();
-                startIntroAnimation();
+                // 移除了原有的startIntroAnimation()调用
             }
         });
     </script>
-</body>
-</html>
+
+</body></html>

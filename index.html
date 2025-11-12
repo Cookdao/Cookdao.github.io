@@ -231,39 +231,24 @@
 
 /* 1. 遮罩层 (全屏) */
 #intro-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 999999 !important;
-  pointer-events: none; /* 让下面的内容不可点击时也能盖住 */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(231, 229, 224, 1); /* 原始背景 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  opacity: 1;
-  transition: background-color 0.6s ease, backdrop-filter 0.6s ease, opacity 0.5s ease-out;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #e7e5e0; /* 匹配 body 背景色 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+    display: none; /* 默认隐藏 */
 }
-
-/* intro 激活时显示 */
 body.intro-active #intro-overlay {
-  display: flex;
+    display: flex; /* 仅在 intro 激活时显示 */
 }
 
-/* 按钮出现时变暗并带轻微模糊 */
-#intro-overlay.dimmed {
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.6),
-      rgba(0, 0, 0, 0.6)
-    ),
-    #e7e5e0; /* 原来的浅色背景 */
-  backdrop-filter: brightness(0.7) blur(3px);
-  transition: background 0.6s ease, backdrop-filter 0.6s ease;
-}
 /* 2. 正方形图片容器 - 修改为充满整个视口 */
 .intro-image-box {
     width: 100vw; /* 宽度设置为视口宽度 */
@@ -311,14 +296,6 @@ body.intro-finished #intro-overlay {
 }
 
 /* 5. 进入按钮样式 */
-/* 按钮出现时背景变暗（强制覆盖） */
-#intro-overlay.dimmed {
-  background-color: rgba(0, 0, 0, 0.7) !important;
-  backdrop-filter: brightness(0.5) blur(2px); /* 让背景稍暗又柔和 */
-  transition: background-color 0.5s ease, backdrop-filter 0.5s ease;
-}
-
-
 #skip-intro-btn {
   position: absolute;
   top: 50%;
@@ -987,37 +964,7 @@ body.intro-finished #intro-overlay {
                 container.appendChild(albumRow);
             });
         }
-// --- 进入按钮控制逻辑 ---
-document.addEventListener("DOMContentLoaded", () => {
-  const overlay = document.getElementById("intro-overlay");
-  const btn = document.getElementById("skip-intro-btn");
 
-  // 激活 intro 状态
-  document.body.classList.add("intro-active");
-  overlay.style.display = "flex";
-
-  // 2秒后显示按钮 & 背景变暗
-  setTimeout(() => {
-    overlay.classList.add("dimmed");
-    btn.classList.add("show");
-  }, 3000);
-
-  // 5秒后自动进入网站
-  const autoEnterTimer = setTimeout(() => {
-    finishIntro();
-  }, 7000); // 2秒出现 + 5秒等待 = 7秒总时间
-
-  // 点击按钮立即进入
-  btn.addEventListener("click", () => {
-    clearTimeout(autoEnterTimer);
-    finishIntro();
-  });
-
-  function finishIntro() {
-    document.body.classList.remove("intro-active");
-    document.body.classList.add("intro-finished");
-  }
-});
         // --- 2. 滚动动画 ---
         function observeAlbums() {
             const albumRows = document.querySelectorAll('.album-row');
@@ -1073,61 +1020,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 // 移除了原有的startIntroAnimation()调用
             }
         });
+    </script>
 
-        document.addEventListener("DOMContentLoaded", () => {
-          const body = document.body;
-          const overlay = document.getElementById("intro-overlay");
-          const introImage = document.getElementById("intro-image");
-          const skipBtn = document.getElementById("skip-intro-btn");
-
-          // 进入时先激活遮罩层
-          body.classList.add("intro-active");
-
-          // 图片加载完后计时
-          introImage.addEventListener("load", () => {
-            // 3 秒后淡入“进入网站”按钮
-            setTimeout(() => {
-              overlay.classList.add("dimmed");
-              skipBtn.classList.add("show");
-            }, 3000);
-          });
-
-          // 点击按钮跳转主页面
-          skipBtn.addEventListener("click", () => {
-            overlay.classList.remove("dimmed");
-            body.classList.remove("intro-active");
-            body.classList.add("intro-finished");
-            setTimeout(() => {
-              overlay.style.display = "none";
-            }, 1000);
-          });
-        });
-
-        document.addEventListener("DOMContentLoaded", () => {
-          const overlay = document.getElementById("intro-overlay");
-          const button = document.getElementById("skip-intro-btn");
-          document.body.classList.add("intro-active");
-
-          // 2 秒后让遮罩层变暗 + 按钮出现
-          setTimeout(() => {
-            overlay.classList.add("dimmed");
-            button.classList.add("show");
-          }, 3000);
-
-          // 点击按钮 → 结束开场动画
-          button.addEventListener("click", () => {
-            document.body.classList.remove("intro-active");
-            document.body.classList.add("intro-finished");
-            overlay.classList.remove("dimmed");
-          });
-        });
-
-
-</script>
-
-
-
-
-
-</body>
-</html>
+</body></html>

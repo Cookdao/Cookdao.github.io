@@ -45,7 +45,9 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: opacity 0.3s, filter 0.3s;
+            /* 更改：添加 transform 初始状态和 transition */
+            transform: scale(1);
+            transition: opacity 0.3s, filter 0.3s, transform 0.4s ease;
         }
         .album-cover a {
             display: block;
@@ -55,6 +57,8 @@
         .album-cover:hover img {
             opacity: 0.5;
             filter: brightness(0.5);
+            /* 更改：添加悬停缩放效果 */
+            transform: scale(1.05);
         }
         .highlight {
             position: absolute;
@@ -199,8 +203,47 @@
         font-size: 3vw;
     }
 }
+
+/* --- 新增动画效果 --- */
+
+/* 1. 元素滚动淡入效果 */
+.album-row {
+    /* ... 现有的 .album-row 样式 ... */
+
+    /* 添加初始状态（透明，并向下偏移 30px） */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, transform; /* 性能优化 */
+}
+.album-row.is-visible {
+    /* 添加可见状态（完全不透明，回到原位） */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 2. 封面悬停缩放效果 (已在 .album-cover img 和 :hover 中更新) */
+
+
+/* 3. 星星脉动动画 */
+@keyframes pulse-star {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.9;
+    }
+    50% {
+        transform: scale(1.2) rotate(10deg);
+        opacity: 1;
+    }
+}
+.highlight span {
+    /* ... 现有的 .highlight span 样式 ... */
+    animation: pulse-star 2.5s infinite ease-in-out; /* 应用动画 */
+}
+
+/* --- 动画效果结束 --- */
+
     </style>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-WKW4EL3VCC"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -790,7 +833,11 @@
             const container = document.getElementById("albums-container");
             let reverseClass = false;
 
-            albums.forEach((album, index) => {
+            // *** 更改：只获取前 10 个专辑 ***
+            const albumsToDisplay = albums.slice(0, 100);
+
+            // *** 更改：遍历 albumsToDisplay (而不是完整的 albums) ***
+            albumsToDisplay.forEach((album, index) => {
                 reverseClass = index % 2 === 0 ? false : true;
 
                 const albumRow = document.createElement("div");
@@ -844,8 +891,34 @@
             });
         }
 
-        // 页面加载完成后生成专辑
-        window.addEventListener("DOMContentLoaded", generateAlbums);
+        // *** 新增：Intersection Observer 动画函数 ***
+        function observeAlbums() {
+            const albumRows = document.querySelectorAll('.album-row');
+
+            // 创建一个观察器
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // 当元素进入视口时
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible'); // 添加 .is-visible 类来触发 CSS 动画
+                        observer.unobserve(entry.target); // 动画执行一次后停止观察
+                    }
+                });
+            }, {
+                threshold: 0.1 // 元素进入视口 10% 时触发
+            });
+
+            // 观察所有 .album-row 元素
+            albumRows.forEach(row => {
+                observer.observe(row);
+            });
+        }
+
+        // *** 更改：页面加载完成后，先生成专辑，然后启动动画观察 ***
+        window.addEventListener("DOMContentLoaded", () => {
+            generateAlbums();
+            observeAlbums(); // 调用新的观察函数
+        });
     </script>
 </body>
 </html>

@@ -27,7 +27,6 @@
         --card-bg: #fff;
     }
 
-    /* 关键修复：全局盒模型，防止Padding撑大元素 */
     *, *::before, *::after {
         box-sizing: border-box;
     }
@@ -44,7 +43,7 @@
         overflow-x: hidden;
     }
 
-    /* --- 容器与动画 --- */
+    /* --- 主内容容器 --- */
     #albums-container {
         width: 100%;
         display: flex;
@@ -59,15 +58,14 @@
         opacity: 1;
     }
 
-    /* --- 核心布局：Desktop 默认样式 --- */
+    /* --- 专辑行样式 (Desktop) --- */
     .album-row {
         display: flex;
-        /* 默认不反转 */
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        width: 1000px;  /* 桌面端固定宽度 */
-        height: 500px; /* 桌面端固定高度 */
+        width: 1000px;
+        height: 500px;
         background-color: var(--card-bg);
         margin: 0;
         position: relative;
@@ -75,7 +73,7 @@
         transform: translateY(30px);
         transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         will-change: opacity, transform;
-        overflow: hidden; /* 防止内容溢出圆角 */
+        overflow: hidden;
     }
 
     .album-row.is-visible {
@@ -83,14 +81,12 @@
         transform: translateY(0);
     }
 
-    /* 反转类 */
     .album-row.reverse {
         flex-direction: row-reverse;
     }
 
-    /* --- 左侧：专辑封面 --- */
+    /* --- 专辑封面与信息 --- */
     .album-cover {
-        /* 强制 50% 宽度，不伸缩 */
         flex: 0 0 50%;
         width: 50%;
         height: 100%;
@@ -107,7 +103,7 @@
     .album-cover img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* 保证图片铺满且不变形 */
+        object-fit: cover;
         display: block;
         transition: opacity 0.3s, filter 0.3s, transform 0.4s ease;
     }
@@ -118,16 +114,14 @@
         transform: scale(1.05);
     }
 
-    /* --- 右侧：专辑信息 --- */
     .album-info {
-        /* 强制 50% 宽度，不伸缩 */
         flex: 0 0 50%;
         width: 50%;
         height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 40px; /* 桌面端内边距 */
+        padding: 40px;
         overflow: hidden;
     }
 
@@ -136,7 +130,6 @@
         width: 100%;
     }
 
-    /* 桌面端字体大小 */
     .year {
         font-size: 18px;
         color: #666;
@@ -160,7 +153,7 @@
         margin: 0;
         text-transform: uppercase;
         line-height: 1.2;
-        word-break: break-word; /* 防止长单词撑开布局 */
+        word-break: break-word;
     }
 
     /* --- 高亮角标 --- */
@@ -208,7 +201,35 @@
         50% { transform: scale(1.2) rotate(15deg); opacity: 1; }
     }
 
-    /* --- 开场动画 --- */
+    /* --- 移动端响应式 --- */
+    @media (max-width: 1000px) {
+        .album-row {
+            width: 100%;
+            height: 50vw;
+        }
+
+        .album-cover, .album-info {
+            flex: 0 0 50%;
+            width: 50%;
+            height: 100%;
+        }
+
+        .album-info {
+            padding: 0 8px;
+        }
+
+        h2 { font-size: 3.8vw; }
+        h3 { font-size: 2.8vw; }
+        .year { font-size: 2.2vw; margin-bottom: 3px; }
+
+        .highlight { width: 13vw; height: 13vw; }
+        .highlight::before { border-top: 13vw solid var(--accent-gold); border-right: 13vw solid transparent; }
+        .highlight span { width: 6.5vw; height: 6.5vw; font-size: 4vw; }
+    }
+
+    /* =========================================
+       动态开场动画 (Dynamic Intro Grid) 样式
+       ========================================= */
     #intro-overlay {
         position: fixed;
         top: 0;
@@ -221,95 +242,113 @@
         align-items: center;
         z-index: 9999;
         opacity: 0;
-        transition: opacity 0.5s ease-out;
+        transition: opacity 0.8s ease-out;
+        overflow: hidden;
     }
 
     body.show-intro { overflow: hidden; }
     body.show-intro #intro-overlay { display: flex; opacity: 1; }
 
-    .intro-image-box { width: 100%; height: 100%; position: relative; }
-    .intro-image { width: 100%; height: 100%; object-fit: cover; }
+    #intro-grid {
+        display: grid;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        /* 自适应列宽，最小200px */
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 0;
+        filter: brightness(0.6);
+        transition: filter 0.5s;
+    }
+
+    .grid-cell {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1; /* 强制正方形 */
+        perspective: 1000px;
+        overflow: hidden;
+        background-color: #ddd;
+    }
+
+    .grid-cell-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 1.2s cubic-bezier(0.4, 0.2, 0.2, 1);
+        transform-style: preserve-3d;
+    }
+
+    .grid-cell.flipped .grid-cell-inner {
+        transform: rotateY(180deg);
+    }
+
+    .grid-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    .grid-face img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .grid-front { background-color: transparent; }
+    .grid-back { background-color: transparent; transform: rotateY(180deg); }
 
     #enter-site-btn {
         position: absolute;
-        bottom: 10vh;
+        top: 50%;
         left: 50%;
-        transform: translateX(-50%);
-        padding: 12px 30px;
-        font-size: 16px;
-        font-weight: 600;
+        transform: translate(-50%, -50%) scale(0.9);
+        padding: 15px 40px;
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: 2px;
         color: #fff;
-        background: rgba(0, 0, 0, 0.5);
-        border: 1px solid #fff;
-        border-radius: 30px;
+        background: rgba(0, 0, 0, 0.6);
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        border-radius: 50px;
         cursor: pointer;
         opacity: 0;
-        transition: all 0.4s ease;
-        backdrop-filter: blur(5px);
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        z-index: 10000;
     }
 
-    #enter-site-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
-    #enter-site-btn.btn-visible { opacity: 1; }
+    #enter-site-btn:hover {
+        background: rgba(255, 255, 255, 0.9);
+        color: #000;
+        transform: translate(-50%, -50%) scale(1);
+    }
 
-    /* --- 移动端响应式 --- */
-    @media (max-width: 1000px) {
-        .album-row {
-            width: 100%; /* 宽度占满屏幕 */
-            height: 50vw; /* 关键：高度等于屏幕宽度的一半，确保两个正方形并排 */
-        }
-
-        /* 依然保持 flex: 0 0 50% 确保左右对半 */
-        .album-cover, .album-info {
-            flex: 0 0 50%;
-            width: 50%;
-            height: 100%;
-        }
-
-        /* 缩小手机端的内边距，给文字腾出空间 */
-        .album-info {
-            padding: 0 8px;
-        }
-
-        /* 手机端使用 vw 单位，确保文字能塞进那一半的空间 */
-        h2 { font-size: 3.8vw; } /* 稍微调小以防换行过多 */
-        h3 { font-size: 2.8vw; }
-        .year { font-size: 2.2vw; margin-bottom: 3px; }
-
-        /* 调整手机端的高亮角标大小 */
-        .highlight {
-            width: 13vw;
-            height: 13vw;
-        }
-        .highlight::before {
-            border-top: 13vw solid var(--accent-gold);
-            border-right: 13vw solid transparent;
-        }
-        .highlight span {
-            width: 6.5vw;
-            height: 6.5vw;
-            font-size: 4vw;
-        }
+    #enter-site-btn.btn-visible {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
 </style>
 </head>
 <body>
 
 <div id="intro-overlay">
-    <div class="intro-image-box">
-        <img class="intro-image" src="https://github.com/user-attachments/assets/da854eee-1c0c-4a78-b15a-5f990693ac43" alt="Intro Cover">
-    </div>
-    <button id="enter-site-btn">进入网站</button>
+    <div id="intro-grid"></div>
+    <button id="enter-site-btn">ENTER</button>
 </div>
 
 <div id="albums-container"></div>
 
 <script>
-    /**
-     * 数据源
-     * 为了代码整洁，建议保持格式统一。已移除多余空格。
-     */
     const albums = [
         { link: "https://music.163.com/album?id=350777340", image: "http://p1.music.126.net/_-rFuALruNFFlRfoEslp7A==/109951172303441948.jpg", year: "2025", artist: "Føxco", title: "Fear Of Nothing", highlighted: true },
+
         { link: "https://music.163.com/album?id=349892857", image: "http://p2.music.126.net/Z0XW7Vb1WHMnn0Z0aZ3tVw==/109951172263038796.jpg", year: "2025", artist: "安伊涵", title: "BAD DESIRE", highlighted: true },
         { link: "https://music.163.com/album?id=273398421", image: "http://p1.music.126.net/EZUw2Idccw7OkinISOXpeQ==/109951171093017111.jpg", year: "2025", artist: "RioT婷 & CheezeK", title: "小巴辣子", highlighted: true },
         { link: "https://music.163.com/album?id=263242113", image: "http://p2.music.126.net/QpNRZsfMP5J4tOlziA8Pnw==/109951170504642760.jpg", year: "2025", artist: "Rapeter", title: "IMGOOD别担心我", highlighted: true },
@@ -383,21 +422,49 @@
         { link: "https://music.163.com/album?id=152978750", image: "http://p2.music.126.net/yPh7c9860LOS3eF5A2wkIA==/109951168499346559.jpg", year: "2022", artist: "一刀阿阿", title: "华东师大没有黑怕", highlighted: false }
     ];
 
-    /**
-     * 生成专辑列表DOM
-     */
+    // --- 数据预处理：分类与排序 ---
+    let priorityAlbums = []; // 高优先级：加星或2025年
+    let normalAlbums = [];   // 普通
+
+    albums.forEach(a => {
+        if (a.highlighted || a.year === "2025") {
+            priorityAlbums.push(a);
+        } else {
+            normalAlbums.push(a);
+        }
+    });
+
+    // Fisher-Yates 洗牌算法
+    function shuffleArray(array) {
+        let arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    // 获取一个加权随机封面 (用于翻页动画)
+    // 70% 概率选高优先级，30% 概率选普通
+    function getWeightedRandomImage() {
+        const isPriority = Math.random() < 0.6;
+        if (isPriority && priorityAlbums.length > 0) {
+            return priorityAlbums[Math.floor(Math.random() * priorityAlbums.length)].image;
+        } else {
+            return albums[Math.floor(Math.random() * albums.length)].image; // 回退到全池随机
+        }
+    }
+
+    // --- 1. 生成主页列表 ---
     function generateAlbums() {
         const container = document.getElementById("albums-container");
-        const fragment = document.createDocumentFragment(); // 使用 Fragment 减少重绘
+        const fragment = document.createDocumentFragment();
 
-        // 显示前100张专辑
         albums.slice(0, 100).forEach((album, index) => {
             const reverseClass = index % 2 !== 0;
-
             const albumRow = document.createElement("div");
             albumRow.className = `album-row ${reverseClass ? "reverse" : ""}`;
 
-            // 构建 HTML 字符串 (比频繁 createElement 略快且直观)
             const highlightHTML = album.highlighted
                 ? `<div class="highlight"><span>★</span></div>`
                 : '';
@@ -417,16 +484,12 @@
                     </div>
                 </div>
             `;
-
             fragment.appendChild(albumRow);
         });
-
         container.appendChild(fragment);
     }
 
-    /**
-     * 滚动监测 (Intersection Observer)
-     */
+    // --- 2. 滚动监测 ---
     function initScrollObserver() {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -442,41 +505,112 @@
         });
     }
 
-    /**
-     * 主初始化逻辑
-     * 合并了开场动画判断和内容加载
-     */
+    // --- 3. 动态开场逻辑 (Album Wall) ---
+    let flipInterval;
+
+    function initIntroGrid() {
+        const gridContainer = document.getElementById('intro-grid');
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        const minColWidth = 200;
+        const cols = Math.ceil(width / minColWidth);
+        const approxCellSize = width / cols;
+        const rows = Math.ceil(height / approxCellSize) + 1;
+
+        const totalCells = cols * rows;
+        const fragment = document.createDocumentFragment();
+
+        // --- 构建初始展示队列 ---
+        // 逻辑：先展示打乱的【高优先级】，再展示打乱的【普通】，确保首屏不重复且优质
+        let displayQueue = [...shuffleArray(priorityAlbums), ...shuffleArray(normalAlbums)];
+
+        for (let i = 0; i < totalCells; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'grid-cell';
+
+            // 从队列中取图，如果队列用完了，就开始从头循环（取模）
+            // 这样能保证直到所有专辑展示完一遍之前，绝对没有重复
+            const albumData = displayQueue[i % displayQueue.length];
+            const imgUrl = albumData.image;
+
+            cell.innerHTML = `
+                <div class="grid-cell-inner">
+                    <div class="grid-face grid-front">
+                        <img src="${imgUrl}" alt="" loading="eager">
+                    </div>
+                    <div class="grid-face grid-back">
+                        <img src="" alt="" loading="eager">
+                    </div>
+                </div>
+            `;
+            fragment.appendChild(cell);
+        }
+        gridContainer.appendChild(fragment);
+    }
+
+    function startGridAnimation() {
+        const cells = document.querySelectorAll('.grid-cell');
+        if (cells.length === 0) return;
+
+        // 2秒翻动一次
+        flipInterval = setInterval(() => {
+            const randomCell = cells[Math.floor(Math.random() * cells.length)];
+            const inner = randomCell.querySelector('.grid-cell-inner');
+            const frontImg = inner.querySelector('.grid-front img');
+            const backImg = inner.querySelector('.grid-back img');
+            const isFlipped = randomCell.classList.contains('flipped');
+
+            // 使用加权随机获取新图片
+            const newImage = getWeightedRandomImage();
+
+            if (isFlipped) {
+                frontImg.src = newImage;
+                randomCell.classList.remove('flipped');
+            } else {
+                backImg.src = newImage;
+                randomCell.classList.add('flipped');
+            }
+
+        }, 2000);
+    }
+
+    function stopGridAnimation() {
+        if (flipInterval) clearInterval(flipInterval);
+    }
+
+    // --- 4. 初始化流程 ---
     document.addEventListener("DOMContentLoaded", () => {
         const hasVisited = sessionStorage.getItem('hasVisited');
         const enterBtn = document.getElementById("enter-site-btn");
         const body = document.body;
 
-        // 生成内容
         generateAlbums();
 
         if (hasVisited) {
-            // 情况A: 已经访问过 -> 直接显示内容，不显示开场
             body.classList.add('content-visible');
             initScrollObserver();
         } else {
-            // 情况B: 第一次访问 -> 显示开场动画
             body.classList.add('show-intro');
 
-            // 1秒后显示按钮
+            initIntroGrid();
+            startGridAnimation();
+
             setTimeout(() => {
                 enterBtn.classList.add("btn-visible");
             }, 1000);
 
-            // 绑定点击事件
             enterBtn.addEventListener("click", () => {
-                // 淡出遮罩
+                stopGridAnimation();
+
                 body.classList.remove('show-intro');
-                // 显示内容
                 body.classList.add('content-visible');
-                // 记录访问状态
                 sessionStorage.setItem('hasVisited', 'true');
-                // 启动滚动监测
                 initScrollObserver();
+
+                setTimeout(() => {
+                    document.getElementById('intro-overlay').style.display = 'none';
+                }, 800);
             });
         }
     });

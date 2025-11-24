@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音频制作与混音服务报价单 | Audio Services</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --accent-color: #4dabf7; /* 专业蓝 */
+            --price-color: #ffc107; /* 金色 */
+            --border-radius: 12px;
+            --spacing: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--spacing);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 4px solid var(--accent-color);
+            color: #fff;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin: 15px 0 10px;
+            color: #fff;
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .card-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            border: 1px solid #333;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .service-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .service-price {
+            color: var(--price-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .service-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .service-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .tag.yes { background: rgba(77, 171, 247, 0.2); color: #74c0fc; }
+        .tag.no { background: rgba(255, 107, 107, 0.2); color: #ff8787; }
+
+        /* List Tables */
+        .list-group {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .list-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-content div:first-child {
+            font-weight: 500;
+            color: #fff;
+        }
+
+        .list-content div:last-child {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .list-price {
+            color: var(--price-color);
+            font-weight: bold;
+            white-space: nowrap;
+            margin-left: 15px;
+        }
+
+        /* Terms Box */
+        .terms-box {
+            background-color: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: var(--border-radius);
+            padding: 25px;
+        }
+
+        .terms-item {
+            margin-bottom: 20px;
+        }
+
+        .terms-item h4 {
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .terms-item ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .terms-item li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .terms-item li::before {
+            content: "•";
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+        }
+
+        .highlight {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #666;
+            font-size: 0.8rem;
+            border-top: 1px solid #333;
+            margin-top: 40px;
+        }
+
+        /* Contact Button */
+        .contact-btn {
+            display: block;
+            width: 100%;
+            background-color: var(--accent-color);
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+
+        .contact-btn:hover {
+            background-color: #3b8dd6;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>音频制作与混音服务</h1>
+            <div class="subtitle">Audio Production & Mixing Rate Card</div>
+        </header>
+
+        <section>
+            <h2>I. 贴唱混音服务 (Vocal Mixing)</h2>
+            <p style="color: #888; margin-bottom: 15px; font-size: 0.9rem;">适用于已有伴奏，仅需处理人声并与伴奏融合的项目。</p>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="service-header">
+                        <span class="service-name">基础混音</span>
+                        <span class="service-price">¥300</span>
+                    </div>
+                    <div class="service-desc">追求专业发行品质，客户自行掌控创意。</div>
+                    <div class="service-tags">
+                        <span class="tag yes">包含修音(音准/节奏)</span>
+                        <span class="tag yes">基础混音/EQ/压缩</span>
+                        <span class="tag no">不含创意特效设计</span>
+                    </div>
+                    <div style="margin-top:10px; font-size:0.8rem; color:#666;">⏱ 交付：3-5工作日</div>
+                </div>
+
+                <div class="card">
+                    <div class="service-header">
+                        <span class="service-name">人声制作</span>
+                        <span class="service-price">¥300</span>
+                    </div>
+                    <div class="service-desc">追求极致氛围，侧重效果设计。</div>
+                    <div class="service-tags">
+                        <span class="tag yes">特殊Delay/Reverb/切片</span>
+                        <span class="tag yes">空间构建</span>
+                        <span class="tag no">不含基础修音(需素材好)</span>
+                    </div>
+                    <div style="margin-top:10px; font-size:0.8rem; color:#666;">⏱ 交付：5-7工作日</div>
+                </div>
+
+                <div class="card" style="border-color: var(--accent-color);">
+                    <div class="service-header">
+                        <span class="service-name">完整贴唱混音</span>
+                        <span class="service-price">¥500</span>
+                    </div>
+                    <div class="service-desc">一站式标准服务。包含“基础混音”与“人声制作”的全流程处理。</div>
+                    <div class="service-tags">
+                        <span class="tag yes">全流程处理</span>
+                        <span class="tag yes">高性价比</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="service-header">
+                        <span class="service-name">单曲母带</span>
+                        <span class="service-price">¥200</span>
+                    </div>
+                    <div class="service-desc">提升响度、动态控制、频段平衡，达到流媒体发行标准。</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>II. 分轨混音 (Stem Mixing)</h2>
+            <div class="list-group">
+                <div class="list-item">
+                    <div class="list-content">
+                        <div>简易分轨 (8轨以内)</div>
+                        <div>适用于简单Demo优化或原声乐器实录</div>
+                    </div>
+                    <div class="list-price">¥1,000</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-content">
+                        <div>常规分轨</div>
+                        <div>中等复杂度，常规流行/说唱/R&B等</div>
+                    </div>
+                    <div class="list-price">¥1,500 起</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-content">
+                        <div>复杂分轨 (60-100轨)</div>
+                        <div>大编制或要求复杂特效设计的项目</div>
+                    </div>
+                    <div class="list-price">¥3,000 起</div>
+                </div>
+            </div>
+            <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">* 注：以上价格不含音频编辑（如修音准、对节奏等），仅为混音费用。</p>
+        </section>
+
+        <section>
+            <h2>III. 编曲与创作 (Production)</h2>
+            
+            <h3>🎹 编曲 (Beat Making)</h3>
+            <div class="list-group">
+                <div class="list-item">
+                    <div class="list-content"><div>非定制 (Leasing) - MP3</div></div>
+                    <div class="list-price">¥180</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-content"><div>非定制 (Leasing) - MP3 + WAV</div></div>
+                    <div class="list-price">¥380</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-content"><div>非定制 (Leasing) - MP3+WAV+Stems</div></div>
+                    <div class="list-price">¥880</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-content"><div>买断 (Exclusive)</div></div>
+                    <div class="list-price">¥1,500 起</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-content"><div>定制编曲 (Custom)</div></div>
+                    <div class="list-price">¥3,000 - ¥5,000</div>
+                </div>
+            </div>
+
+            <h3>✍️ 词曲创作 (Songwriting)</h3>
+            <div class="list-group">
+                <div class="list-item">
+                    <div class="list-content"><div>作词 (中/英 3min内)</div></div>
+                    <div class="list-price">¥280</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-content"><div>作曲 (旋律/和弦/结构)</div></div>
+                    <div class="list-price">¥480</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-content"><div>词曲全包</div></div>
+                    <div class="list-price">¥680</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>IV. DJ 演出服务</h2>
+            <div class="list-group">
+                <div class="list-item">
+                    <div class="list-content">
+                        <div>日间演出</div>
+                        <div>歌手伴奏 / 市集 / 餐厅等</div>
+                    </div>
+                    <div class="list-price">¥300 / hour</div>
+                </div>
+                <div class="list-item">
+                    <div class="list-content">
+                        <div>夜间/现场演出</div>
+                        <div>Club / Bar / Livehouse</div>
+                    </div>
+                    <div class="list-price">¥1,000 起</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>📝 合作细则与额外费用 (Terms)</h2>
+            <div class="terms-box">
+                <div class="terms-item">
+                    <h4>1. Cypher / 合辑混音细则</h4>
+                    <ul>
+                        <li><strong>基础标准：</strong>默认仅含基础伴奏拼接。</li>
+                        <li><strong>四化衔接 (¥100/处)：</strong>制作切分、Drop、破拍、反拍掉落等复杂衔接。</li>
+                    </ul>
+                </div>
+                
+                <div class="terms-item">
+                    <h4>2. 音频编辑 (修音/对齐)</h4>
+                    <ul>
+                        <li><strong>¥100 / 条主唱：</strong>适用于结构规整的轨道。</li>
+                        <li><strong>+ ¥50 / 条：</strong>针对唱功较弱或严重跑调者。</li>
+                        <li>若素材节奏位置混乱，按实际工作量额外计费。</li>
+                    </ul>
+                </div>
+
+                <div class="terms-item">
+                    <h4>3. 修改与售后</h4>
+                    <ul>
+                        <li><strong>母带前：</strong>前3次免费（平衡/氛围/电平）。支持在线会议当天定稿。第4次起 ¥50/次。</li>
+                        <li><strong>母带后 (¥100/次)：</strong>因客户原因（审美变化、替换素材等）需重新混音。</li>
+                    </ul>
+                </div>
+
+                <div class="terms-item">
+                    <h4>4. 文件交付</h4>
+                    <ul>
+                        <li>包含：成品音频、带伴唱版本、纯伴奏。</li>
+                        <li>额外付费：纯干声、阿卡贝拉、分轨文件等。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Audio Production Services. All Rights Reserved.</p>
+            <p>Prices are subject to change without notice.</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>

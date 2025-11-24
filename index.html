@@ -642,15 +642,22 @@
                 introButtons.classList.add("visible");
             }, 1000);
 
-            // 点击 Enter 按钮进入主站
+// 点击 Enter 按钮进入主站
             enterBtn.addEventListener("click", () => {
                 stopGridAnimation();
-                
+
+                // --- 新增代码开始：让按钮容器消失 ---
+                introButtons.classList.remove("visible"); // 1. 移除 visible 类，触发 CSS 淡出效果
+                setTimeout(() => {
+                    introButtons.style.display = 'none'; // 2. 淡出后彻底隐藏，防止挡住下面的点击
+                }, 800); // 时间要和 CSS transition 匹配
+                // --- 新增代码结束 ---
+
                 body.classList.remove('show-intro');
                 body.classList.add('content-visible');
                 sessionStorage.setItem('hasVisited', 'true');
                 initScrollObserver();
-                
+
                 setTimeout(() => {
                     document.getElementById('intro-overlay').style.display = 'none';
                 }, 800);

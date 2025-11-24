@@ -311,44 +311,77 @@
     .grid-front { background-color: transparent; }
     .grid-back { background-color: transparent; transform: rotateY(180deg); }
 
-    #enter-site-btn {
+    /* --- 开场按钮容器 --- */
+    #intro-buttons {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%) scale(0.9);
-        padding: 15px 40px;
+        display: flex;
+        flex-direction: row; /* 默认横向排列 */
+        gap: 25px;
+        z-index: 10000;
+        opacity: 0;
+        transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #intro-buttons.visible {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* --- 按钮通用样式 --- */
+    .intro-btn {
+        display: inline-block;
+        padding: 15px 35px;
         font-size: 18px;
         font-weight: bold;
         letter-spacing: 2px;
+        text-transform: uppercase;
         color: #fff;
         background: rgba(0, 0, 0, 0.6);
         border: 2px solid rgba(255, 255, 255, 0.8);
         border-radius: 50px;
         cursor: pointer;
-        opacity: 0;
-        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        text-decoration: none;
         backdrop-filter: blur(10px);
         box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        z-index: 10000;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        text-align: center;
     }
 
-    #enter-site-btn:hover {
+    .intro-btn:hover {
         background: rgba(255, 255, 255, 0.9);
         color: #000;
-        transform: translate(-50%, -50%) scale(1);
+        transform: translateY(-2px);
     }
 
-    #enter-site-btn.btn-visible {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
+    /* --- 移动端按钮响应式：竖排 --- */
+    @media (max-width: 600px) {
+        #intro-buttons {
+            flex-direction: column; /* 手机上竖着排 */
+            gap: 15px;
+            width: 80%; /* 确保不过宽 */
+        }
+        .intro-btn {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+        }
     }
+
 </style>
 </head>
 <body>
 
 <div id="intro-overlay">
     <div id="intro-grid"></div>
-    <button id="enter-site-btn">ENTER</button>
+</div>
+
+<div id="intro-buttons">
+    <button id="enter-site-btn" class="intro-btn">Enter</button>
+    <a href="https://cookdao.github.io/pricing/" id="price-btn" class="intro-btn">See the price</a>
 </div>
 
 <div id="albums-container"></div>
@@ -454,7 +487,7 @@
     // 获取一个加权随机封面 (用于翻页动画)
     // 70% 概率选高优先级，30% 概率选普通
     function getWeightedRandomImage() {
-        const isPriority = Math.random() < 0.7; 
+        const isPriority = Math.random() < 0.7;
         if (isPriority && priorityAlbums.length > 0) {
             return priorityAlbums[Math.floor(Math.random() * priorityAlbums.length)].image;
         } else {
@@ -471,9 +504,9 @@
             const reverseClass = index % 2 !== 0;
             const albumRow = document.createElement("div");
             albumRow.className = `album-row ${reverseClass ? "reverse" : ""}`;
-            
-            const highlightHTML = album.highlighted 
-                ? `<div class="highlight"><span>★</span></div>` 
+
+            const highlightHTML = album.highlighted
+                ? `<div class="highlight"><span>★</span></div>`
                 : '';
 
             albumRow.innerHTML = `
@@ -513,20 +546,20 @@
     }
 
     // --- 3. 动态开场逻辑 (Album Wall) ---
-    let flipInterval; 
+    let flipInterval;
 
     function initIntroGrid() {
         const gridContainer = document.getElementById('intro-grid');
         const width = window.innerWidth;
         const height = window.innerHeight;
-        
+
         // 估算单元格大小，这里依赖CSS media query的实际生效值
         // 在手机上，CSS会将最小宽度设置为100px
-        const minColWidth = width <= 600 ? 100 : 200; 
-        
+        const minColWidth = width <= 600 ? 100 : 200;
+
         const cols = Math.ceil(width / minColWidth);
         const approxCellSize = width / cols;
-        const rows = Math.ceil(height / approxCellSize) + 1; 
+        const rows = Math.ceil(height / approxCellSize) + 1;
 
         const totalCells = cols * rows;
         const fragment = document.createDocumentFragment();
@@ -537,7 +570,7 @@
         for (let i = 0; i < totalCells; i++) {
             const cell = document.createElement('div');
             cell.className = 'grid-cell';
-            
+
             const albumData = displayQueue[i % displayQueue.length];
             const imgUrl = albumData.image;
 
@@ -567,7 +600,7 @@
             const frontImg = inner.querySelector('.grid-front img');
             const backImg = inner.querySelector('.grid-back img');
             const isFlipped = randomCell.classList.contains('flipped');
-            
+
             // 使用加权随机获取新图片
             const newImage = getWeightedRandomImage();
 
@@ -579,7 +612,7 @@
                 randomCell.classList.add('flipped');
             }
 
-        }, 2000); 
+        }, 2000);
     }
 
     function stopGridAnimation() {
@@ -589,6 +622,7 @@
     // --- 4. 初始化流程 ---
     document.addEventListener("DOMContentLoaded", () => {
         const hasVisited = sessionStorage.getItem('hasVisited');
+        const introButtons = document.getElementById("intro-buttons");
         const enterBtn = document.getElementById("enter-site-btn");
         const body = document.body;
 
@@ -599,14 +633,16 @@
             initScrollObserver();
         } else {
             body.classList.add('show-intro');
-            
+
             initIntroGrid();
             startGridAnimation();
 
+            // 1秒后显示按钮容器
             setTimeout(() => {
-                enterBtn.classList.add("btn-visible");
+                introButtons.classList.add("visible");
             }, 1000);
 
+            // 点击 Enter 按钮进入主站
             enterBtn.addEventListener("click", () => {
                 stopGridAnimation();
                 

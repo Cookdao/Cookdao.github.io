@@ -629,8 +629,15 @@
         generateAlbums();
 
         if (hasVisited) {
-            body.classList.add('content-visible');
-            initScrollObserver();
+            body.classList.add('show-intro');
+
+            initIntroGrid();
+            startGridAnimation();
+
+            // 1秒后显示按钮容器
+            setTimeout(() => {
+                introButtons.classList.add("visible");
+            }, 1000);
         } else {
             body.classList.add('show-intro');
 

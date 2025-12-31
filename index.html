@@ -1,614 +1,316 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>刀大厨的菜单</title>
-<link rel="icon" href="https://www.emojiall.com/images/240/apple/1f373.png" type="image/png"/>
-<meta property="og:title" content="大厨菜单"/>
-<meta property="og:description" content="刀大厨混音母带"/>
-<meta property="og:image" content="https://github.com/Cookdao/Cookdao.github.io/blob/main/icon.png"/>
-<meta property="og:url" content="https://cookdao.github.io/"/>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<title>刀大厨的菜单</title>
+	<link rel="icon" href="https://www.emojiall.com/images/240/apple/1f373.png" type="image/png"/>
+	
+	<style>
+		/* --- 全局与色彩系统 --- */
+		:root {
+			--bg-color: #e8e6e1;
+			--text-color: #1a1a1a;
+			--accent-gold: #b08d57;
+			--card-bg: #fff;
+			--transition-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+			/* 统一按钮字体变量 */
+			--btn-font: 'Helvetica', Arial, sans-serif;
+		}
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WKW4EL3VCC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-WKW4EL3VCC');
-</script>
+		*, *::before, *::after { box-sizing: border-box; }
 
-<style>
-	/* --- 全局设置 --- */
-	:root {
-		--bg-color: #e7e5e0;
-		--text-color: #000;
-		--accent-gold: gold;
-		--card-bg: #fff;
-	}
+		body {
+			font-family: 'Times New Roman', Times, serif; 
+			margin: 0; padding: 0;
+			background-color: var(--bg-color);
+			color: var(--text-color);
+			display: flex; flex-direction: column; align-items: center;
+			overflow-x: hidden;
+			-webkit-font-smoothing: antialiased;
+		}
 
-	*, *::before, *::after {
-		box-sizing: border-box;
-	}
+		/* --- 主内容容器：移除顶部空隙 --- */
+		#albums-container {
+			width: 100%;
+			max-width: 1200px; 
+			display: none; 
+			flex-direction: column;
+			align-items: center;
+			opacity: 0;
+			transition: opacity 1s ease;
+			padding: 0 0 80px 0; /* 顶部设为 0，底部保留空间 */
+		}
 
-	body {
-		font-family: 'Helvetica Neue', Arial, sans-serif;
-		margin: 0;
-		padding: 0;
-		background-color: var(--bg-color);
-		color: var(--text-color);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		overflow-x: hidden;
-	}
+		body.content-visible #albums-container { display: flex; opacity: 1; }
 
-	/* --- 主内容容器 --- */
-	#albums-container {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		opacity: 0;
-		transition: opacity 0.8s ease-in;
-		padding-bottom: 50px;
-	}
-
-	body.content-visible #albums-container {
-		opacity: 1;
-	}
-
-	/* --- 专辑行样式 (Desktop) --- */
-	.album-row {
-		display: flex;
-		flex-direction: row; 
-		justify-content: center;
-		align-items: center;
-		width: 1000px;
-		height: 500px;
-		background-color: var(--card-bg);
-		margin: 0;
-		position: relative;
-		opacity: 0;
-		transform: translateY(30px);
-		transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-		will-change: opacity, transform;
-		overflow: hidden;
-	}
-
-	.album-row.is-visible {
-		opacity: 1;
-		transform: translateY(0);
-	}
-
-	.album-row.reverse {
-		flex-direction: row-reverse;
-	}
-
-	/* --- 专辑封面与信息 --- */
-	.album-cover {
-		flex: 0 0 50%; 
-		width: 50%;
-		height: 100%;
-		position: relative;
-		overflow: hidden;
-	}
-
-	.album-cover a {
-		display: block;
-		width: 100%;
-		height: 100%;
-	}
-
-	.album-cover img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		display: block;
-		transition: opacity 0.3s, filter 0.3s, transform 0.4s ease;
-	}
-
-	.album-cover:hover img {
-		opacity: 0.6;
-		filter: brightness(0.6);
-		transform: scale(1.05);
-	}
-
-	.album-info {
-		flex: 0 0 50%;
-		width: 50%;
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		padding: 40px;
-		overflow: hidden;
-	}
-
-	.album-info-inner {
-		text-align: center;
-		width: 100%;
-	}
-
-	.year {
-		font-size: 18px;
-		color: #666;
-		margin-bottom: 10px;
-		letter-spacing: 2px;
-		display: block;
-	}
-
-	h3 {
-		font-size: 28px;
-		font-weight: normal;
-		text-decoration: underline;
-		color: #333;
-		margin: 0 0 10px 0;
-	}
-
-	h2 {
-		font-size: 42px;
-		font-weight: 300;
-		color: #000;
-		margin: 0;
-		text-transform: uppercase;
-		line-height: 1.2;
-		word-break: break-word;
-	}
-
-	/* --- 高亮角标 --- */
-	.highlight {
-		position: absolute;
-		top: 0;
-		right: 0;
-		width: 100px;
-		height: 100px;
-		overflow: hidden;
-		pointer-events: none;
-		z-index: 10;
-	}
-
-	.highlight::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		right: 0;
-		width: 0;
-		height: 0;
-		border-top: 100px solid var(--accent-gold);
-		border-right: 100px solid transparent;
-		transform: rotate(90deg);
-		opacity: 0.9;
-	}
-
-	.highlight span {
-		position: absolute;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		top: 0;
-		right: 0;
-		width: 50px;
-		height: 50px;
-		font-size: 30px;
-		color: #000;
-		opacity: 0.9;
-		animation: pulse-star 2.5s infinite ease-in-out;
-	}
-
-	@keyframes pulse-star {
-		0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.9; }
-		50% { transform: scale(1.2) rotate(15deg); opacity: 1; }
-	}
-
-	/* --- 移动端主内容响应式 --- */
-	@media (max-width: 1000px) {
+		/* --- 专辑行 (强制 1:1) --- */
 		.album-row {
-			width: 100%;
-			height: 50vw;
+			display: flex; 
+			width: 100%; 
+			aspect-ratio: 2 / 1; 
+			background-color: var(--card-bg);
+			margin: 0; position: relative;
+			opacity: 0; transform: translateY(30px);
+			transition: opacity 0.8s var(--transition-smooth), transform 0.8s var(--transition-smooth);
+			overflow: hidden;
+			border-bottom: 1px solid rgba(0,0,0,0.03);
 		}
 		
-		.album-cover, .album-info {
-			flex: 0 0 50%;
-			width: 50%;
-			height: 100%;
+		@media (min-width: 1000px) { .album-row { aspect-ratio: auto; height: 550px; } }
+		.album-row.is-visible { opacity: 1; transform: translateY(0); }
+		.album-row.reverse { flex-direction: row-reverse; }
+
+		.album-cover { flex: 0 0 50%; height: 100%; position: relative; overflow: hidden; }
+		.album-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.5s var(--transition-smooth); display: block; }
+		.album-cover:hover img { transform: scale(1.08); }
+
+		.album-info { flex: 0 0 50%; display: flex; justify-content: center; align-items: center; padding: 20px; }
+		.album-info-inner { text-align: center; width: 100%; }
+
+		.year { 
+			display: block; font-family: 'Helvetica', sans-serif; font-size: clamp(10px, 2.2vw, 14px); 
+			color: #888; letter-spacing: 5px; margin-bottom: 15px; font-weight: 300;
 		}
-		
-		.album-info {
-			padding: 0 8px; 
+		h3 { 
+			font-size: clamp(12px, 2.8vw, 18px); font-weight: 400; color: var(--accent-gold); 
+			margin: 0 0 10px 0; letter-spacing: 2px; text-transform: uppercase;
 		}
+		h2 { 
+			font-size: clamp(16px, 4.2vw, 38px); font-weight: 300; line-height: 1.2; 
+			margin: 0; color: #000; word-break: break-word;
+		}
+		.album-info-inner::before { content: ''; display: block; width: 25px; height: 1px; background: var(--accent-gold); margin: 0 auto 15px; }
 
-		h2 { font-size: 3.8vw; }
-		h3 { font-size: 2.8vw; }
-		.year { font-size: 2.2vw; margin-bottom: 3px; }
-		
-		.highlight { width: 13vw; height: 13vw; }
-		.highlight::before { border-top: 13vw solid var(--accent-gold); border-right: 13vw solid transparent; }
-		.highlight span { width: 6.5vw; height: 6.5vw; font-size: 4vw; }
-	}
+		/* --- 角标星标 --- */
+		.highlight { position: absolute; top: 0; right: 0; width: 80px; height: 80px; z-index: 10; pointer-events: none; }
+		.highlight::before {
+			content: ''; position: absolute; top: 0; right: 0;
+			border-top: 80px solid var(--accent-gold); border-right: 80px solid transparent;
+			transform: rotate(90deg); opacity: 0.9;
+		}
+		.highlight span {
+			position: absolute; top: 0; right: 0; width: 40px; height: 40px;
+			display: flex; justify-content: center; align-items: center;
+			font-size: 20px; color: #fff; animation: pulse-star 2.5s infinite ease-in-out;
+		}
+		@keyframes pulse-star { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
 
-	/* =========================================
-	   动态开场动画 (Dynamic Intro Grid) 样式
-	   ========================================= */
-	#intro-overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100vw;
-		height: 100vh;
-		background-color: var(--bg-color);
-		display: none;
-		justify-content: center;
-		align-items: center;
-		z-index: 9999;
-		opacity: 0;
-		transition: opacity 0.8s ease-out;
-		overflow: hidden;
-	}
+		/* --- 开场动画网格 --- */
+		#intro-overlay {
+			position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+			background-color: var(--bg-color); z-index: 9999;
+			display: none; justify-content: center; align-items: center;
+			opacity: 0; transition: opacity 0.8s ease-out; overflow: hidden;
+		}
+		body.show-intro { overflow: hidden; }
+		body.show-intro #intro-overlay { display: flex; opacity: 1; }
 
-	body.show-intro { overflow: hidden; }
-	body.show-intro #intro-overlay { display: flex; opacity: 1; }
-
-	#intro-grid {
-		display: grid;
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: auto; 
-		/* 桌面/大屏幕默认：格子较大 (≥200px) */
-		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-		gap: 0;
-		filter: brightness(0.6);
-		transition: filter 0.5s;
-	}
-
-	/* --- 针对小屏幕优化：每行至少三个封面 --- */
-	@media (max-width: 600px) {
 		#intro-grid {
-			/* 最小宽度降至100px，确保在标准手机屏幕上可以显示3-4列 */
-			grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+			display: grid; position: absolute; top: 0; left: 0; width: 100%;
+			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+			filter: brightness(0.5) grayscale(0.2);
 		}
-	}
+		@media (max-width: 600px) { #intro-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); } }
 
-	.grid-cell {
-		position: relative;
-		width: 100%;
-		aspect-ratio: 1 / 1; /* 强制正方形 */
-		perspective: 1000px;
-		overflow: hidden;
-		background-color: #ddd;
-	}
+		.grid-cell { position: relative; width: 100%; aspect-ratio: 1/1; perspective: 1000px; background-color: #ddd; }
+		.grid-cell-inner { position: relative; width: 100%; height: 100%; transition: transform 1.2s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
+		.grid-cell.flipped .grid-cell-inner { transform: rotateY(180deg); }
+		.grid-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+		.grid-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
+		.grid-back { transform: rotateY(180deg); }
 
-	.grid-cell-inner {
-		position: relative;
-		width: 100%;
-		height: 100%;
-		text-align: center;
-		transition: transform 1.2s cubic-bezier(0.4, 0.2, 0.2, 1);
-		transform-style: preserve-3d;
-	}
-
-	.grid-cell.flipped .grid-cell-inner {
-		transform: rotateY(180deg);
-	}
-
-	.grid-face {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		backface-visibility: hidden;
-		-webkit-backface-visibility: hidden;
-	}
-
-	.grid-face img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		display: block;
-	}
-
-	.grid-front { background-color: transparent; }
-	.grid-back { background-color: transparent; transform: rotateY(180deg); }
-
-	/* --- 开场按钮容器 --- */
-	#intro-buttons {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%) scale(0.9);
-		display: flex;
-		flex-direction: row; /* 默认横向排列 */
-		gap: 25px;
-		z-index: 10000;
-		opacity: 0;
-		transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	}
-
-	#intro-buttons.visible {
-		opacity: 1;
-		transform: translate(-50%, -50%) scale(1);
-	}
-
-	/* --- 按钮通用样式 --- */
-	.intro-btn {
-		display: inline-block;
-		padding: 15px 35px;
-		font-size: 18px;
-		font-weight: bold;
-		letter-spacing: 2px;
-		text-transform: uppercase;
-		color: #fff;
-		background: rgba(0, 0, 0, 0.6);
-		border: 2px solid rgba(255, 255, 255, 0.8);
-		border-radius: 50px;
-		cursor: pointer;
-		text-decoration: none;
-		backdrop-filter: blur(10px);
-		box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-		transition: all 0.3s ease;
-		white-space: nowrap;
-		text-align: center;
-	}
-
-	.intro-btn:hover {
-		background: rgba(255, 255, 255, 0.9);
-		color: #000;
-		transform: translateY(-2px);
-	}
-
-	/* --- 移动端按钮响应式：竖排 --- */
-	@media (max-width: 600px) {
+		/* --- 开场按钮：强制字体一致 --- */
 		#intro-buttons {
-			flex-direction: column; /* 手机上竖着排 */
-			gap: 15px;
-			width: 80%; /* 确保不过宽 */
+			position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
+			display: flex; gap: 20px; z-index: 10000; opacity: 0;
+			transition: all 0.8s var(--transition-smooth);
 		}
-		.intro-btn {
-			width: 100%;
-			padding: 12px 20px;
-			font-size: 16px;
-		}
-	}
+		#intro-buttons.visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
-</style>
+		.intro-btn {
+			/* 核心修复：强制重置按钮和链接的默认样式 */
+			font-family: var(--btn-font) !important; 
+			font-size: 14px; 
+			font-weight: 600; 
+			line-height: 1.2;
+			letter-spacing: 3px;
+			text-transform: uppercase;
+			color: #fff; 
+			background: rgba(0, 0, 0, 0.75);
+			border: 1px solid rgba(255, 255, 255, 0.3); 
+			border-radius: 50px; 
+			cursor: pointer;
+			text-decoration: none; 
+			backdrop-filter: blur(10px); 
+			transition: 0.3s; 
+			text-align: center;
+			padding: 18px 40px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			outline: none;
+			-webkit-appearance: none;
+		}
+		.intro-btn:hover { background: #fff; color: #000; transform: translateY(-2px); border-color: #fff; }
+
+		@media (max-width: 600px) {
+			#intro-buttons { flex-direction: column; width: 80%; }
+			.intro-btn { width: 100%; padding: 15px; font-size: 13px; }
+		}
+	</style>
 </head>
 <body>
 
-<div id="intro-overlay">
-	<div id="intro-grid"></div>
-</div>
+	<div id="intro-overlay">
+		<div id="intro-grid"></div>
+	</div>
 
-<div id="intro-buttons">
-	<button id="enter-site-btn" class="intro-btn">Enter</button>
-	<a href="https://cookdao.github.io/pricing/" id="price-btn" class="intro-btn">See the price</a>
-</div>
+	<div id="intro-buttons">
+		<button id="enter-site-btn" class="intro-btn">Enter Menu</button>
+		<a href="https://cookdao.github.io/pricing/" class="intro-btn">See Pricing</a>
+	</div>
 
-<div id="albums-container"></div>
+	<div id="albums-container"></div>
 
-<script src="albums.js"></script>
+	<script src="albums.js"></script>
 
-<script>
-	// 注意：这里的 const albums = [...] 已经移除了，
-	// 现在脚本会直接读取 albums.js 里的 albums 变量。
-
-	// --- 数据预处理：分类与排序 ---
-	let priorityAlbums = []; // 高优先级：加星或2025年
-	let normalAlbums = [];   // 普通
-
-	// 确保 albums 数据已加载，防止报错
-	if (typeof albums !== 'undefined') {
-		albums.forEach(a => {
-			if (a.highlighted || a.year === "2025") {
-				priorityAlbums.push(a);
-			} else {
-				normalAlbums.push(a);
-			}
-		});
-	} else {
-		console.error("Albums data not found. Please check albums.js link.");
-	}
-
-	// Fisher-Yates 洗牌算法
-	function shuffleArray(array) {
-		let arr = [...array];
-		for (let i = arr.length - 1; i > 0; i--) {
-			const j = Math.floor(Math.random() * (i + 1));
-			[arr[i], arr[j]] = [arr[j], arr[i]];
-		}
-		return arr;
-	}
-
-	// 获取一个加权随机封面 (用于翻页动画)
-	// 70% 概率选高优先级，30% 概率选普通
-	function getWeightedRandomImage() {
-		if (typeof albums === 'undefined') return "";
-		
-		const isPriority = Math.random() < 0.7;
-		if (isPriority && priorityAlbums.length > 0) {
-			return priorityAlbums[Math.floor(Math.random() * priorityAlbums.length)].image;
-		} else {
-			return albums[Math.floor(Math.random() * albums.length)].image; // 回退到全池随机
-		}
-	}
-
-	// --- 1. 生成主页列表 ---
-	function generateAlbums() {
-		if (typeof albums === 'undefined') return;
-
-		const container = document.getElementById("albums-container");
-		const fragment = document.createDocumentFragment();
-
-		albums.slice(0, 100).forEach((album, index) => {
-			const reverseClass = index % 2 !== 0;
-			const albumRow = document.createElement("div");
-			albumRow.className = `album-row ${reverseClass ? "reverse" : ""}`;
-
-			const highlightHTML = album.highlighted
-				? `<div class="highlight"><span>★</span></div>`
-				: '';
-
-			albumRow.innerHTML = `
-				<div class="album-cover">
-					<a href="${album.link}" target="_blank" rel="noopener noreferrer">
-						<img src="${album.image}" alt="${album.title} - ${album.artist}" loading="lazy" />
-						${highlightHTML}
-					</a>
-				</div>
-				<div class="album-info">
-					<div class="album-info-inner">
-						<span class="year">${album.year}</span>
-						<h3>${album.artist}</h3>
-						<h2>${album.title}</h2>
-					</div>
-				</div>
-			`;
-			fragment.appendChild(albumRow);
-		});
-		container.appendChild(fragment);
-	}
-
-	// --- 2. 滚动监测 ---
-	function initScrollObserver() {
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach(entry => {
-				if (entry.isIntersecting) {
-					entry.target.classList.add('is-visible');
-					observer.unobserve(entry.target);
-				}
+	<script>
+		let priorityAlbums = [];
+		let normalAlbums = [];
+		if (typeof albums !== 'undefined') {
+			albums.forEach(a => {
+				if (a.highlighted || a.year === "2025") priorityAlbums.push(a);
+				else normalAlbums.push(a);
 			});
-		}, { threshold: 0.1, rootMargin: "50px" });
+		}
 
-		document.querySelectorAll('.album-row').forEach(row => {
-			observer.observe(row);
-		});
-	}
+		function shuffleArray(array) {
+			let arr = [...array];
+			for (let i = arr.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1));
+				[arr[i], arr[j]] = [arr[j], arr[i]];
+			}
+			return arr;
+		}
 
-	// --- 3. 动态开场逻辑 (Album Wall) ---
-	let flipInterval;
+		function getWeightedRandomImage() {
+			if (typeof albums === 'undefined') return "";
+			const isPriority = Math.random() < 0.7;
+			if (isPriority && priorityAlbums.length > 0) {
+				return priorityAlbums[Math.floor(Math.random() * priorityAlbums.length)].image;
+			}
+			return albums[Math.floor(Math.random() * albums.length)].image;
+		}
 
-	function initIntroGrid() {
-		const gridContainer = document.getElementById('intro-grid');
-		const width = window.innerWidth;
-		const height = window.innerHeight;
+		function generateAlbums() {
+			const container = document.getElementById("albums-container");
+			if (!container || typeof albums === 'undefined') return;
 
-		// 估算单元格大小，这里依赖CSS media query的实际生效值
-		// 在手机上，CSS会将最小宽度设置为100px
-		const minColWidth = width <= 600 ? 100 : 200;
-
-		const cols = Math.ceil(width / minColWidth);
-		const approxCellSize = width / cols;
-		const rows = Math.ceil(height / approxCellSize) + 1;
-
-		const totalCells = cols * rows;
-		const fragment = document.createDocumentFragment();
-
-		// --- 构建初始展示队列 ---
-		let displayQueue = [...shuffleArray(priorityAlbums), ...shuffleArray(normalAlbums)];
-
-		for (let i = 0; i < totalCells; i++) {
-			const cell = document.createElement('div');
-			cell.className = 'grid-cell';
-
-			const albumData = displayQueue[i % displayQueue.length] || {}; // 防空保护
-			const imgUrl = albumData.image || "";
-
-			cell.innerHTML = `
-				<div class="grid-cell-inner">
-					<div class="grid-face grid-front">
-						<img src="${imgUrl}" alt="" loading="eager">
+			container.innerHTML = albums.map((album, index) => `
+				<div class="album-row ${index % 2 !== 0 ? 'reverse' : ''}">
+					<div class="album-cover">
+						<a href="${album.link}" target="_blank">
+							<img src="${album.image}" alt="${album.title}" loading="${index < 2 ? 'eager' : 'lazy'}">
+							${album.highlighted ? '<div class="highlight"><span>★</span></div>' : ''}
+						</a>
 					</div>
-					<div class="grid-face grid-back">
-						<img src="" alt="" loading="eager">
+					<div class="album-info">
+						<div class="album-info-inner">
+							<span class="year">${album.year}</span>
+							<h3>${album.artist}</h3>
+							<h2>${album.title}</h2>
+						</div>
 					</div>
 				</div>
-			`;
-			fragment.appendChild(cell);
+			`).join('');
 		}
-		gridContainer.appendChild(fragment);
-	}
 
-	function startGridAnimation() {
-		const cells = document.querySelectorAll('.grid-cell');
-		if (cells.length === 0) return;
+		function initScrollObserver() {
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('is-visible');
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.1 });
+			document.querySelectorAll('.album-row').forEach(row => observer.observe(row));
+		}
 
-		// 2秒翻动一次
-		flipInterval = setInterval(() => {
-			const randomCell = cells[Math.floor(Math.random() * cells.length)];
-			const inner = randomCell.querySelector('.grid-cell-inner');
-			const frontImg = inner.querySelector('.grid-front img');
-			const backImg = inner.querySelector('.grid-back img');
-			const isFlipped = randomCell.classList.contains('flipped');
+		let flipInterval;
+		function initIntroGrid() {
+			const grid = document.getElementById('intro-grid');
+			const width = window.innerWidth;
+			const height = window.innerHeight;
+			const minColWidth = width <= 600 ? 100 : 200;
+			const cols = Math.ceil(width / minColWidth);
+			const rows = Math.ceil(height / (width / cols)) + 1;
+			const totalCells = cols * rows;
 
-			// 使用加权随机获取新图片
-			const newImage = getWeightedRandomImage();
+			let displayQueue = [...shuffleArray(priorityAlbums), ...shuffleArray(normalAlbums)];
+			let cellsHTML = '';
 
-			if (isFlipped) {
-				frontImg.src = newImage;
-				randomCell.classList.remove('flipped');
-			} else {
-				backImg.src = newImage;
-				randomCell.classList.add('flipped');
+			for (let i = 0; i < totalCells; i++) {
+				const imgUrl = (displayQueue[i % displayQueue.length] || {}).image || "";
+				cellsHTML += `
+					<div class="grid-cell">
+						<div class="grid-cell-inner">
+							<div class="grid-face grid-front"><img src="${imgUrl}"></div>
+							<div class="grid-face grid-back"><img src=""></div>
+						</div>
+					</div>`;
 			}
+			grid.innerHTML = cellsHTML;
+		}
 
-		}, 2000);
-	}
+		function startGridAnimation() {
+			flipInterval = setInterval(() => {
+				const cells = document.querySelectorAll('.grid-cell');
+				if (cells.length === 0) return;
+				const randomCell = cells[Math.floor(Math.random() * cells.length)];
+				const inner = randomCell.querySelector('.grid-cell-inner');
+				const isFlipped = randomCell.classList.contains('flipped');
+				const nextImg = randomCell.querySelector(isFlipped ? '.grid-front img' : '.grid-back img');
+				
+				nextImg.src = getWeightedRandomImage();
+				randomCell.classList.toggle('flipped');
+			}, 2000);
+		}
 
-	function stopGridAnimation() {
-		if (flipInterval) clearInterval(flipInterval);
-	}
-
-	// --- 4. 初始化流程 ---
-	document.addEventListener("DOMContentLoaded", () => {
-		const hasVisited = sessionStorage.getItem('hasVisited');
-		const introButtons = document.getElementById("intro-buttons");
-		const enterBtn = document.getElementById("enter-site-btn");
-		const body = document.body;
-
-		// 生成列表
-		generateAlbums();
-
-		// 定义 Enter 点击行为
 		function enterSite() {
-			stopGridAnimation();
-			introButtons.classList.remove("visible");
+			if (flipInterval) clearInterval(flipInterval);
+			const buttons = document.getElementById("intro-buttons");
+			const overlay = document.getElementById("intro-overlay");
+			
+			buttons.classList.remove("visible");
+			overlay.style.opacity = '0';
+			
 			setTimeout(() => {
-				introButtons.style.display = 'none';
+				overlay.style.display = 'none';
+				buttons.style.display = 'none';
 			}, 800);
 
-			body.classList.remove('show-intro');
-			body.classList.add('content-visible');
+			document.body.classList.remove('show-intro');
+			document.body.classList.add('content-visible');
 			sessionStorage.setItem('hasVisited', 'true');
 			initScrollObserver();
-
-			setTimeout(() => {
-				document.getElementById('intro-overlay').style.display = 'none';
-			}, 800);
 		}
 
-		enterBtn.addEventListener("click", enterSite);
-
-		if (hasVisited) {
-			// 之前访问过 -> 直接运行动画，并快速显示按钮（或者也可以选择直接进入，看你喜好，目前逻辑是显示动画）
-			body.classList.add('show-intro');
-			initIntroGrid();
-			startGridAnimation();
-			setTimeout(() => {
-				introButtons.classList.add("visible");
-			}, 1000);
-		} else {
-			// 首次访问
-			body.classList.add('show-intro');
+		document.addEventListener("DOMContentLoaded", () => {
+			generateAlbums();
+			const hasVisited = sessionStorage.getItem('hasVisited');
+			
+			document.body.classList.add('show-intro');
 			initIntroGrid();
 			startGridAnimation();
 
-			// 1秒后显示按钮容器
 			setTimeout(() => {
-				introButtons.classList.add("visible");
+				document.getElementById("intro-buttons").classList.add("visible");
 			}, 1000);
-		}
-	});
-</script>
 
+			document.getElementById('enter-site-btn').addEventListener('click', enterSite);
+		});
+	</script>
 </body>
 </html>

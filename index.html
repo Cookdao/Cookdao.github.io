@@ -1,316 +1,309 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-	<meta charset="UTF-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-	<title>刀大厨的菜单</title>
-	<link rel="icon" href="https://www.emojiall.com/images/240/apple/1f373.png" type="image/png"/>
-	
-	<style>
-		/* --- 全局与色彩系统 --- */
-		:root {
-			--bg-color: #e8e6e1;
-			--text-color: #1a1a1a;
-			--accent-gold: #b08d57;
-			--card-bg: #fff;
-			--transition-smooth: cubic-bezier(0.25, 1, 0.5, 1);
-			/* 统一按钮字体变量 */
-			--btn-font: 'Helvetica', Arial, sans-serif;
-		}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+<title>Mixing Portfolio</title>
 
-		*, *::before, *::after { box-sizing: border-box; }
+<style>
+:root {
+  --bg:#000;
+  --text-main:#fff;
+  --text-dim:#86868b;
+  --font-pro:-apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif;
+  --easing:cubic-bezier(0.16,1,0.3,1);
+  --cols: 8; 
+}
 
-		body {
-			font-family: 'Times New Roman', Times, serif; 
-			margin: 0; padding: 0;
-			background-color: var(--bg-color);
-			color: var(--text-color);
-			display: flex; flex-direction: column; align-items: center;
-			overflow-x: hidden;
-			-webkit-font-smoothing: antialiased;
-		}
+body {
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family:var(--font-pro);
+  overflow:hidden;
+}
 
-		/* --- 主内容容器：移除顶部空隙 --- */
-		#albums-container {
-			width: 100%;
-			max-width: 1200px; 
-			display: none; 
-			flex-direction: column;
-			align-items: center;
-			opacity: 0;
-			transition: opacity 1s ease;
-			padding: 0 0 80px 0; /* 顶部设为 0，底部保留空间 */
-		}
+/* ================= Intro ================= */
 
-		body.content-visible #albums-container { display: flex; opacity: 1; }
+#intro-overlay {
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:9999;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
 
-		/* --- 专辑行 (强制 1:1) --- */
-		.album-row {
-			display: flex; 
-			width: 100%; 
-			aspect-ratio: 2 / 1; 
-			background-color: var(--card-bg);
-			margin: 0; position: relative;
-			opacity: 0; transform: translateY(30px);
-			transition: opacity 0.8s var(--transition-smooth), transform 0.8s var(--transition-smooth);
-			overflow: hidden;
-			border-bottom: 1px solid rgba(0,0,0,0.03);
-		}
-		
-		@media (min-width: 1000px) { .album-row { aspect-ratio: auto; height: 550px; } }
-		.album-row.is-visible { opacity: 1; transform: translateY(0); }
-		.album-row.reverse { flex-direction: row-reverse; }
+#intro-grid {
+  display:grid;
+  width:100vw;
+  height:100vh;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-auto-rows: calc(100vw / var(--cols)); 
+  gap: 0; 
+  align-content:start;
+  filter:brightness(1);
+  transition:filter 1.5s ease;
+  visibility:hidden;
+}
 
-		.album-cover { flex: 0 0 50%; height: 100%; position: relative; overflow: hidden; }
-		.album-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.5s var(--transition-smooth); display: block; }
-		.album-cover:hover img { transform: scale(1.08); }
+#intro-grid.dimmed { filter:brightness(.3); }
 
-		.album-info { flex: 0 0 50%; display: flex; justify-content: center; align-items: center; padding: 20px; }
-		.album-info-inner { text-align: center; width: 100%; }
+@media (max-width:768px){
+  :root { --cols: 5; }
+}
 
-		.year { 
-			display: block; font-family: 'Helvetica', sans-serif; font-size: clamp(10px, 2.2vw, 14px); 
-			color: #888; letter-spacing: 5px; margin-bottom: 15px; font-weight: 300;
-		}
-		h3 { 
-			font-size: clamp(12px, 2.8vw, 18px); font-weight: 400; color: var(--accent-gold); 
-			margin: 0 0 10px 0; letter-spacing: 2px; text-transform: uppercase;
-		}
-		h2 { 
-			font-size: clamp(16px, 4.2vw, 38px); font-weight: 300; line-height: 1.2; 
-			margin: 0; color: #000; word-break: break-word;
-		}
-		.album-info-inner::before { content: ''; display: block; width: 25px; height: 1px; background: var(--accent-gold); margin: 0 auto 15px; }
+.grid-cell { position:relative; width: 100%; height: 100%; overflow: hidden; }
+.grid-cell img { width:100%; height:100%; object-fit:cover; display: block; border-radius: 0; }
 
-		/* --- 角标星标 --- */
-		.highlight { position: absolute; top: 0; right: 0; width: 80px; height: 80px; z-index: 10; pointer-events: none; }
-		.highlight::before {
-			content: ''; position: absolute; top: 0; right: 0;
-			border-top: 80px solid var(--accent-gold); border-right: 80px solid transparent;
-			transform: rotate(90deg); opacity: 0.9;
-		}
-		.highlight span {
-			position: absolute; top: 0; right: 0; width: 40px; height: 40px;
-			display: flex; justify-content: center; align-items: center;
-			font-size: 20px; color: #fff; animation: pulse-star 2.5s infinite ease-in-out;
-		}
-		@keyframes pulse-star { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+.flying-unit {
+  position:fixed;
+  z-index:10001;
+  pointer-events:none;
+  opacity: 0;
+  object-fit: cover;
+  border-radius: 0;
+  will-change: transform, opacity;
+}
 
-		/* --- 开场动画网格 --- */
-		#intro-overlay {
-			position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-			background-color: var(--bg-color); z-index: 9999;
-			display: none; justify-content: center; align-items: center;
-			opacity: 0; transition: opacity 0.8s ease-out; overflow: hidden;
-		}
-		body.show-intro { overflow: hidden; }
-		body.show-intro #intro-overlay { display: flex; opacity: 1; }
+/* ================= UI ================= */
 
-		#intro-grid {
-			display: grid; position: absolute; top: 0; left: 0; width: 100%;
-			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-			filter: brightness(0.5) grayscale(0.2);
-		}
-		@media (max-width: 600px) { #intro-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); } }
+#intro-ui {
+  position:absolute;
+  z-index:10002;
+  opacity:0;
+  transition:opacity 1s var(--easing);
+  pointer-events: none;
+  /* 修改：增加布局容器，使两个按钮并排 */
+  display: flex;
+  gap: 20px;
+}
+#intro-ui.visible { opacity:1; pointer-events: all; }
 
-		.grid-cell { position: relative; width: 100%; aspect-ratio: 1/1; perspective: 1000px; background-color: #ddd; }
-		.grid-cell-inner { position: relative; width: 100%; height: 100%; transition: transform 1.2s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
-		.grid-cell.flipped .grid-cell-inner { transform: rotateY(180deg); }
-		.grid-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-		.grid-face img { width: 100%; height: 100%; object-fit: cover; display: block; }
-		.grid-back { transform: rotateY(180deg); }
+.enter-btn, .pricing-btn {
+  background:#fff;
+  color:#000;
+  border:none;
+  padding:18px 45px;
+  border-radius:40px;
+  font-size:12px;
+  letter-spacing:4px;
+  font-weight:600;
+  cursor:pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
 
-		/* --- 开场按钮：强制字体一致 --- */
-		#intro-buttons {
-			position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
-			display: flex; gap: 20px; z-index: 10000; opacity: 0;
-			transition: all 0.8s var(--transition-smooth);
-		}
-		#intro-buttons.visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+/* Pricing 按钮稍微做一点点视觉降级，让主按钮更突出 */
+.pricing-btn {
+  background: rgba(255, 255, 255, 0.9);
+}
 
-		.intro-btn {
-			/* 核心修复：强制重置按钮和链接的默认样式 */
-			font-family: var(--btn-font) !important; 
-			font-size: 14px; 
-			font-weight: 600; 
-			line-height: 1.2;
-			letter-spacing: 3px;
-			text-transform: uppercase;
-			color: #fff; 
-			background: rgba(0, 0, 0, 0.75);
-			border: 1px solid rgba(255, 255, 255, 0.3); 
-			border-radius: 50px; 
-			cursor: pointer;
-			text-decoration: none; 
-			backdrop-filter: blur(10px); 
-			transition: 0.3s; 
-			text-align: center;
-			padding: 18px 40px;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			outline: none;
-			-webkit-appearance: none;
-		}
-		.intro-btn:hover { background: #fff; color: #000; transform: translateY(-2px); border-color: #fff; }
+.enter-btn:active, .pricing-btn:active { transform: scale(0.95); }
 
-		@media (max-width: 600px) {
-			#intro-buttons { flex-direction: column; width: 80%; }
-			.intro-btn { width: 100%; padding: 15px; font-size: 13px; }
-		}
-	</style>
+@media (max-width:480px) {
+  #intro-ui { flex-direction: column; align-items: center; gap: 15px; }
+}
+
+/* ================= Content ================= */
+
+#albums-container {
+  max-width:1100px; 
+  margin:0 auto;
+  padding:150px 40px;
+  display:none;
+  opacity:0;
+}
+
+body.content-visible { overflow:auto; }
+body.content-visible #albums-container { display:block; opacity:1; transition:opacity 1.5s; }
+
+.album-row {
+  display:flex;
+  align-items:center;
+  gap:80px;
+  margin-bottom:200px;
+  opacity:0;
+  transform:translateY(60px);
+  transition:all 1.2s var(--easing);
+}
+
+.album-row.is-visible { opacity:1; transform:translateY(0); }
+
+@media (min-width:769px){
+  .album-row.reverse { flex-direction:row-reverse; }
+  .album-row.reverse .album-info { text-align:right; }
+}
+
+.album-cover-wrapper {
+  flex:1; 
+  aspect-ratio:1/1;
+  position:relative;
+  box-shadow:0 40px 100px rgba(0,0,0,.6);
+}
+
+.album-cover-wrapper img { width:100%; height:100%; object-fit:cover; border-radius: 0; }
+
+.album-info { flex:1; }
+
+/* Highlight 标识样式 */
+.highlight-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+}
+
+.year { color:var(--text-dim); margin-bottom:12px; font-size: 16px; }
+.artist { color:var(--text-dim); margin:8px 0; font-size: 20px; }
+.title {
+  font-size:clamp(32px,4.5vw,56px);
+  font-weight:700;
+  margin:0;
+  line-height:1.1;
+  color: var(--text-main);
+}
+
+@media (max-width:768px) {
+  .album-row { flex-direction: column; gap: 40px; margin-bottom: 120px; }
+  .album-row.reverse .album-info { text-align: left; }
+}
+</style>
 </head>
+
 <body>
 
-	<div id="intro-overlay">
-		<div id="intro-grid"></div>
+<div id="intro-overlay">
+  <div id="intro-grid"></div>
+  <div id="intro-ui">
+	<button id="enter-site-btn" class="enter-btn">ENTER</button>
+	<a href="https://cookdao.github.io/pricing/" class="pricing-btn">PRICING</a>
+  </div>
+</div>
+
+<div id="albums-container"></div>
+
+<script src="albums.js"></script>
+<script>
+/* ========= Utils ========= */
+function shuffle(arr) {
+  return arr.slice().sort(() => Math.random() - 0.5);
+}
+
+/* ========= Intro Logic ========= */
+
+function initHybridAnimation(){
+  const grid = document.getElementById('intro-grid');
+  const cols = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--cols').trim());
+  const cellWidth = window.innerWidth / cols;
+  const rows = Math.ceil(window.innerHeight / cellWidth) + 1;
+  const totalCells = cols * rows;
+
+  const highlights = shuffle(albums.filter(a => a.highlighted));
+  const others = shuffle(albums.filter(a => !a.highlighted));
+  let combined = [...highlights, ...others];
+  
+  const displayPool = [];
+  for(let i=0; i<totalCells; i++) {
+	displayPool.push(combined[i % combined.length]);
+  }
+
+  grid.innerHTML = displayPool.map(item => `
+	<div class="grid-cell">
+	  <img src="${item.image}" style="opacity:0">
 	</div>
+  `).join('');
+  
+  grid.style.visibility = 'visible';
 
-	<div id="intro-buttons">
-		<button id="enter-site-btn" class="intro-btn">Enter Menu</button>
-		<a href="https://cookdao.github.io/pricing/" class="intro-btn">See Pricing</a>
-	</div>
+  const cells = document.querySelectorAll('.grid-cell');
+  let loaded = 0;
 
-	<div id="albums-container"></div>
+  cells.forEach((cell, i) => {
+	const rect = cell.getBoundingClientRect();
+	const fly = document.createElement('img');
+	fly.src = displayPool[i].image;
+	fly.className = 'flying-unit';
+	
+	const angle = Math.random() * Math.PI * 2;
+	const distance = Math.max(window.innerWidth, window.innerHeight) * 1.5;
+	
+	fly.style.width = rect.width + 'px';
+	fly.style.height = rect.height + 'px';
+	fly.style.left = '0px';
+	fly.style.top = '0px';
+	
+	const startX = window.innerWidth/2 + Math.cos(angle) * distance;
+	const startY = window.innerHeight/2 + Math.sin(angle) * distance;
+	
+	fly.style.transform = `translate(${startX}px, ${startY}px) scale(0.3)`;
+	document.body.appendChild(fly);
 
-	<script src="albums.js"></script>
+	setTimeout(() => {
+	  requestAnimationFrame(() => {
+		fly.style.transition = `transform ${1.2 + Math.random()*0.8}s var(--easing), opacity 0.8s ease`;
+		fly.style.opacity = '1';
+		fly.style.transform = `translate(${rect.left}px, ${rect.top}px) scale(1)`;
+	  });
+	}, i * 15); 
 
-	<script>
-		let priorityAlbums = [];
-		let normalAlbums = [];
-		if (typeof albums !== 'undefined') {
-			albums.forEach(a => {
-				if (a.highlighted || a.year === "2025") priorityAlbums.push(a);
-				else normalAlbums.push(a);
-			});
-		}
+	setTimeout(() => {
+	  const targetImg = cell.querySelector('img');
+	  if(targetImg) targetImg.style.opacity = 1;
+	  fly.remove();
+	  if(++loaded === totalCells) {
+		grid.classList.add('dimmed');
+		document.getElementById('intro-ui').classList.add('visible');
+	  }
+	}, 1800 + (i * 15)); 
+  });
+}
 
-		function shuffleArray(array) {
-			let arr = [...array];
-			for (let i = arr.length - 1; i > 0; i--) {
-				const j = Math.floor(Math.random() * (i + 1));
-				[arr[i], arr[j]] = [arr[j], arr[i]];
-			}
-			return arr;
-		}
+/* ========= Content Logic ========= */
 
-		function getWeightedRandomImage() {
-			if (typeof albums === 'undefined') return "";
-			const isPriority = Math.random() < 0.7;
-			if (isPriority && priorityAlbums.length > 0) {
-				return priorityAlbums[Math.floor(Math.random() * priorityAlbums.length)].image;
-			}
-			return albums[Math.floor(Math.random() * albums.length)].image;
-		}
+function generateContent(){
+  document.getElementById('albums-container').innerHTML = albums.map((a,i)=>`
+	<div class="album-row ${i%2?'reverse':''}">
+	  <div class="album-cover-wrapper">
+		<a href="${a.link}" target="_blank"><img src="${a.image}"></a>
+	  </div>
+	  <div class="album-info">
+		${a.highlighted ? '<div class="highlight-badge">Featured Work</div>' : ''}
+		<div class="year">${a.year}</div>
+		<div class="artist">${a.artist}</div>
+		<h2 class="title">${a.title}</h2>
+	  </div>
+	</div>`).join('');
+}
 
-		function generateAlbums() {
-			const container = document.getElementById("albums-container");
-			if (!container || typeof albums === 'undefined') return;
+function enterSite(){
+  document.getElementById('intro-overlay').style.opacity = 0;
+  setTimeout(() => {
+	document.getElementById('intro-overlay').remove();
+	document.body.classList.add('content-visible');
+	const obs = new IntersectionObserver(es => {
+	  es.forEach(e => e.isIntersecting && e.target.classList.add('is-visible'));
+	}, {threshold:.1});
+	document.querySelectorAll('.album-row').forEach(r => obs.observe(r));
+  }, 1200);
+}
 
-			container.innerHTML = albums.map((album, index) => `
-				<div class="album-row ${index % 2 !== 0 ? 'reverse' : ''}">
-					<div class="album-cover">
-						<a href="${album.link}" target="_blank">
-							<img src="${album.image}" alt="${album.title}" loading="${index < 2 ? 'eager' : 'lazy'}">
-							${album.highlighted ? '<div class="highlight"><span>★</span></div>' : ''}
-						</a>
-					</div>
-					<div class="album-info">
-						<div class="album-info-inner">
-							<span class="year">${album.year}</span>
-							<h3>${album.artist}</h3>
-							<h2>${album.title}</h2>
-						</div>
-					</div>
-				</div>
-			`).join('');
-		}
-
-		function initScrollObserver() {
-			const observer = new IntersectionObserver((entries) => {
-				entries.forEach(entry => {
-					if (entry.isIntersecting) {
-						entry.target.classList.add('is-visible');
-						observer.unobserve(entry.target);
-					}
-				});
-			}, { threshold: 0.1 });
-			document.querySelectorAll('.album-row').forEach(row => observer.observe(row));
-		}
-
-		let flipInterval;
-		function initIntroGrid() {
-			const grid = document.getElementById('intro-grid');
-			const width = window.innerWidth;
-			const height = window.innerHeight;
-			const minColWidth = width <= 600 ? 100 : 200;
-			const cols = Math.ceil(width / minColWidth);
-			const rows = Math.ceil(height / (width / cols)) + 1;
-			const totalCells = cols * rows;
-
-			let displayQueue = [...shuffleArray(priorityAlbums), ...shuffleArray(normalAlbums)];
-			let cellsHTML = '';
-
-			for (let i = 0; i < totalCells; i++) {
-				const imgUrl = (displayQueue[i % displayQueue.length] || {}).image || "";
-				cellsHTML += `
-					<div class="grid-cell">
-						<div class="grid-cell-inner">
-							<div class="grid-face grid-front"><img src="${imgUrl}"></div>
-							<div class="grid-face grid-back"><img src=""></div>
-						</div>
-					</div>`;
-			}
-			grid.innerHTML = cellsHTML;
-		}
-
-		function startGridAnimation() {
-			flipInterval = setInterval(() => {
-				const cells = document.querySelectorAll('.grid-cell');
-				if (cells.length === 0) return;
-				const randomCell = cells[Math.floor(Math.random() * cells.length)];
-				const inner = randomCell.querySelector('.grid-cell-inner');
-				const isFlipped = randomCell.classList.contains('flipped');
-				const nextImg = randomCell.querySelector(isFlipped ? '.grid-front img' : '.grid-back img');
-				
-				nextImg.src = getWeightedRandomImage();
-				randomCell.classList.toggle('flipped');
-			}, 2000);
-		}
-
-		function enterSite() {
-			if (flipInterval) clearInterval(flipInterval);
-			const buttons = document.getElementById("intro-buttons");
-			const overlay = document.getElementById("intro-overlay");
-			
-			buttons.classList.remove("visible");
-			overlay.style.opacity = '0';
-			
-			setTimeout(() => {
-				overlay.style.display = 'none';
-				buttons.style.display = 'none';
-			}, 800);
-
-			document.body.classList.remove('show-intro');
-			document.body.classList.add('content-visible');
-			sessionStorage.setItem('hasVisited', 'true');
-			initScrollObserver();
-		}
-
-		document.addEventListener("DOMContentLoaded", () => {
-			generateAlbums();
-			const hasVisited = sessionStorage.getItem('hasVisited');
-			
-			document.body.classList.add('show-intro');
-			initIntroGrid();
-			startGridAnimation();
-
-			setTimeout(() => {
-				document.getElementById("intro-buttons").classList.add("visible");
-			}, 1000);
-
-			document.getElementById('enter-site-btn').addEventListener('click', enterSite);
-		});
-	</script>
+document.addEventListener('DOMContentLoaded', () => {
+  generateContent();
+  setTimeout(initHybridAnimation, 400);
+  document.getElementById('enter-site-btn').onclick = enterSite;
+});
+</script>
 </body>
 </html>

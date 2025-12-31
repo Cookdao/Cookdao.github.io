@@ -1,358 +1,316 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>刀大厨 音频制作与混音服务报价单 | Audio Services</title>
-    <style>
-        /* =========================================
-           CSS 变量与主题设置
-           ========================================= */
-        :root {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-main: #e0e0e0;
-            --text-muted: #a0a0a0;
-            --text-heading: #ffffff;
-            --border-color: #333333;
-            --accent-color: #4dabf7; 
-            --accent-hover: #3b8dd6;
-            --price-color: #ffc107;
-            --tag-yes-bg: rgba(77, 171, 247, 0.15);
-            --tag-yes-text: #74c0fc;
-            --tag-no-bg: rgba(255, 107, 107, 0.15);
-            --tag-no-text: #ff8787;
-            --border-radius: 12px;
-            --spacing: 20px;
-            --transition-speed: 0.3s;
-        }
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+	<title>PRICING | ChefDao</title>
+	<style>
+		:root {
+			/* 提升可读性的深灰色调 */
+			--bg: #121212; 
+			--card-bg: #1c1c1e;
+			--card-hover: #2c2c2e;
+			--text-main: #ffffff;
+			--text-dim: #a1a1a6;
+			--accent: #ffffff;
+			--border: rgba(255, 255, 255, 0.1);
+			--font-pro: -apple-system, "SF Pro Display", "SF Pro Icons", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+			--easing: cubic-bezier(0.16, 1, 0.3, 1);
+		}
 
-        [data-theme="light"] {
-            --bg-color: #f4f6f8;
-            --card-bg: #ffffff;
-            --text-main: #495057;
-            --text-muted: #868e96;
-            --text-heading: #212529;
-            --border-color: #e9ecef;
-            --accent-color: #228be6;
-            --price-color: #f59f00;
-            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            --tag-yes-bg: rgba(34, 139, 230, 0.1);
-            --tag-yes-text: #1971c2;
-            --tag-no-bg: rgba(250, 82, 82, 0.1);
-            --tag-no-text: #e03131;
-        }
+		* { box-sizing: border-box; margin: 0; padding: 0; }
+		body {
+			background-color: var(--bg);
+			color: var(--text-main);
+			font-family: var(--font-pro);
+			line-height: 1.6;
+			-webkit-font-smoothing: antialiased;
+		}
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            transition: background-color var(--transition-speed), color var(--transition-speed);
-        }
+		.container { max-width: 1000px; margin: 0 auto; padding: 80px 24px; }
 
-        .container { max-width: 800px; margin: 0 auto; padding: var(--spacing); padding-bottom: 120px; }
+		/* --- Header --- */
+		header { margin-bottom: 60px; border-bottom: 1px solid var(--border); padding-bottom: 40px; }
+		.back-nav { margin-bottom: 32px; }
+		.back-nav a { 
+			color: var(--text-dim); text-decoration: none; font-size: 13px; 
+			letter-spacing: 1px; transition: color 0.3s; font-weight: 500;
+		}
+		.back-nav a:hover { color: #fff; }
 
-        /* 主题切换 */
-        .theme-toggle {
-            position: fixed; top: 20px; right: 20px;
-            background: var(--card-bg); border: 1px solid var(--border-color);
-            color: var(--text-main); width: 44px; height: 44px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 1000; transition: all 0.3s ease;
-        }
-        .theme-toggle:hover { transform: scale(1.1); border-color: var(--accent-color); }
-        .theme-toggle svg { width: 22px; height: 22px; fill: currentColor; }
+		h1 { font-size: clamp(40px, 8vw, 56px); font-weight: 700; letter-spacing: -1px; margin-bottom: 8px; }
+		.subtitle { color: var(--text-dim); font-size: 16px; letter-spacing: 3px; text-transform: uppercase; font-weight: 400; }
 
-        /* 头部 */
-        header { text-align: center; margin-bottom: 50px; padding: 40px 0 20px; border-bottom: 1px solid var(--border-color); }
-        h1 { font-size: 2.2rem; margin-bottom: 10px; color: var(--text-heading); letter-spacing: -0.5px; }
-        .subtitle { color: var(--accent-color); font-weight: 600; font-size: 0.9rem; letter-spacing: 1.5px; text-transform: uppercase; }
+		.contact-minimal { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 24px 40px; }
+		.contact-minimal div { font-size: 14px; display: flex; align-items: center; }
+		.contact-minimal span { color: var(--text-dim); margin-right: 10px; font-weight: 600; font-size: 12px; }
+		.contact-minimal a { color: var(--text-main); text-decoration: none; border-bottom: 1px solid var(--border); transition: 0.3s; }
+		.contact-minimal a:hover { border-color: #fff; }
 
-        .contact-box {
-            margin: 22px auto 0; display: inline-flex; flex-direction: column; gap: 10px;
-            padding: 14px 22px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px;
-        }
-        .contact-item { display: flex; justify-content: center; gap: 8px; font-size: 0.95rem; }
-        .contact-label { color: var(--text-muted); }
-        .contact-value { color: var(--text-heading); font-weight: 700; }
-        .contact-link { color: var(--accent-color); font-weight: 600; text-decoration: none; }
+		/* --- Sections --- */
+		section { margin-bottom: 80px; }
+		
+		.section-header { margin-bottom: 32px; }
+		.section-header h2 { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+		.section-header p { color: var(--text-dim); font-size: 14px; }
 
-        /* 章节 */
-        section { margin-bottom: 60px; animation: fadeIn 0.5s ease-in-out; }
-        h2 { font-size: 1.5rem; margin-bottom: 25px; padding-left: 15px; border-left: 5px solid var(--accent-color); color: var(--text-heading); }
-        h3 { font-size: 1.2rem; margin: 25px 0 15px; color: var(--text-heading); display: flex; align-items: center; gap: 8px; }
+		/* --- Grid & Cards --- */
+		.card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+		@media (max-width: 768px) { .card-grid { grid-template-columns: 1fr; } }
 
-        /* 卡片 */
-        .card-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-        @media (min-width: 600px) { .card-grid { grid-template-columns: 1fr 1fr; } }
+		.price-card {
+			background: var(--card-bg);
+			border: 1px solid var(--border);
+			padding: 32px;
+			border-radius: 16px;
+			display: flex;
+			flex-direction: column;
+			transition: all 0.4s var(--easing);
+		}
+		.price-card:hover { transform: translateY(-4px); background: var(--card-hover); border-color: rgba(255,255,255,0.2); }
+		.price-card.featured { border: 1.5px solid #fff; }
+		
+		.pc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+		.pc-title { font-size: 20px; font-weight: 600; color: #fff; }
+		.pc-price { font-size: 24px; font-weight: 700; font-family: "SF Mono", monospace; }
+		
+		.pc-desc { color: var(--text-dim); font-size: 14px; margin-bottom: 24px; flex-grow: 1; }
+		.pc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+		.tag { font-size: 11px; padding: 4px 10px; background: rgba(255,255,255,0.05); border-radius: 6px; color: #fff; font-weight: 500; }
+		.tag.highlight { color: #5e5ef0; background: rgba(94, 94, 240, 0.1); }
 
-        .card {
-            background-color: var(--card-bg); border-radius: var(--border-radius);
-            padding: 25px; border: 1px solid var(--border-color);
-            transition: transform 0.2s, border-color 0.2s;
-            display: flex; flex-direction: column;
-        }
-        .card:hover { border-color: var(--accent-color); transform: translateY(-3px); }
-        .card.featured { border: 2px solid var(--accent-color); position: relative; }
-        .card.featured::after {
-            content: "推荐"; position: absolute; top: -10px; right: 15px;
-            background: var(--accent-color); color: #fff; font-size: 0.75rem;
-            padding: 2px 8px; border-radius: 10px; font-weight: bold;
-        }
+		.pc-time { font-size: 12px; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
 
-        .service-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
-        .service-name { font-weight: bold; font-size: 1.1rem; color: var(--text-heading); }
-        .service-price { color: var(--price-color); font-weight: 800; font-size: 1.25rem; }
-        .service-desc { font-size: 0.95rem; color: var(--text-main); margin-bottom: 15px; flex-grow: 1; }
+		/* --- List Items --- */
+		.list-container { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
+		.list-row {
+			display: flex; justify-content: space-between; align-items: center;
+			padding: 24px 32px; border-bottom: 1px solid var(--border);
+			transition: background 0.3s;
+		}
+		.list-row:last-child { border-bottom: none; }
+		.list-row:hover { background: var(--card-hover); }
+		.list-info .main { font-size: 17px; font-weight: 600; color: #fff; }
+		.list-info .sub { font-size: 13px; color: var(--text-dim); margin-top: 4px; }
+		.list-price { font-family: "SF Mono", monospace; font-weight: 700; font-size: 18px; }
 
-        .service-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
-        .tag { font-size: 0.75rem; padding: 4px 10px; border-radius: 6px; font-weight: 500; }
-        .tag.yes { background: var(--tag-yes-bg); color: var(--tag-yes-text); }
-        .tag.no { background: var(--tag-no-bg); color: var(--tag-no-text); }
-        .delivery-time { margin-top: 12px; font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+		/* --- Terms Box --- */
+		.terms-box { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+		.terms-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+		@media (max-width: 768px) { .terms-grid { grid-template-columns: 1fr; } }
+		.term-item h4 { font-size: 15px; margin-bottom: 12px; color: #fff; border-left: 3px solid #fff; padding-left: 12px; }
+		.term-item ul { list-style: none; }
+		.term-item li { font-size: 14px; color: var(--text-dim); margin-bottom: 8px; position: relative; padding-left: 18px; }
+		.term-item li::before { content: "•"; position: absolute; left: 0; color: var(--text-dim); }
 
-        /* 列表组 */
-        .list-group { background-color: var(--card-bg); border-radius: var(--border-radius); overflow: hidden; border: 1px solid var(--border-color); }
-        .list-item { padding: 18px 25px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-        .list-item:last-child { border-bottom: none; }
-        .list-price { color: var(--price-color); font-weight: bold; white-space: nowrap; margin-left: 15px; font-size: 1.1rem; }
+		/* --- Floating Action --- */
+		.contact-bar {
+			position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+			background: #fff; color: #000; padding: 14px 32px; border-radius: 40px;
+			display: flex; align-items: center; gap: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+			z-index: 100; cursor: pointer; transition: all 0.3s var(--easing);
+		}
+		.contact-bar:hover { transform: translateX(-50%) translateY(-5px); box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
+		.contact-bar span { font-size: 13px; font-weight: 700; letter-spacing: 1px; }
 
-        /* 条款 */
-        .terms-box { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 30px; }
-        .terms-item { margin-bottom: 25px; }
-        .terms-item:last-child { margin-bottom: 0; }
-        .terms-item h4 { color: var(--accent-color); margin-bottom: 10px; font-size: 1.05rem; font-weight: bold; }
-        .terms-item ul { list-style-type: none; padding-left: 0; }
-        .terms-item li { position: relative; padding-left: 20px; margin-bottom: 8px; font-size: 0.95rem; color: var(--text-main); }
-        .terms-item li::before { content: "•"; color: var(--accent-color); position: absolute; left: 0; font-weight: bold; }
-
-        /* 手机端悬浮 */
-        .mobile-contact-bar {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: var(--card-bg); border-top: 1px solid var(--border-color);
-            padding: 15px var(--spacing); z-index: 999; display: flex; justify-content: center;
-        }
-        .mobile-contact-inner { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 600px; }
-        .mobile-copy { background: var(--accent-color); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        footer { text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 40px; }
-    </style>
+		footer { text-align: center; padding: 60px 0 140px; color: var(--text-dim); font-size: 13px; }
+	</style>
 </head>
 <body>
 
-<button class="theme-toggle" id="themeToggle" aria-label="切换日夜模式">
-    <svg id="themeIcon" viewBox="0 0 24 24"></svg>
-</button>
-
 <div class="container">
-    <header>
-        <h1>刀大厨 音频制作与混音</h1>
-        <div class="subtitle">ChefDao Audio Production & Mixing</div>
-        <div class="contact-box">
-            <div class="contact-item">
-                <span class="contact-label">WeChat</span>
-                <span class="contact-value">Cookdao</span>
-            </div>
-            <div class="contact-item">
-                <a href="https://bento.me/chefdao" target="_blank" class="contact-link">🔗 bento.me/chefdao</a>
-            </div>
-        </div>
-    </header>
+	<header>
+		<nav class="back-nav"><a href="./index.html">← BACK TO PORTFOLIO</a></nav>
+		<h1>Pricing.</h1>
+		<div class="subtitle">音频制作与混音服务报价</div>
+		<div class="contact-minimal">
+			<div><span>WECHAT</span>Cookdao</div>
+			<div><span>BENTO</span><a href="https://bento.me/chefdao" target="_blank">bento.me/chefdao</a></div>
+		</div>
+	</header>
 
-    <section>
-        <h2>I. 贴唱混音服务 (Vocal Mixing)</h2>
-        <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 0.95rem;">适用于已有伴奏，仅需处理人声并与伴奏融合的项目。</p>
-        <div class="card-grid">
-            <div class="card featured">
-                <div class="service-header">
-                    <span class="service-name">完整贴唱混音</span>
-                    <span class="service-price">¥450</span>
-                </div>
-                <div class="service-desc">一站式标准服务。包含“基础混音”与“人声制作”以及母带的全流程处理。</div>
-                <div class="service-tags">
-                    <span class="tag yes">全流程处理</span>
-                    <span class="tag yes">高性价比</span>
-                    <span class="tag yes">含母带</span>
-                </div>
-                <div class="delivery-time">⏱ 交付：3-5工作日</div>
-            </div>
-            <div class="card">
-                <div class="service-header">
-                    <span class="service-name">基础混音</span>
-                    <span class="service-price">¥299</span>
-                </div>
-                <div class="service-desc">追求专业发行品质，客户自行掌控创意。</div>
-                <div class="service-tags">
-                    <span class="tag yes">包含修音(音准/节奏)</span>
-                    <span class="tag yes">EQ/压缩/平衡</span>
-                </div>
-                <div class="delivery-time">⏱ 交付：3-5工作日</div>
-            </div>
-            <div class="card">
-                <div class="service-header">
-                    <span class="service-name">人声制作</span>
-                    <span class="service-price">¥299</span>
-                </div>
-                <div class="service-desc">追求极致氛围，侧重效果设计。</div>
-                <div class="service-tags">
-                    <span class="tag yes">特殊延迟/混响/切片</span>
-                    <span class="tag yes">空间构建</span>
-                    <span class="tag no">需提供已修好干声</span>
-                </div>
-                <div class="delivery-time">⏱ 交付：5-7工作日</div>
-            </div>
-            <div class="card">
-                <div class="service-header">
-                    <span class="service-name">单曲母带</span>
-                    <span class="service-price">¥200</span>
-                </div>
-                <div class="service-desc">提升响度、动态控制、频段平衡，达到流媒体发行标准。</div>
-                <div class="service-tags"><span class="tag yes">流媒体标准</span></div>
-            </div>
-        </div>
-    </section>
+	<section>
+		<div class="section-header">
+			<h2>Vocal Mixing / 贴唱混音</h2>
+			<p>适用于已有伴奏，仅需处理人声并与伴奏融合的项目。</p>
+		</div>
+		<div class="card-grid">
+			<div class="price-card featured">
+				<div class="pc-header">
+					<span class="pc-title">完整贴唱混音</span>
+					<span class="pc-price">¥450</span>
+				</div>
+				<div class="pc-desc">一站式标准服务。包含基础混音、人声制作及母带全流程处理。</div>
+				<div class="pc-tags">
+					<span class="tag">高性价比</span><span class="tag">全流程</span><span class="tag">含母带</span>
+				</div>
+				<div class="pc-time">⏱ 交付：3-5 工作日</div>
+			</div>
+			<div class="price-card">
+				<div class="pc-header">
+					<span class="pc-title">基础混音</span>
+					<span class="pc-price">¥299</span>
+				</div>
+				<div class="pc-desc">追求专业发行品质。包含音准节奏修整、EQ、压缩及整体平衡。</div>
+				<div class="pc-tags">
+					<span class="tag">音准修复</span><span class="tag">品质发行</span>
+				</div>
+				<div class="pc-time">⏱ 交付：3-5 工作日</div>
+			</div>
+			<div class="price-card">
+				<div class="pc-header">
+					<span class="pc-title">人声制作</span>
+					<span class="pc-price">¥299</span>
+				</div>
+				<div class="pc-desc">侧重空间与氛围设计。包含特殊延迟、混响、切片等效果。</div>
+				<div class="pc-tags">
+					<span class="tag">氛围设计</span><span class="tag">需提供修好干声</span>
+				</div>
+				<div class="pc-time">⏱ 交付：5-7 工作日</div>
+			</div>
+			<div class="price-card">
+				<div class="pc-header">
+					<span class="pc-title">单曲母带</span>
+					<span class="pc-price">¥200</span>
+				</div>
+				<div class="pc-desc">提升响度与动态控制，使音质达到流媒体发行标准。</div>
+				<div class="pc-tags">
+					<span class="tag">响度优化</span><span class="tag">发行标准</span>
+				</div>
+				<div class="pc-time">⏱ 交付：1-2 工作日</div>
+			</div>
+		</div>
+	</section>
 
-    <section>
-        <h2>II. 人声录音服务 (Vocal Recording)</h2>
-        <div class="list-group">
-            <div class="list-item">
-                <div class="list-content">
-                    <div style="font-weight: 600; color: var(--text-heading);">专业人声录制</div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted);">提供专业声学录音棚环境、高品质麦克风及话放</div>
-                </div>
-                <div class="list-price">¥300 / 小时</div>
-            </div>
-        </div>
-        <p style="font-size: 0.85rem; color: var(--accent-color); margin-top: 12px; font-weight: 600;">
-            * 备注：录音服务 2 小时起预约，请提前联系确认档期。
-        </p>
-    </section>
+	<section>
+		<div class="section-header">
+			<h2>Production / 编曲创作</h2>
+			<p>从 Beat Making 到词曲全包的定制化创作服务。</p>
+		</div>
+		<div class="card-grid">
+			<div class="price-card featured">
+				<div class="pc-header">
+					<span class="pc-title">定制编曲 Custom</span>
+					<span class="pc-price">¥3,000+</span>
+				</div>
+				<div class="pc-desc">根据你的风格要求，从零开始创作独一无二的伴奏。</div>
+				<div class="pc-tags"><span class="tag">独家专属</span><span class="tag">商业授权</span></div>
+			</div>
+			<div class="price-card">
+				<div class="pc-header">
+					<span class="pc-title">非定制 Lease</span>
+					<span class="pc-price">¥180/380</span>
+				</div>
+				<div class="pc-desc">租用现有 Beat 使用权。可选 MP3 或 MP3+WAV 分轨版本。</div>
+				<div class="pc-tags"><span class="tag">Leasing</span></div>
+			</div>
 
-    <section>
-        <h2>III. 分轨混音 (Stem Mixing)</h2>
-        <div class="list-group">
-            <div class="list-item">
-                <div class="list-content"><div>简易分轨 (8轨以内)</div><div>适用于简单Demo优化或原声乐器实录</div></div>
-                <div class="list-price">¥1,000</div>
-            </div>
-            <div class="list-item">
-                <div class="list-content"><div>常规分轨</div><div>中等复杂度，常规流行/说唱/R&B等</div></div>
-                <div class="list-price">¥1,500 起</div>
-            </div>
-            <div class="list-item">
-                <div class="list-content"><div>复杂分轨 (60-100轨)</div><div>大编制或要求复杂特效设计的项目</div></div>
-                <div class="list-price">¥3,000 起</div>
-            </div>
-        </div>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">* 注：以上价格不含音频编辑（如修音准、对节奏等），仅为混音费用。</p>
-    </section>
+			<div class="price-card">
+				<div class="pc-header">
+					<span class="pc-title">词曲创作</span>
+					<span class="pc-price">¥280/480</span>
+				</div>
+				<div class="pc-desc">专业作词（中/英）或旋律作曲，协助完成作品雏形。</div>
+				<div class="pc-tags"><span class="tag">词作</span><span class="tag">作曲</span></div>
+			</div>
+			<div class="price-card">
+				<div class="pc-header">
+					<span class="pc-title">词曲全包</span>
+					<span class="pc-price">¥680</span>
+				</div>
+				<div class="pc-desc">最高性价比。完整的词曲创作方案，助你快速开启录音。</div>
+				<div class="pc-tags"><span class="tag">打包优惠</span></div>
+			</div>
+		</div>
+	</section>
 
-    <section>
-        <h2>IV. 编曲与创作 (Production)</h2>
-        <h3>🎹 编曲 (Beat Making)</h3>
-        <div class="list-group">
-            <div class="list-item"><div class="list-content"><div>非定制 (Leasing) - MP3</div></div><div class="list-price">¥180</div></div>
-            <div class="list-item"><div class="list-content"><div>非定制 (Leasing) - MP3+WAV</div></div><div class="list-price">¥380</div></div>
-            <div class="list-item"><div class="list-content"><div>买断 (Exclusive)</div></div><div class="list-price">¥1,500 起</div></div>
-            <div class="list-item"><div class="list-content"><div>定制编曲 (Custom)</div></div><div class="list-price">¥3,000 - ¥5,000</div></div>
-        </div>
-        <h3>✍️ 词曲创作 (Songwriting)</h3>
-        <div class="list-group">
-            <div class="list-item"><div class="list-content"><div>作词 (中/英)</div></div><div class="list-price">¥280</div></div>
-            <div class="list-item"><div class="list-content"><div>作曲 (旋律/和弦)</div></div><div class="list-price">¥480</div></div>
-            <div class="list-item"><div class="list-content"><div>词曲全包</div></div><div class="list-price">¥680</div></div>
-        </div>
-    </section>
+	<section>
+		<div class="section-header">
+			<h2>Stem Mixing / 分轨混音</h2>
+			<p>针对多轨道项目，进行精细化的空间平衡与音色处理。</p>
+		</div>
+		<div class="list-container">
+			<div class="list-row">
+				<div class="list-info">
+					<div class="main">简易分轨 (8轨以内)</div>
+					<div class="sub">适用于简单 Demo 优化或原声乐器实录项目。</div>
+				</div>
+				<div class="list-price">¥1,000</div>
+			</div>
+			<div class="list-row">
+				<div class="list-info">
+					<div class="main">常规分轨</div>
+					<div class="sub">中等复杂度，常规流行 / 说唱 / R&B 等。</div>
+				</div>
+				<div class="list-price">¥1,500 起</div>
+			</div>
+			<div class="list-row">
+				<div class="list-info">
+					<div class="main">复杂分轨 (60-100轨)</div>
+					<div class="sub">大编制或要求复杂特效设计的项目。</div>
+				</div>
+				<div class="list-price">¥3,000 起</div>
+			</div>
+		</div>
+	</section>
 
-    <section>
-        <h2>V. DJ 演出服务</h2>
-        <div class="list-group">
-            <div class="list-item">
-                <div class="list-content"><div>日间演出</div><div>歌手伴奏 / 市集 / 餐厅等</div></div>
-                <div class="list-price">¥300 / h</div>
-            </div>
-            <div class="list-item">
-                <div class="list-content"><div>夜间/现场演出</div><div>Club / Bar / Livehouse</div></div>
-                <div class="list-price">¥1,000 起/场</div>
-            </div>
-        </div>
-    </section>
+	<section>
+		<div class="section-header">
+			<h2>Terms / 合作细则</h2>
+		</div>
+		<div class="terms-box">
+			<div class="terms-grid">
+				<div class="term-item">
+					<h4>修改与售后</h4>
+					<ul>
+						<li>母带前：前 3 次修改免费。</li>
+						<li>母带后：¥100/次（因客户原因需重混）。</li>
+						<li>支持在线会议实时定稿。</li>
+					</ul>
+				</div>
+				<div class="term-item">
+					<h4>音频编辑</h4>
+					<ul>
+						<li>修音/对齐：¥100/条主唱（规整轨道）。</li>
+						<li>唱功较弱或严重跑调者另计。</li>
+					</ul>
+				</div>
+				<div class="term-item">
+					<h4>关于录音</h4>
+					<ul>
+						<li>专业人声录制：¥300/小时。</li>
+						<li>2 小时起预约，请提前确认档期。</li>
+					</ul>
+				</div>
+				<div class="term-item">
+					<h4>文件交付</h4>
+					<ul>
+						<li>成品音频 (High-res WAV)。</li>
+						<li>带伴唱版本 / 纯伴奏版本。</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
 
-    <section>
-        <h2>📝 合作细则与额外费用 (Terms)</h2>
-        <div class="terms-box">
-            <div class="terms-item">
-                <h4>1. Cypher / 合辑混音细则</h4>
-                <ul>
-                    <li><strong>基础标准：</strong>默认仅含基础伴奏拼接。</li>
-                    <li><strong>四化衔接 (¥100/处)：</strong>制作切分、Drop、破拍等复杂衔接。</li>
-                </ul>
-            </div>
-            <div class="terms-item">
-                <h4>2. 音频编辑 (修音/对齐)</h4>
-                <ul>
-                    <li><strong>¥100 / 条主唱：</strong>适用于结构规整的轨道。</li>
-                    <li><strong>+ ¥50 / 条：</strong>针对唱功较弱或严重跑调者。</li>
-                </ul>
-            </div>
-            <div class="terms-item">
-                <h4>3. 修改与售后</h4>
-                <ul>
-                    <li><strong>母带前：</strong>前3次免费。支持在线会议当天定稿。</li>
-                    <li><strong>母带后 (¥100/次)：</strong>因客户原因需重新混音。</li>
-                </ul>
-            </div>
-            <div class="terms-item">
-                <h4>4. 文件交付</h4>
-                <ul>
-                    <li>包含：成品音频、带伴唱版本、纯伴奏。</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2025 ChefDao Audio Production Services. All Rights Reserved.</p>
-    </footer>
+	<footer>
+		<p>&copy; 2025 CHEFDAO AUDIO PRODUCTION. ALL RIGHTS RESERVED.</p>
+	</footer>
 </div>
 
-<div class="mobile-contact-bar">
-    <div class="mobile-contact-inner">
-        <div>WeChat：<strong>Cookdao</strong></div>
-        <button class="mobile-copy" onclick="copyWechat()">复制微信</button>
-    </div>
+<div class="contact-bar" onclick="copyWechat()">
+	<span>COPY WECHAT ID (COOKDAO)</span>
 </div>
 
 <script>
-    const toggleBtn = document.getElementById('themeToggle');
-    const htmlElement = document.documentElement;
-    const themeIcon = document.getElementById('themeIcon');
-
-    const moonPath = 'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z';
-    const sunPath = 'M12 7a5 5 0 100 10 5 5 0 000-10zM2 12h2m16 0h2M12 2v2m0 16v2m-6.36-16.36l1.42 1.42m10.58 10.58l1.42 1.42M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42';
-
-    function setTheme(theme) {
-        htmlElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-        themeIcon.innerHTML = `<path d="${theme === 'dark' ? moonPath : sunPath}" fill="none" stroke="currentColor" stroke-width="2" />`;
-    }
-
-    toggleBtn.addEventListener('click', () => {
-        const currentTheme = htmlElement.getAttribute('data-theme');
-        setTheme(currentTheme === 'dark' ? 'light' : 'dark');
-    });
-
-    // 初始化
-    setTheme(localStorage.getItem('theme') || 'dark');
-
-    function copyWechat() {
-        navigator.clipboard.writeText('Cookdao').then(() => {
-            alert('微信 ID 已复制到剪贴板');
-        });
-    }
+	function copyWechat() {
+		navigator.clipboard.writeText('Cookdao').then(() => {
+			const bar = document.querySelector('.contact-bar span');
+			const original = bar.innerText;
+			bar.innerText = '微信 ID 已复制';
+			setTimeout(() => bar.innerText = original, 2000);
+		});
+	}
 </script>
 
 </body>

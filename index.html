@@ -1,309 +1,683 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
-<title>刀大厨 ChefDao</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>刀大厨的菜单</title>
+<link rel="icon" href="https://www.emojiall.com/images/240/apple/1f373.png" type="image/png"/>
+<meta property="og:title" content="大厨菜单"/>
+<meta property="og:description" content="刀大厨混音母带"/>
+<meta property="og:image" content="https://github.com/Cookdao/Cookdao.github.io/blob/main/icon.png"/>
+<meta property="og:url" content="https://cookdao.github.io/"/>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WKW4EL3VCC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-WKW4EL3VCC');
+</script>
 
 <style>
-:root {
-  --bg:#000;
-  --text-main:#fff;
-  --text-dim:#86868b;
-  --font-pro:-apple-system,"SF Pro Display","Helvetica Neue",Arial,sans-serif;
-  --easing:cubic-bezier(0.16,1,0.3,1);
-  --cols: 8; 
-}
+    /* --- 全局设置 --- */
+    :root {
+        --bg-color: #e7e5e0;
+        --text-color: #000;
+        --accent-gold: gold;
+        --card-bg: #fff;
+    }
 
-body {
-  margin:0;
-  background:#000;
-  color:#fff;
-  font-family:var(--font-pro);
-  overflow:hidden;
-}
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
 
-/* ================= Intro ================= */
+    body {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-x: hidden;
+    }
 
-#intro-overlay {
-  position:fixed;
-  inset:0;
-  background:#000;
-  z-index:9999;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
-}
+    /* --- 主内容容器 --- */
+    #albums-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.8s ease-in;
+        padding-bottom: 50px;
+    }
 
-#intro-grid {
-  display:grid;
-  width:100vw;
-  height:100vh;
-  grid-template-columns: repeat(var(--cols), 1fr);
-  grid-auto-rows: calc(100vw / var(--cols)); 
-  gap: 0; 
-  align-content:start;
-  filter:brightness(1);
-  transition:filter 1.5s ease;
-  visibility:hidden;
-}
+    body.content-visible #albums-container {
+        opacity: 1;
+    }
 
-#intro-grid.dimmed { filter:brightness(.3); }
+    /* --- 专辑行样式 (Desktop) --- */
+    .album-row {
+        display: flex;
+        flex-direction: row; 
+        justify-content: center;
+        align-items: center;
+        width: 1000px;
+        height: 500px;
+        background-color: var(--card-bg);
+        margin: 0;
+        position: relative;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        will-change: opacity, transform;
+        overflow: hidden;
+    }
 
-@media (max-width:768px){
-  :root { --cols: 3; }
-}
+    .album-row.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-.grid-cell { position:relative; width: 100%; height: 100%; overflow: hidden; }
-.grid-cell img { width:100%; height:100%; object-fit:cover; display: block; border-radius: 0; }
+    .album-row.reverse {
+        flex-direction: row-reverse;
+    }
 
-.flying-unit {
-  position:fixed;
-  z-index:10001;
-  pointer-events:none;
-  opacity: 0;
-  object-fit: cover;
-  border-radius: 0;
-  will-change: transform, opacity;
-}
+    /* --- 专辑封面与信息 --- */
+    .album-cover {
+        flex: 0 0 50%; 
+        width: 50%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
 
-/* ================= UI ================= */
+    .album-cover a {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
 
-#intro-ui {
-  position:absolute;
-  z-index:10002;
-  opacity:0;
-  transition:opacity 1s var(--easing);
-  pointer-events: none;
-  /* 修改：增加布局容器，使两个按钮并排 */
-  display: flex;
-  gap: 20px;
-}
-#intro-ui.visible { opacity:1; pointer-events: all; }
+    .album-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: opacity 0.3s, filter 0.3s, transform 0.4s ease;
+    }
 
-.enter-btn, .pricing-btn {
-  background:#fff;
-  color:#000;
-  border:none;
-  padding:18px 45px;
-  border-radius:40px;
-  font-size:12px;
-  letter-spacing:4px;
-  font-weight:600;
-  cursor:pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-  text-decoration: none;
-  display: inline-block;
-}
+    .album-cover:hover img {
+        opacity: 0.6;
+        filter: brightness(0.6);
+        transform: scale(1.05);
+    }
 
-/* Pricing 按钮稍微做一点点视觉降级，让主按钮更突出 */
-.pricing-btn {
-  background: rgba(255, 255, 255, 0.9);
-}
+    .album-info {
+        flex: 0 0 50%;
+        width: 50%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        overflow: hidden;
+    }
 
-.enter-btn:active, .pricing-btn:active { transform: scale(0.95); }
+    .album-info-inner {
+        text-align: center;
+        width: 100%;
+    }
 
-@media (max-width:480px) {
-  #intro-ui { flex-direction: column; align-items: center; gap: 15px; }
-}
+    .year {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 10px;
+        letter-spacing: 2px;
+        display: block;
+    }
 
-/* ================= Content ================= */
+    h3 {
+        font-size: 28px;
+        font-weight: normal;
+        text-decoration: underline;
+        color: #333;
+        margin: 0 0 10px 0;
+    }
 
-#albums-container {
-  max-width:1100px; 
-  margin:0 auto;
-  padding:150px 40px;
-  display:none;
-  opacity:0;
-}
+    h2 {
+        font-size: 42px;
+        font-weight: 300;
+        color: #000;
+        margin: 0;
+        text-transform: uppercase;
+        line-height: 1.2;
+        word-break: break-word;
+    }
 
-body.content-visible { overflow:auto; }
-body.content-visible #albums-container { display:block; opacity:1; transition:opacity 1.5s; }
+    /* --- 高亮角标 --- */
+    .highlight {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 10;
+    }
 
-.album-row {
-  display:flex;
-  align-items:center;
-  gap:80px;
-  margin-bottom:200px;
-  opacity:0;
-  transform:translateY(60px);
-  transition:all 1.2s var(--easing);
-}
+    .highlight::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-top: 100px solid var(--accent-gold);
+        border-right: 100px solid transparent;
+        transform: rotate(90deg);
+        opacity: 0.9;
+    }
 
-.album-row.is-visible { opacity:1; transform:translateY(0); }
+    .highlight span {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 0;
+        right: 0;
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        color: #000;
+        opacity: 0.9;
+        animation: pulse-star 2.5s infinite ease-in-out;
+    }
 
-@media (min-width:769px){
-  .album-row.reverse { flex-direction:row-reverse; }
-  .album-row.reverse .album-info { text-align:right; }
-}
+    @keyframes pulse-star {
+        0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.9; }
+        50% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+    }
 
-.album-cover-wrapper {
-  flex:1; 
-  aspect-ratio:1/1;
-  position:relative;
-  box-shadow:0 40px 100px rgba(0,0,0,.6);
-}
+    /* --- 移动端主内容响应式 --- */
+    @media (max-width: 1000px) {
+        .album-row {
+            width: 100%;
+            height: 50vw;
+        }
+        
+        .album-cover, .album-info {
+            flex: 0 0 50%;
+            width: 50%;
+            height: 100%;
+        }
+        
+        .album-info {
+            padding: 0 8px; 
+        }
 
-.album-cover-wrapper img { width:100%; height:100%; object-fit:cover; border-radius: 0; }
+        h2 { font-size: 3.8vw; }
+        h3 { font-size: 2.8vw; }
+        .year { font-size: 2.2vw; margin-bottom: 3px; }
+        
+        .highlight { width: 13vw; height: 13vw; }
+        .highlight::before { border-top: 13vw solid var(--accent-gold); border-right: 13vw solid transparent; }
+        .highlight span { width: 6.5vw; height: 6.5vw; font-size: 4vw; }
+    }
 
-.album-info { flex:1; }
+    /* =========================================
+       动态开场动画 (Dynamic Intro Grid) 样式
+       ========================================= */
+    #intro-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--bg-color);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.8s ease-out;
+        overflow: hidden;
+    }
 
-/* Highlight 标识样式 */
-.highlight-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #fff;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  backdrop-filter: blur(10px);
-}
+    body.show-intro { overflow: hidden; }
+    body.show-intro #intro-overlay { display: flex; opacity: 1; }
 
-.year { color:var(--text-dim); margin-bottom:12px; font-size: 16px; }
-.artist { color:var(--text-dim); margin:8px 0; font-size: 20px; }
-.title {
-  font-size:clamp(32px,4.5vw,56px);
-  font-weight:700;
-  margin:0;
-  line-height:1.1;
-  color: var(--text-main);
-}
+    #intro-grid {
+        display: grid;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto; 
+        /* 桌面/大屏幕默认：格子较大 (≥200px) */
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+        gap: 0;
+        filter: brightness(0.6);
+        transition: filter 0.5s;
+    }
 
-@media (max-width:768px) {
-  .album-row { flex-direction: column; gap: 40px; margin-bottom: 120px; }
-  .album-row.reverse .album-info { text-align: left; }
-}
+    /* --- 针对小屏幕优化：每行至少三个封面 --- */
+    @media (max-width: 600px) {
+        #intro-grid {
+            /* 最小宽度降至100px，确保在标准手机屏幕上可以显示3-4列 */
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        }
+    }
+
+    .grid-cell {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1; /* 强制正方形 */
+        perspective: 1000px;
+        overflow: hidden;
+        background-color: #ddd;
+    }
+
+    .grid-cell-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 1.2s cubic-bezier(0.4, 0.2, 0.2, 1);
+        transform-style: preserve-3d;
+    }
+
+    .grid-cell.flipped .grid-cell-inner {
+        transform: rotateY(180deg);
+    }
+
+    .grid-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    .grid-face img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .grid-front { background-color: transparent; }
+    .grid-back { background-color: transparent; transform: rotateY(180deg); }
+
+    /* --- 开场按钮容器 --- */
+    #intro-buttons {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        display: flex;
+        flex-direction: row; /* 默认横向排列 */
+        gap: 25px;
+        z-index: 10000;
+        opacity: 0;
+        transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #intro-buttons.visible {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* --- 按钮通用样式 --- */
+    .intro-btn {
+        display: inline-block;
+        padding: 15px 35px;
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.6);
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        border-radius: 50px;
+        cursor: pointer;
+        text-decoration: none;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .intro-btn:hover {
+        background: rgba(255, 255, 255, 0.9);
+        color: #000;
+        transform: translateY(-2px);
+    }
+
+    /* --- 移动端按钮响应式：竖排 --- */
+    @media (max-width: 600px) {
+        #intro-buttons {
+            flex-direction: column; /* 手机上竖着排 */
+            gap: 15px;
+            width: 80%; /* 确保不过宽 */
+        }
+        .intro-btn {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 16px;
+        }
+    }
+
 </style>
 </head>
-
 <body>
 
 <div id="intro-overlay">
-  <div id="intro-grid"></div>
-  <div id="intro-ui">
-	<button id="enter-site-btn" class="enter-btn">ENTER</button>
-	<a href="https://cookdao.github.io/pricing/" class="pricing-btn">PRICING</a>
-  </div>
+    <div id="intro-grid"></div>
+</div>
+
+<div id="intro-buttons">
+    <button id="enter-site-btn" class="intro-btn">Enter</button>
+    <a href="https://cookdao.github.io/pricing/" id="price-btn" class="intro-btn">See the price</a>
 </div>
 
 <div id="albums-container"></div>
 
-<script src="albums.js"></script>
 <script>
-/* ========= Utils ========= */
-function shuffle(arr) {
-  return arr.slice().sort(() => Math.random() - 0.5);
-}
+    const albums = [
+  { link: "https://music.163.com/album?id=350777340", image: "http://p1.music.126.net/_-rFuALruNFFlRfoEslp7A==/109951172303441948.jpg", year: "2025", artist: "Føxco", title: "Fear Of Nothing", trackCount: 4, highlighted: true, date: "2025-11-21" },
+  { link: "https://music.163.com/album?id=349892857", image: "http://p1.music.126.net/Z0XW7Vb1WHMnn0Z0aZ3tVw==/109951172263038796.jpg", year: "2025", artist: "安伊涵", title: "BAD DESIRE", trackCount: 10, highlighted: true, date: "2025-11-11" },
+  { link: "https://music.163.com/album?id=273398421", image: "http://p2.music.126.net/EZUw2Idccw7OkinISOXpeQ==/109951171093017111.jpg", year: "2025", artist: "RioT婷", title: "小巴辣子", trackCount: 10, highlighted: true, date: "2025-06-01" },
+  { link: "https://music.163.com/album?id=263242113", image: "http://p1.music.126.net/QpNRZsfMP5J4tOlziA8Pnw==/109951170504642760.jpg", year: "2025", artist: "Rapeter", title: "IMGOOD别担心我", trackCount: 12, highlighted: true, date: "2025-02-22" },
+  { link: "https://music.163.com/album?id=285430095", image: "http://p2.music.126.net/fUvIMTUbos3A397_tb6Tzw==/109951172032384990.jpg", year: "2025", artist: "Uin", title: "首尔病(Take Me Out)", highlighted: false, date: "2025-09-18" },
+  { link: "https://music.163.com/album?id=354900387", image: "http://p2.music.126.net/-fo-2xcCWfs2kAHEW7l2fw==/109951172445407142.jpg", year: "2025", artist: "Tee田丰源", title: "《小城市男人》", highlighted: false, date: "2025-12-17" },
+  { link: "https://music.163.com/album?id=352601849", image: "http://p1.music.126.net/udCJEhYUMy4U8qkCpBY0eA==/109951172370574144.jpg", year: "2025", artist: "EKi", title: "憾", highlighted: false, date: "2025-12-01" },
+  { link: "https://music.163.com/album?id=285918201", image: "http://p2.music.126.net/NPwKdmm_krtd4sEEzE8G-g==/109951172050720624.jpg", year: "2025", artist: "西冷", title: "汤火", highlighted: false, date: "2025-09-22" },
+  { link: "https://music.163.com/album?id=286640994", image: "http://p2.music.126.net/8kfzjYITMEooNL7B2ND4iw==/109951172079018238.jpg", year: "2025", artist: "ZEE", title: "The Megenta EP", highlighted: false, date: "2025-10-01" },
+  { link: "https://music.163.com/album?id=284607285", image: "http://p2.music.126.net/JlYNY-59Ys9_P6v4Q_8pYA==/109951171998308814.jpg", year: "2025", artist: "CheezeK & CATI2", title: "Just Come Again", highlighted: false, date: "2025-09-13" },
+  { link: "https://music.163.com/album?id=284558402", image: "http://p2.music.126.net/hkegtpRfa2Ow7WuRuGiajQ==/109951171998134151.jpg", year: "2025", artist: "juNk chaiN", title: "愚", highlighted: false, date: "2025-09-10" },
+  { link: "https://music.163.com/album?id=283509783", image: "http://p2.music.126.net/k5Ea2W95Vk2ZHjPnq4S4WQ==/109951171959047869.jpg", year: "2025", artist: "掌柜不CHOKIN", title: "焦虑型人格", highlighted: false, date: "2025-08-31" },
+  { link: "https://music.163.com/album?id=281868509", image: "http://p2.music.126.net/4aw3W2ztwD-t8FyA65psRw==/109951171885901333.jpg", year: "2025", artist: "898", title: "灯塔", highlighted: false, date: "2025-08-17" },
+  { link: "https://music.163.com/album?id=279179554", image: "http://p2.music.126.net/t_dolznM2McNhnl4b4Qa4Q==/109951171789982806.jpg", year: "2025", artist: "CheezeK", title: "必备指令2.0", highlighted: false, date: "2025-07-23" },
+  { link: "https://music.163.com/album?id=276925482", image: "http://p2.music.126.net/m0opMAaNB1eOGnd30EYFZg==/109951171387080337.jpg", year: "2025", artist: "焦娇JoJo", title: "陕北女子", trackCount: 3, highlighted: true, date: "2025-07-02" },
+  { link: "https://music.163.com/album?id=270573035", image: "http://p1.music.126.net/NrbdvLw7jhqKWzPYLUzEOw==/109951170927016553.jpg", year: "2025", artist: "YOUNGLEGO", title: "快人一步", highlighted: false, date: "2025-05-01" },
+  { link: "https://music.163.com/album?id=276430474", image: "http://p1.music.126.net/kB5zkM3rSYaJtZNUM-tmVQ==/109951171363350397.jpg", year: "2025", artist: "FLAG2000 & 歪吉", title: "BAD BAD的心情", highlighted: false, date: "2025-06-26" },
+  { link: "https://music.163.com/album?id=166077501", image: "http://p2.music.126.net/ohHee67UBXig9S89itHNAQ==/109951168627523940.jpg", year: "2023", artist: "浪氏云", title: "浪潮 Restart", highlighted: false, date: "2023-05-20" },
+  { link: "https://music.163.com/album?id=275300472", image: "http://p2.music.126.net/NI49TfJcoiaBxw9te1TUkA==/109951171315986087.jpg", year: "2025", artist: "Jerome杰罗姆", title: "天命", highlighted: false, date: "2025-06-16" },
+  { link: "https://music.163.com/album?id=275333561", image: "http://p1.music.126.net/TVysXuJ9sv4GnlvmYI-P1Q==/109951171296811142.jpg", year: "2025", artist: "LiI GONBU", title: "Im comiug", trackCount: 12, highlighted: true, date: "2025-06-20" },
+  { link: "https://music.163.com/album?id=272339997", image: "http://p1.music.126.net/J89BSZrXMJL0AKWYyB1dvw==/109951171002089414.jpg", year: "2025", artist: "Lil Pink", title: "This Love of Mine", highlighted: false, date: "2025-05-20" },
+  { link: "https://music.163.com/album?id=271405981", image: "http://p2.music.126.net/FcXC3O6H0NpaJjhOYfSMEw==/109951170964908286.jpg", year: "2025", artist: "LilSugar", title: "英英", highlighted: false, date: "2025-05-11" },
+  { link: "https://music.163.com/album?id=272339857", image: "http://p2.music.126.net/lvdW8gDU5ZOjjQHVp_0Mbg==/109951171001170800.jpg", year: "2025", artist: "李李", title: "2 The Harmony", highlighted: false, date: "2025-05-19" },
+  { link: "https://music.163.com/album?id=271594679", image: "http://p1.music.126.net/4Yd8xzNw_d_NpwtWTp8CMA==/109951170974582178.jpg", year: "2025", artist: "HanP", title: "如果累了就歇歇吧", highlighted: false, date: "2025-05-14" },
+  { link: "https://music.163.com/album?id=267552392", image: "http://p2.music.126.net/dLO3LfOGdQ-X3P6I02yrWA==/109951170673486612.jpg", year: "2025", artist: "Ele Jazz", title: "太空规则", highlighted: true, date: "2025-04-01" },
+  { link: "https://music.163.com/album?id=270338954", image: "http://p1.music.126.net/7KS-dsJ0RUXelV2gY7DglQ==/109951170923668169.jpg", year: "2025", artist: "浴霸王", title: "MASKED BOWLING", highlighted: false, date: "2025-04-29" },
+  { link: "https://music.163.com/album?id=269915848", image: "http://p2.music.126.net/f_kwkW2QEpaD262iCr3g2A==/109951170862430479.jpg", year: "2025", artist: "柒6", title: "没说再见", highlighted: false, date: "2025-04-24" },
+  { link: "https://music.163.com/album?id=266613043", image: "http://p1.music.126.net/-W9spToZSasNLLvDCoQx8g==/109951170637774434.jpg", year: "2025", artist: "898", title: "恍惚", highlighted: false, date: "2025-03-22" },
+  { link: "https://music.163.com/album?id=264233704", image: "http://p2.music.126.net/Gi-KgnO2CoPUxM7S7l5Z4Q==/109951170523797331.jpg", year: "2025", artist: "Uin尤因", title: "Portfolio Mixtape Pt.1", trackCount: 7, highlighted: true, date: "2025-02-28" },
+  { link: "https://music.163.com/album?id=263243441", image: "http://p1.music.126.net/UCmvFFVtBPU2qBXc_UJPkQ==/109951170496707576.jpg", year: "2025", artist: "RioT婷", title: "岛 Pt.1", highlighted: false, date: "2025-02-19" },
+  { link: "https://music.163.com/album?id=263018609", image: "http://p2.music.126.net/k4hAMIW4kt57vhqo9rFdeg==/109951170490373724.jpg", year: "2025", artist: "安伊涵", title: "Heaven", highlighted: false, date: "2025-02-16" },
+  { link: "https://music.163.com/album?id=262350947", image: "http://p2.music.126.net/tg23znRitSin1BsH9cNRpw==/109951170470853706.jpg", year: "2025", artist: "Rapeter", title: "Shower", highlighted: true, date: "未知" },
+  { link: "https://music.163.com/album?id=258535006", image: "http://p1.music.126.net/K0FP9U0dC9uzP1MP4WrdIA==/109951170344988605.jpg", year: "2025", artist: "西冷", title: "果体，苹果，你", trackCount: 6, highlighted: true, date: "2025-01-05" },
+  { link: "https://music.163.com/album?id=268691673", image: "http://p2.music.126.net/HKse0pNFetTPe89RUfKFGg==/109951170713614365.jpg", year: "2025", artist: "FLAG2000", title: "秘密花园", highlighted: false, date: "2025-04-11" },
+  { link: "https://music.163.com/album?id=257739096", image: "http://p1.music.126.net/No5Anl8V6Y-EgEUwh0V2qQ==/109951170306042309.jpg", year: "2024", artist: "米拉Mila & 西凹木", title: "Leave to time", highlighted: false, date: "2024-12-28" },
+  { link: "https://music.163.com/album?id=256193130", image: "http://p1.music.126.net/cGmDYLkspQWcp0AJ69Ljww==/109951170233779980.jpg", year: "2024", artist: "CanvaSunny", title: "STRIKERS", highlighted: false, date: "2024-12-07" },
+  { link: "https://music.163.com/album?id=255259643", image: "http://p1.music.126.net/usdpvCx1QjWegBimczIEjw==/109951170201490125.jpg", year: "2024", artist: "HanP", title: "Oizys", highlighted: false, date: "2024-12-01" },
+  { link: "https://music.163.com/album?id=255259506", image: "http://p1.music.126.net/0bez3nJkVino6BTd9tVb8A==/109951170201142948.jpg", year: "2024", artist: "nicyco & Ele Jazz", title: "V", highlighted: false, date: "2024-11-29" },
+  { link: "https://music.163.com/album?id=253462820", image: "http://p1.music.126.net/sBeI0oNXUva-ZuLbWHN4eQ==/109951170141792269.jpg", year: "2024", artist: "李晨曦 & Rapeter", title: "乡里别的爱情故事", highlighted: false, date: "2024-11-15" },
+  { link: "https://music.163.com/album?id=250416715", image: "http://p1.music.126.net/6EB-ibVrkz50WvF6pxaP1Q==/109951170035097807.jpg", year: "2024", artist: "Ele Jazz", title: "郁金香", trackCount: 3, highlighted: true, date: "2024-10-23" },
+  { link: "https://music.163.com/album?id=249870834", image: "http://p2.music.126.net/nnnqgdFjThGzG3m1r7YRHg==/109951170018200576.jpg", year: "2024", artist: "程思源 & Rapeter", title: "Royal Blue", highlighted: true, date: "未知" },
+  { link: "https://music.163.com/album?id=247380991", image: "http://p1.music.126.net/oeWWJJjJ0c0erzqBoiVD3g==/109951169946775974.jpg", year: "2024", artist: "Cee", title: "侬CYPHER了伐", highlighted: true, date: "2024-09-09" },
+  { link: "https://music.163.com/album?id=248678750", image: "http://p2.music.126.net/tXBQV9T84lAzYCby8A_Msg==/109951169984473918.jpg", year: "2024", artist: "Ele Jazz", title: "Forgetful", highlighted: true, date: "2024-09-26" },
+  { link: "https://music.163.com/album?id=247913938", image: "http://p2.music.126.net/-G2re2uXOqk0AL732efmjw==/109951169962138318.jpg", year: "2024", artist: "898", title: "夕阳 风 烟", highlighted: false, date: "2024-09-15" },
+  { link: "https://music.163.com/album?id=246507605", image: "http://p1.music.126.net/vcRyBA253mdIy3nB7DECVQ==/109951169920447205.jpg", year: "2024", artist: "MonPig", title: "金鼎", highlighted: false, date: "2024-08-31" },
+  { link: "https://music.163.com/album?id=245062074", image: "http://p1.music.126.net/V8_Day3Ae1-QEGIBW8LtaQ==/109951169875108033.jpg", year: "2024", artist: "YIF钱毅峰", title: "必备指令", highlighted: false, date: "2024-08-15" },
+  { link: "https://music.163.com/album?id=243932243", image: "http://p2.music.126.net/fKK51uZdIdG5ymWfJug0qw==/109951169839894902.jpg", year: "2024", artist: "CeezeK & RioT婷", title: "火烧云", highlighted: false, date: "2024-08-03" },
+  { link: "https://music.163.com/album?id=242854471", image: "http://p1.music.126.net/0AtdhPH3u8r27xkOsFVc_Q==/109951169809119505.jpg", year: "2024", artist: "nicyco", title: "捕肉", highlighted: false, date: "2024-07-23" },
+  { link: "https://music.163.com/album?id=240703510", image: "http://p1.music.126.net/GZ0KxxLOkIiOLU-gv5OMNg==/109951169734137482.jpg", year: "2024", artist: "nicyco", title: "F？emo 2024", highlighted: false, date: "2024-06-29" },
+  { link: "https://music.163.com/album?id=197506694", image: "http://p2.music.126.net/2RTtCM1vA5VL4JfiK90O1g==/109951169632401644.jpg", year: "2024", artist: "Fefei物", title: "下个阶段", highlighted: false, date: "2024-05-28" },
+  { link: "https://music.163.com/album?id=196146392", image: "http://p1.music.126.net/Qymiy4g6WaCME-s8Wn0arg==/109951169597772610.jpg", year: "2024", artist: "曼珠沙華.", title: "MARGUERITE玛格丽特", highlighted: false, date: "2024-05-20" },
+  { link: "https://music.163.com/album?id=194993652", image: "http://p2.music.126.net/dCO06VehJ_NrUhoerQnXJw==/109951169571672118.jpg", year: "2024", artist: "FrankyFire", title: "Frankyworld", trackCount: 3, highlighted: true, date: "2024-05-11" },
+  { link: "https://music.163.com/album?id=194996069", image: "http://p1.music.126.net/7OmEUb-t3lxEGmRrZNVSZw==/109951169570309879.jpg", year: "2024", artist: "Wey", title: "MINI COOPER", highlighted: false, date: "2024-05-07" },
+  { link: "https://music.163.com/album?id=193130769", image: "http://p2.music.126.net/cPERXa2NBtiuxVuDKB3vUA==/109951169523822357.jpg", year: "2024", artist: "西冷", title: "布鲁切尔", trackCount: 12, highlighted: true, date: "2024-04-23" },
+  { link: "https://music.163.com/album?id=191521031", image: "http://p1.music.126.net/66kZHJ4z-jqPwuPjjtJibA==/109951169479579615.jpg", year: "2024", artist: "JungleZR", title: "断弦", highlighted: false, date: "2024-04-08" },
+  { link: "https://music.163.com/album?id=189753745", image: "http://p1.music.126.net/rA734NyZbO-HTxi0L4CGcQ==/109951169433203470.jpg", year: "2024", artist: "Ele Jazz", title: "Palette Mixtape", trackCount: 14, highlighted: true, date: "2024-03-16" },
+  { link: "https://music.163.com/album?id=189515959", image: "http://p1.music.126.net/1HNA1I19oM6jjt66-ac0-Q==/109951169427057439.jpg", year: "2024", artist: "Ele Jazz", title: "楚门", highlighted: false, date: "2024-03-14" },
+  { link: "https://music.163.com/album?id=186263420", image: "http://p2.music.126.net/56fONfps2akyEmrcNxu0iw==/109951169352788904.jpg", year: "2024", artist: "nineteen", title: "不走心说爱1.0", highlighted: false, date: "2024-02-19" },
+  { link: "https://music.163.com/album?id=186011706", image: "http://p2.music.126.net/YwPy6LK5aEHcpsqL11x8gA==/109951169342070122.jpg", year: "2024", artist: "JungleZR", title: "贰拾", trackCount: 9, highlighted: true, date: "2024-02-18" },
+  { link: "https://music.163.com/album?id=184937627", image: "http://p2.music.126.net/IsnOYAV-_RMHHJtx5LJ_qQ==/109951169307418420.jpg", year: "2024", artist: "ACondaway", title: "席卷着人间的浪", highlighted: false, date: "2024-02-04" },
+  { link: "https://music.163.com/album?id=184912000", image: "http://p1.music.126.net/lMbzsP3-kTe4pi_ZxH3u1w==/109951169306203582.jpg", year: "2024", artist: "白丝巾YuXuan", title: "抛弃", highlighted: false, date: "2024-02-02" },
+  { link: "https://music.163.com/album?id=181712415", image: "http://p1.music.126.net/OXM0Ydl5B7t5ZcIbvy5LSg==/109951169203928801.jpg", year: "2023", artist: "哇嘻大", title: "华东师范大学2023Cypher", highlighted: true, date: "2023-12-25" },
+  { link: "https://music.163.com/album?id=181790153", image: "http://p2.music.126.net/UO-23SocfXXV6xax72f2HA==/109951169206498088.jpg", year: "2023", artist: "nicyco", title: "怪士诞日", highlighted: false, date: "未知" },
+  { link: "https://music.163.com/album?id=179884769", image: "http://p1.music.126.net/DGKwqeRssR67V8vzLfrDTA==/109951169105516154.jpg", year: "2023", artist: "nicyco", title: "N.P.C", highlighted: false, date: "2023-12-02" },
+  { link: "https://music.163.com/album?id=180169615", image: "http://p2.music.126.net/A-iqfjD77zMBFeh8ruiy-w==/109951169121605029.jpg", year: "2023", artist: "DIAMA 琨", title: "SU1C1DE", highlighted: false, date: "2023-12-02" },
+  { link: "https://music.163.com/album?id=178746366", image: "http://p2.music.126.net/dOWgk0E3A6rSyMMukEJmRw==/109951169046283282.jpg", year: "2023", artist: "CheezeK", title: "Fashion Demon", highlighted: false, date: "2023-11-12" },
+  { link: "https://music.163.com/album?id=177570503", image: "http://p1.music.126.net/aBk05gFqZ9rjVSk33aKV6A==/109951169008188224.jpg", year: "2023", artist: "JungleZR", title: "NINJAS", highlighted: false, date: "2023-10-26" },
+  { link: "https://music.163.com/album?id=175046931", image: "http://p1.music.126.net/6IZBK_DKP_zsUSC-MGXw6g==/109951168927494191.jpg", year: "2023", artist: "DIAMA 琨", title: "Boombap Soul", highlighted: false, date: "2023-09-20" },
+  { link: "https://music.163.com/album?id=173735399", image: "http://p2.music.126.net/ljY7YIeBT9wNp_i0GUMwjA==/109951168884355333.jpg", year: "2023", artist: "白丝巾YuXuan", title: "拾探步", highlighted: false, date: "2023-09-02" },
+  { link: "https://music.163.com/album?id=173608711", image: "http://p2.music.126.net/R2x-Zgc75BgD92YIagQ_5A==/109951168881558137.jpg", year: "2023", artist: "白丝巾YuXuan", title: "试探步Mixtape", trackCount: 11, highlighted: true, date: "2023-09-01" },
+  { link: "https://music.163.com/album?id=168762519", image: "http://p1.music.126.net/thj9epXwYzRryqrYDwRraA==/109951168713810198.jpg", year: "2023", artist: "JungleZR", title: "人", highlighted: false, date: "2023-07-03" },
+  { link: "https://music.163.com/album?id=164912481", image: "http://p1.music.126.net/naajK5WkZBZU3AmoY2Kb_w==/109951168589887251.jpg", year: "2023", artist: "一刀阿阿", title: "我 恨 早 八", highlighted: true, date: "2023-05-04" },
+  { link: "https://music.163.com/album?id=164744981", image: "http://p2.music.126.net/npR37nSCYUtvDsVlLBMVFA==/109951168581638648.jpg", year: "2023", artist: "LOG", title: "HARDCORE SOUL", highlighted: false, date: "2023-05-01" },
+  { link: "https://music.163.com/album?id=160212346", image: "http://p1.music.126.net/yNANX0v6lrmbah1DKoN0UA==/109951168316034924.jpg", year: "2023", artist: "DaWaNOLonE", title: "我以为你会说的", highlighted: false, date: "2023-02-17" },
+  { link: "https://music.163.com/album?id=159201448", image: "http://p2.music.126.net/6oDEyvZH8j2voQVpaiRAWQ==/109951168276674198.jpg", year: "2023", artist: "LOG", title: "冬忒窝瑞", highlighted: false, date: "2023-02-01" },
+  { link: "https://music.163.com/album?id=156898457", image: "http://p1.music.126.net/Jr5MMh8uXNOO_Trt9GMd9g==/109951168163867338.jpg", year: "2022", artist: "LOG", title: "Trash Talk", highlighted: false, date: "2022-12-20" },
+  { link: "https://music.163.com/album?id=152978750", image: "http://p2.music.126.net/yPh7c9860LOS3eF5A2wkIA==/109951168499346559.jpg", year: "2022", artist: "一刀阿阿", title: "华东师大没有黑怕", highlighted: false, date: "2022-10-10" },
+    ];
 
-/* ========= Intro Logic ========= */
+    // --- 数据预处理：分类与排序 ---
+    let priorityAlbums = []; // 高优先级：加星或2025年
+    let normalAlbums = [];   // 普通
 
-function initHybridAnimation(){
-  const grid = document.getElementById('intro-grid');
-  const cols = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--cols').trim());
-  const cellWidth = window.innerWidth / cols;
-  const rows = Math.ceil(window.innerHeight / cellWidth) + 1;
-  const totalCells = cols * rows;
+    albums.forEach(a => {
+        if (a.highlighted || a.year === "2025") {
+            priorityAlbums.push(a);
+        } else {
+            normalAlbums.push(a);
+        }
+    });
 
-  const highlights = shuffle(albums.filter(a => a.highlighted));
-  const others = shuffle(albums.filter(a => !a.highlighted));
-  let combined = [...highlights, ...others];
-  
-  const displayPool = [];
-  for(let i=0; i<totalCells; i++) {
-	displayPool.push(combined[i % combined.length]);
-  }
+    // Fisher-Yates 洗牌算法
+    function shuffleArray(array) {
+        let arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
 
-  grid.innerHTML = displayPool.map(item => `
-	<div class="grid-cell">
-	  <img src="${item.image}" style="opacity:0">
-	</div>
-  `).join('');
-  
-  grid.style.visibility = 'visible';
+    // 获取一个加权随机封面 (用于翻页动画)
+    // 70% 概率选高优先级，30% 概率选普通
+    function getWeightedRandomImage() {
+        const isPriority = Math.random() < 0.7;
+        if (isPriority && priorityAlbums.length > 0) {
+            return priorityAlbums[Math.floor(Math.random() * priorityAlbums.length)].image;
+        } else {
+            return albums[Math.floor(Math.random() * albums.length)].image; // 回退到全池随机
+        }
+    }
 
-  const cells = document.querySelectorAll('.grid-cell');
-  let loaded = 0;
+    // --- 1. 生成主页列表 ---
+    function generateAlbums() {
+        const container = document.getElementById("albums-container");
+        const fragment = document.createDocumentFragment();
 
-  cells.forEach((cell, i) => {
-	const rect = cell.getBoundingClientRect();
-	const fly = document.createElement('img');
-	fly.src = displayPool[i].image;
-	fly.className = 'flying-unit';
-	
-	const angle = Math.random() * Math.PI * 2;
-	const distance = Math.max(window.innerWidth, window.innerHeight) * 1.5;
-	
-	fly.style.width = rect.width + 'px';
-	fly.style.height = rect.height + 'px';
-	fly.style.left = '0px';
-	fly.style.top = '0px';
-	
-	const startX = window.innerWidth/2 + Math.cos(angle) * distance;
-	const startY = window.innerHeight/2 + Math.sin(angle) * distance;
-	
-	fly.style.transform = `translate(${startX}px, ${startY}px) scale(0.3)`;
-	document.body.appendChild(fly);
+        albums.slice(0, 100).forEach((album, index) => {
+            const reverseClass = index % 2 !== 0;
+            const albumRow = document.createElement("div");
+            albumRow.className = `album-row ${reverseClass ? "reverse" : ""}`;
 
-	setTimeout(() => {
-	  requestAnimationFrame(() => {
-		fly.style.transition = `transform ${1.2 + Math.random()*0.8}s var(--easing), opacity 0.8s ease`;
-		fly.style.opacity = '1';
-		fly.style.transform = `translate(${rect.left}px, ${rect.top}px) scale(1)`;
-	  });
-	}, i * 15); 
+            const highlightHTML = album.highlighted
+                ? `<div class="highlight"><span>★</span></div>`
+                : '';
 
-	setTimeout(() => {
-	  const targetImg = cell.querySelector('img');
-	  if(targetImg) targetImg.style.opacity = 1;
-	  fly.remove();
-	  if(++loaded === totalCells) {
-		grid.classList.add('dimmed');
-		document.getElementById('intro-ui').classList.add('visible');
-	  }
-	}, 2500 + (i * 15)); 
-  });
-}
+            albumRow.innerHTML = `
+                <div class="album-cover">
+                    <a href="${album.link}" target="_blank" rel="noopener noreferrer">
+                        <img src="${album.image}" alt="${album.title} - ${album.artist}" loading="lazy" />
+                        ${highlightHTML}
+                    </a>
+                </div>
+                <div class="album-info">
+                    <div class="album-info-inner">
+                        <span class="year">${album.year}</span>
+                        <h3>${album.artist}</h3>
+                        <h2>${album.title}</h2>
+                    </div>
+                </div>
+            `;
+            fragment.appendChild(albumRow);
+        });
+        container.appendChild(fragment);
+    }
 
-/* ========= Content Logic ========= */
+    // --- 2. 滚动监测 ---
+    function initScrollObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "50px" });
 
-function generateContent(){
-  document.getElementById('albums-container').innerHTML = albums.map((a,i)=>`
-	<div class="album-row ${i%2?'reverse':''}">
-	  <div class="album-cover-wrapper">
-		<a href="${a.link}" target="_blank"><img src="${a.image}"></a>
-	  </div>
-	  <div class="album-info">
-		${a.highlighted ? '<div class="highlight-badge">Featured Work</div>' : ''}
-		<div class="year">${a.year}</div>
-		<div class="artist">${a.artist}</div>
-		<h2 class="title">${a.title}</h2>
-	  </div>
-	</div>`).join('');
-}
+        document.querySelectorAll('.album-row').forEach(row => {
+            observer.observe(row);
+        });
+    }
 
-function enterSite(){
-  document.getElementById('intro-overlay').style.opacity = 0;
-  setTimeout(() => {
-	document.getElementById('intro-overlay').remove();
-	document.body.classList.add('content-visible');
-	const obs = new IntersectionObserver(es => {
-	  es.forEach(e => e.isIntersecting && e.target.classList.add('is-visible'));
-	}, {threshold:.1});
-	document.querySelectorAll('.album-row').forEach(r => obs.observe(r));
-  }, 1200);
-}
+    // --- 3. 动态开场逻辑 (Album Wall) ---
+    let flipInterval;
 
-document.addEventListener('DOMContentLoaded', () => {
-  generateContent();
-  setTimeout(initHybridAnimation, 400);
-  document.getElementById('enter-site-btn').onclick = enterSite;
-});
+    function initIntroGrid() {
+        const gridContainer = document.getElementById('intro-grid');
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        // 估算单元格大小，这里依赖CSS media query的实际生效值
+        // 在手机上，CSS会将最小宽度设置为100px
+        const minColWidth = width <= 600 ? 100 : 200;
+
+        const cols = Math.ceil(width / minColWidth);
+        const approxCellSize = width / cols;
+        const rows = Math.ceil(height / approxCellSize) + 1;
+
+        const totalCells = cols * rows;
+        const fragment = document.createDocumentFragment();
+
+        // --- 构建初始展示队列 ---
+        let displayQueue = [...shuffleArray(priorityAlbums), ...shuffleArray(normalAlbums)];
+
+        for (let i = 0; i < totalCells; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'grid-cell';
+
+            const albumData = displayQueue[i % displayQueue.length];
+            const imgUrl = albumData.image;
+
+            cell.innerHTML = `
+                <div class="grid-cell-inner">
+                    <div class="grid-face grid-front">
+                        <img src="${imgUrl}" alt="" loading="eager">
+                    </div>
+                    <div class="grid-face grid-back">
+                        <img src="" alt="" loading="eager">
+                    </div>
+                </div>
+            `;
+            fragment.appendChild(cell);
+        }
+        gridContainer.appendChild(fragment);
+    }
+
+    function startGridAnimation() {
+        const cells = document.querySelectorAll('.grid-cell');
+        if (cells.length === 0) return;
+
+        // 2秒翻动一次
+        flipInterval = setInterval(() => {
+            const randomCell = cells[Math.floor(Math.random() * cells.length)];
+            const inner = randomCell.querySelector('.grid-cell-inner');
+            const frontImg = inner.querySelector('.grid-front img');
+            const backImg = inner.querySelector('.grid-back img');
+            const isFlipped = randomCell.classList.contains('flipped');
+
+            // 使用加权随机获取新图片
+            const newImage = getWeightedRandomImage();
+
+            if (isFlipped) {
+                frontImg.src = newImage;
+                randomCell.classList.remove('flipped');
+            } else {
+                backImg.src = newImage;
+                randomCell.classList.add('flipped');
+            }
+
+        }, 2000);
+    }
+
+    function stopGridAnimation() {
+        if (flipInterval) clearInterval(flipInterval);
+    }
+
+    // --- 4. 初始化流程 ---
+    document.addEventListener("DOMContentLoaded", () => {
+        const hasVisited = sessionStorage.getItem('hasVisited');
+        const introButtons = document.getElementById("intro-buttons");
+        const enterBtn = document.getElementById("enter-site-btn");
+        const body = document.body;
+
+        generateAlbums();
+
+        if (hasVisited) {
+            body.classList.add('show-intro');
+
+            initIntroGrid();
+            startGridAnimation();
+
+            // 1秒后显示按钮容器
+            setTimeout(() => {
+                introButtons.classList.add("visible");
+            }, 1000);
+        } else {
+            body.classList.add('show-intro');
+
+            initIntroGrid();
+            startGridAnimation();
+
+            // 1秒后显示按钮容器
+            setTimeout(() => {
+                introButtons.classList.add("visible");
+            }, 1000);
+
+// 点击 Enter 按钮进入主站
+            enterBtn.addEventListener("click", () => {
+                stopGridAnimation();
+
+                // --- 新增代码开始：让按钮容器消失 ---
+                introButtons.classList.remove("visible"); // 1. 移除 visible 类，触发 CSS 淡出效果
+                setTimeout(() => {
+                    introButtons.style.display = 'none'; // 2. 淡出后彻底隐藏，防止挡住下面的点击
+                }, 800); // 时间要和 CSS transition 匹配
+                // --- 新增代码结束 ---
+
+                body.classList.remove('show-intro');
+                body.classList.add('content-visible');
+                sessionStorage.setItem('hasVisited', 'true');
+                initScrollObserver();
+
+                setTimeout(() => {
+                    document.getElementById('intro-overlay').style.display = 'none';
+                }, 800);
+            });
+        }
+    });
 </script>
+
 </body>
 </html>

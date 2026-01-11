@@ -3,7 +3,7 @@
 
 const albums = [
   { link: "https://music.163.com/album?id=263242113", image: "http://p1.music.126.net/QpNRZsfMP5J4tOlziA8Pnw==/109951170504642760.jpg", year: "2025", artist: "Rapeter", title: "IMGOOD别担心我", trackCount: 12, highlighted: true, date: "2025-02-22",award:"最佳流行说唱专辑提名 & 年度单曲提名" },
-  { link: "https://music.163.com/album?id=273398421", image: "http://p2.music.126.net/EZUw2Idccw7OkinISOXpeQ==/109951171093017111.jpg", year: "2025", artist: "RioT婷 & CheezeK", title: "小巴辣子", trackCount: 10, highlighted: true, date: "2025-06-01" },
+  { link: "https://music.163.com/album?id=273398421", image: "http://p2.music.126.net/EZUw2Idccw7OkinISOXpeQ==/109951171093017111.jpg", year: "2025", artist: "RioT婷 & CheezeK", title: "小巴辣子", trackCount: 10, highlighted: true, date: "2025-06-01",award:"网易云 上海榜TOP1" },
   { link: "https://music.163.com/album?id=350777340", image: "http://p1.music.126.net/_-rFuALruNFFlRfoEslp7A==/109951172303441948.jpg", year: "2025", artist: "Føxco", title: "Fear Of Nothing", trackCount: 4, highlighted: true, date: "2025-11-21" },
   { link: "https://music.163.com/album?id=349892857", image: "http://p1.music.126.net/Z0XW7Vb1WHMnn0Z0aZ3tVw==/109951172263038796.jpg", year: "2025", artist: "安伊涵", title: "BAD DESIRE", trackCount: 10, highlighted: true, date: "2025-11-11" },
   { link: "https://music.163.com/album?id=285430095", image: "http://p2.music.126.net/fUvIMTUbos3A397_tb6Tzw==/109951172032384990.jpg", year: "2025", artist: "Uin", title: "首尔病(Take Me Out)", highlighted: true, date: "2025-09-18" },
